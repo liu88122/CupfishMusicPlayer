@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/main_background"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/tabBar"
+        layout="@layout/tab_bar" />
+    
+
+    <com.cupfish.musicplayer.ui.view.MyViewPager
+        android:id="@+id/vp_main"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+</LinearLayout>

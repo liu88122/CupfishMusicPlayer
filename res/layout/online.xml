@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <!--
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/list_section_divider_holo_custom"
+            android:padding="10dip"
+            android:text="@string/baiduting"
+            android:textColor="@color/main_blue_light" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/main_blue_light" />
+    </LinearLayout>
+    -->
+
+    <Button
+        android:id="@+id/bt_search_online"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dip"
+        android:background="@drawable/search_btn_selector"
+        android:padding="10dip"
+        android:text="@string/search_online"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="40dip"
+        android:layout_weight="1" >
+
+        <ImageView
+            android:id="@+id/iv_baidu_music"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/baidu_music_btn_selector" />
+
+      
+    </RelativeLayout>
+
+    <!-- <include layout="@layout/bottom_mini_player" /> -->
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/red_light" />
+
+        <com.cupfish.musicplayer.ui.view.MyTextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dip"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:clickable="true"
+            android:singleLine="true"
+            android:text="@string/copyright"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:background="@color/red_light" />
+    </LinearLayout>
+
+</LinearLayout>

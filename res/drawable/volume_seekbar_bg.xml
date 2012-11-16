@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- 背景图 -->
+    <item
+        android:id="@+android:id/background"
+        android:drawable="@drawable/volume_bar_progress_default"/>
+    <!-- 全部能量图 -->
+    <item
+        android:id="@+android:id/SecondaryProgress"
+        android:drawable="@drawable/volume_bar_progress_default"/>
+    <!-- 进和能量图 -->
+    <item
+        android:id="@+android:id/progress"
+        android:drawable="@drawable/volume_bar_progress"/>
+
+</layer-list>

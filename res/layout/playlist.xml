@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/main_bg"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tab_custom_blue_bg"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/bt_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tab_btn_bg_selector"
+                android:drawableLeft="@drawable/tab_left_arrow"
+                android:minWidth="30dip"
+                android:padding="5dip"
+                android:text="@string/playlist"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/tab_bar_divider" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/lv_playlist"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:cacheColorHint="@color/transparent"
+            android:divider="@color/main_blue_translucent"
+            android:dividerHeight="1dip"
+            android:listSelector="@drawable/music_list_selector"
+            android:paddingTop="5dip" />
+    </LinearLayout>
+
+</FrameLayout>

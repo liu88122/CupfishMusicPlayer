@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:background="@drawable/volume_controll_bg" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/volume"
+        android:textColor="@color/main_blue_light"
+        android:textSize="18sp" />
+
+    <SeekBar
+        android:id="@+id/sb_volume"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:layout_marginTop="10dip"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:progress="0"
+        android:progressDrawable="@drawable/player_seekbar_bg"
+        android:thumb="@drawable/volume_bar_progress_thumb" />
+
+</LinearLayout>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, MusicPlayerActivity!</string>
+    <string name="app_name">杯里鱼音乐</string>
+    <string name="tab_bar_playing">正在听</string>
+    <string name="tab_bar_local">本地听</string>
+    <string name="tab_bar_online">在线听</string>
+    <string name="baiduting">百度听</string>
+    <string name="download">下载</string>
+    <string name="mm_ss_zero">00:00</string>
+    <string name="playlist">播放列表</string>
+    <string name="new_top">新歌榜</string>
+    <string name="tip">提示</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+    <string name="dialog_msg_default">确定吗？</string>
+    <string name="search_online">说出你想听的歌曲</string>
+    <string name="search">搜索结果</string>
+    <string name="refresh">点击加载</string>
+    <string name="love_music">爱音乐</string>
+    <string name="love_life">爱生活</string>
+    <string name="volume">音量控制</string>
+    <string name="customize_lrc_tip">请输入自定义个性歌词</string>
+    <string name="et_customize_lrc_hint">字数不宜过长哦</string>
+    <string name="copyright">版权声明:所有在线音乐、图像、文字和其他内容资料均来自互联网，杯里鱼自身不存储任何资源，也不对链接的内容进行编辑、修改，所有在线音乐、图像、文字和其他内容版权均属百度公司、谷歌公司、内容提供商、唱片发行公司及歌曲作者所有，所有内容仅供个人、非商业、娱乐用途，支持正版，人人有责！</string>
+
+</resources>

@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/main_background"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/tv_song_singer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerHorizontal="true"
+                    android:paddingLeft="15dip"
+                    android:paddingTop="2dip"
+                    android:text="@string/love_music"
+                    android:textColor="@color/main_blue_light"
+                    android:textSize="30sp" />
+
+                <ImageView
+                    android:id="@+id/iv_playlist_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dip"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/playlist_default" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_song_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dip"
+                android:paddingTop="2dip"
+                android:text="@string/love_life"
+                android:textColor="@color/main_blue_light"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_song_album"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dip"
+                android:paddingTop="5dip"
+                android:textColor="@color/main_blue_light"
+                android:textSize="10sp" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dip" >
+
+                <com.cupfish.musicplayer.ui.view.MyImageView
+                    android:id="@+id/iv_album_cover"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:scaleType="matrix"
+                    android:src="@drawable/start_cover_default" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="#33333333"
+                    android:orientation="vertical" >
+
+                    <TextSwitcher
+                        android:id="@+id/ts_lrc"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#8833B5E5"
+                        android:padding="5dip" />
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dip"
+                        android:background="@color/main_blue_light" />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <android.gesture.GestureOverlayView
+            android:id="@+id/myGestureView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#33333333"
+            android:focusableInTouchMode="true"
+            android:gestureColor="@color/main_blue_light"
+            android:gestureStrokeType="multiple"
+            android:orientation="horizontal"
+            android:uncertainGestureColor="@color/yellow_light"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/iv_player_play_pause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/player_play_btn_selector" />
+
+            <ImageView
+                android:id="@+id/iv_player_previous"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/iv_player_play_pause"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/player_pre_btn_selector" />
+
+            <ImageView
+                android:id="@+id/iv_volume"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:layout_toLeftOf="@id/iv_player_previous"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/volume_default" />
+
+            <ImageView
+                android:id="@+id/iv_player_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_toRightOf="@id/iv_player_play_pause"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/player_next_btn_selector" />
+
+            <ImageView
+                android:id="@+id/iv_guesture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dip"
+                android:layout_toRightOf="@id/iv_player_next"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/gesture" />
+        </RelativeLayout>
+
+        <SeekBar
+            android:id="@+id/sb_player_progress"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:progress="0"
+            android:progressDrawable="@drawable/player_seekbar_bg"
+            android:thumb="@drawable/player_bar_point" />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dip" >
+
+            <TextView
+                android:id="@+id/tv_current_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="10dip"
+                android:text="@string/mm_ss_zero"
+                android:textColor="@color/main_blue_light"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_total_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dip"
+                android:text="@string/mm_ss_zero"
+                android:textColor="@color/main_blue_light"
+                android:textSize="12sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

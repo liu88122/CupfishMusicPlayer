@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/panel_message"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"
+            android:src="@drawable/dialog_alert" />
+
+        <TextView
+            android:id="@+id/tv_dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="5dip"
+            android:text="@string/customize_lrc_tip"
+            android:textColor="@color/main_blue_light"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        android:background="@color/main_blue_light" />
+
+    <EditText
+        android:id="@+id/et_customize_lrc"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dip"
+        android:hint="@string/et_customize_lrc_hint"
+        android:singleLine="true"
+        android:textColor="@color/main_blue_light"
+        android:textSize="18sp" />
+
+    <View
+        android:id="@+id/divider1"
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="@color/gray" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/bt_confirm"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/dialog_btn_selector"
+            android:padding="10dip"
+            android:text="@string/confirm"
+            android:textSize="16sp" />
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="1dip"
+            android:layout_height="fill_parent"
+            android:background="@color/gray" />
+
+        <Button
+            android:id="@+id/bt_cancel"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/dialog_btn_selector"
+            android:padding="10dip"
+            android:text="@string/cancel"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</LinearLayout>
