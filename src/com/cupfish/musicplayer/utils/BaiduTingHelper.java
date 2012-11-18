@@ -218,7 +218,7 @@ public class BaiduTingHelper {
 				}
 			}
 			album.setId(albumId);
-			album.setCoverImg("http:" + coverImg);
+			album.setCoverImg(coverImg);
 			album.setTitle(title);
 			album.setDesc(desc);
 			album.setSongs(songs);

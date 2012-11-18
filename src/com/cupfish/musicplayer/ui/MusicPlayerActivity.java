@@ -88,6 +88,7 @@ import com.cupfish.musicplayer.utils.FileManageAssistant;
 import com.cupfish.musicplayer.utils.LRCManager;
 import com.cupfish.musicplayer.utils.LocalMediaUtil;
 import com.cupfish.musicplayer.utils.MyImageUtils;
+import com.cupfish.musicplayer.utils.MyImageUtils.ImageCallback;
 import com.cupfish.musicplayer.utils.ShakeDetector;
 import com.cupfish.musicplayer.utils.ShakeDetector.OnShakeListener;
 import com.cupfish.musicplayer.utils.TextFormatUtils;
@@ -780,20 +781,18 @@ public class MusicPlayerActivity extends Activity implements OnClickListener, Vi
 			bitmap = MyImageUtils.createReflectionImageWithOrigin(LocalMediaUtil.getArtwork(MusicPlayerActivity.this, songId, albumId));
 			
 			//TODO 专辑封面下载有问题，待修复
-			// if (bitmap == null) {
-			// String imageName = MyImageUtils.md5(mCurrentSong.getTitle());
-			// Log.i(TAG, "Loading ImageCover");
-			// bitmap = MyImageUtils.loadImage(imageName, imageUrl, new
-			// ImageCallback() {
-			// @Override
-			// public void loadImage(Bitmap bitmap, String imagePath) {
-			// isDefaultAlbum = false;
-			// mAlbumCover.clearAnimation();
-			// mAlbumCover.setImageBitmap(MyImageUtils.getFitableBitmapWithReflection(MusicPlayerActivity.this,
-			// bitmap));
-			// }
-			// });
-//			}
+			if (bitmap == null) {
+				String imageName = MyImageUtils.md5(mCurrentSong.getTitle());
+				Log.i(TAG, "Loading ImageCover");
+				bitmap = MyImageUtils.loadImage(imageName, imageUrl, new ImageCallback() {
+					@Override
+					public void loadImage(Bitmap bitmap, String imagePath) {
+						isDefaultAlbum = false;
+						mAlbumCover.clearAnimation();
+						mAlbumCover.setImageBitmap(MyImageUtils.getFitableBitmapWithReflection(MusicPlayerActivity.this, bitmap));
+					}
+				});
+			}
 
 			if (bitmap == null) {
 				bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.music_album_default);

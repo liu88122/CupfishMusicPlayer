@@ -303,13 +303,19 @@ public class MyImageUtils {
 						if(TextUtils.isEmpty(imageUrl)){
 							return;
 						}
-						URL url = new URL("http://www.baidu.com");
-//						HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-						BufferedInputStream bis = new BufferedInputStream(url.openStream());
-						Bitmap bitmap = BitmapFactory.decodeStream(bis);
+						Bitmap bitmap = null;
+						URL url = new URL(imageUrl);
+						System.out.println(imageUrl);
+						HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+						if(conn.getResponseCode() == 200){
+							BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
+							bitmap = BitmapFactory.decodeStream(bis);
+						}
 
 						//String imageName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
-						saveImage(imageName, bitmap);
+						if(bitmap != null){
+							saveImage(imageName, bitmap);
+						}
 
 						Message msg = Message.obtain();
 						msg.obj = bitmap;
