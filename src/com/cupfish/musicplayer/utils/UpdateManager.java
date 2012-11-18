@@ -18,7 +18,9 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Environment;
 
-import com.cupfish.musicplayer.domain.AppUpdateInfo;
+import com.cupfish.musicplayer.bean.AppUpdateInfo;
+import com.cupfish.musicplayer.download.DownloadEngine.DownloadListener;
+import com.cupfish.musicplayer.download.DownloadTask;
 import com.cupfish.musicplayer.parser.JsonParser;
 
 /**
@@ -126,7 +128,7 @@ public class UpdateManager {
 		Thread downloadThread = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				String fileName = downloadUrl.substring(downloadUrl.lastIndexOf("/") + 1);
+				final String fileName = downloadUrl.substring(downloadUrl.lastIndexOf("/") + 1);
 				InputStream is = null;
 				FileOutputStream fos = null;
 				try {
@@ -135,21 +137,21 @@ public class UpdateManager {
 					is = conn.getInputStream();
 					dialog.setMax(conn.getContentLength());
 					
-					File file = new File(context.getExternalCacheDir(), fileName);
-					fos = new FileOutputStream(file);
-					byte[] buffer = new byte[1024 * 8];
-					int len = 0;
-					int currentLoaded = 0;
-					while((len = is.read(buffer)) != -1){
-						fos.write(buffer, 0, len);
-						currentLoaded += len;
-						dialog.setProgress(currentLoaded);
-					}
-					
-					if(file.exists()){
-						dialog.dismiss();
-						installApk(context, file.getPath());
-					}
+//					File file = new File(context.getExternalCacheDir(), fileName);
+//					fos = new FileOutputStream(file);
+//					byte[] buffer = new byte[1024 * 8];
+//					int len = 0;
+//					int currentLoaded = 0;
+//					while((len = is.read(buffer)) != -1){
+//						fos.write(buffer, 0, len);
+//						currentLoaded += len;
+//						dialog.setProgress(currentLoaded);
+//					}
+//					
+//					if(file.exists()){
+//						dialog.dismiss();
+//						installApk(context, file.getPath());
+//					}
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -167,6 +169,23 @@ public class UpdateManager {
 					} catch (Exception e) {
 					}
 				}
+				final String dir = Environment.getExternalStorageDirectory() + "/cupfish";
+				DownloadTask task = new DownloadTask(context, downloadUrl, dir, 2);
+				task.setDownloadListener(new DownloadListener() {
+					
+					@Override
+					public void onDownloading(int size) {
+						dialog.setProgress(size);
+						
+					}
+					
+					@Override
+					public void onDownloadFinish() {
+						// TODO Auto-generated method stub
+						installApk(context, dir + "/" + fileName);
+					}
+				});
+				task.start();
 			}
 		});
 		downloadThread.start();

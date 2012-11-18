@@ -23,8 +23,8 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.cupfish.musicplayer.bean.Song;
 import com.cupfish.musicplayer.dao.PlayerListDao;
-import com.cupfish.musicplayer.domain.Song;
 import com.cupfish.musicplayer.exception.NetTimeoutException;
 import com.cupfish.musicplayer.global.BaseApp;
 import com.cupfish.musicplayer.global.Constants;

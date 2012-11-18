@@ -19,8 +19,8 @@ import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 
 import com.cupfish.musicplayer.R;
-import com.cupfish.musicplayer.domain.Artist;
-import com.cupfish.musicplayer.domain.Song;
+import com.cupfish.musicplayer.bean.Artist;
+import com.cupfish.musicplayer.bean.Song;
 
 public class LocalMediaUtil {
 

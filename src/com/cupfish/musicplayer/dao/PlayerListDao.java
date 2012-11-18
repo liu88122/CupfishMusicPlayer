@@ -8,7 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.MediaStore.Audio.Playlists;
 
-import com.cupfish.musicplayer.domain.Song;
+import com.cupfish.musicplayer.bean.Song;
 import com.cupfish.musicplayer.utils.PlayerListDbHelper;
 
 public class PlayerListDao {

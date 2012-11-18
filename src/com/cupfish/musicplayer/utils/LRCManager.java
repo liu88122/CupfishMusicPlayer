@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.cupfish.musicplayer.domain.LRC;
+import com.cupfish.musicplayer.bean.LRC;
 
 public class LRCManager {
 	private ExecutorService service;

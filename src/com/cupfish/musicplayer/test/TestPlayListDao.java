@@ -5,8 +5,8 @@ import java.util.List;
 
 import android.test.AndroidTestCase;
 
+import com.cupfish.musicplayer.bean.Song;
 import com.cupfish.musicplayer.dao.PlayerListDao;
-import com.cupfish.musicplayer.domain.Song;
 
 public class TestPlayListDao extends AndroidTestCase {
 

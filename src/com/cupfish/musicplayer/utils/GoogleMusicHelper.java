@@ -21,7 +21,7 @@ import android.media.MediaPlayer.OnBufferingUpdateListener;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.cupfish.musicplayer.domain.Song;
+import com.cupfish.musicplayer.bean.Song;
 import com.cupfish.musicplayer.exception.NetTimeoutException;
 import com.cupfish.musicplayer.global.Constants;
 

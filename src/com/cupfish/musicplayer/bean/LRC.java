@@ -1,4 +1,4 @@
-package com.cupfish.musicplayer.domain;
+package com.cupfish.musicplayer.bean;
 
 import java.util.Iterator;
 import java.util.TreeMap;

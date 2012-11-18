@@ -5,7 +5,7 @@ import java.io.File;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.cupfish.musicplayer.domain.Song;
+import com.cupfish.musicplayer.bean.Song;
 
 public class FileManageAssistant {
 

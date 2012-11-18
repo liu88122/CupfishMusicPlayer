@@ -1,4 +1,4 @@
-package com.cupfish.musicplayer.domain;
+package com.cupfish.musicplayer.bean;
 
 public class AppUpdateInfo {
 	public int versionCode;

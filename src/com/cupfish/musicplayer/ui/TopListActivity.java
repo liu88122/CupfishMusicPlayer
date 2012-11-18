@@ -27,7 +27,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.cupfish.musicplayer.R;
-import com.cupfish.musicplayer.domain.Song;
+import com.cupfish.musicplayer.bean.Song;
 import com.cupfish.musicplayer.exception.NetTimeoutException;
 import com.cupfish.musicplayer.global.BaseApp;
 import com.cupfish.musicplayer.global.Constants;

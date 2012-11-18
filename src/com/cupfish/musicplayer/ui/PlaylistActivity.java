@@ -16,7 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.cupfish.musicplayer.R;
-import com.cupfish.musicplayer.domain.Song;
+import com.cupfish.musicplayer.bean.Song;
 import com.cupfish.musicplayer.global.BaseApp;
 import com.cupfish.musicplayer.global.Constants;
 import com.cupfish.musicplayer.ui.adapter.PlaylistAdapter;

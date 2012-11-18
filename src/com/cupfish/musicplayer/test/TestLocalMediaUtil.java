@@ -4,7 +4,7 @@ import java.util.List;
 
 import android.test.AndroidTestCase;
 
-import com.cupfish.musicplayer.domain.Song;
+import com.cupfish.musicplayer.bean.Song;
 import com.cupfish.musicplayer.utils.LocalMediaUtil;
 
 public class TestLocalMediaUtil extends AndroidTestCase {

@@ -9,7 +9,7 @@ import java.util.TreeMap;
 
 import android.test.AndroidTestCase;
 
-import com.cupfish.musicplayer.domain.Song;
+import com.cupfish.musicplayer.bean.Song;
 import com.cupfish.musicplayer.utils.BaiduTingHelper;
 import com.cupfish.musicplayer.utils.LRCReader;
 

@@ -16,7 +16,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.cupfish.musicplayer.R;
-import com.cupfish.musicplayer.domain.AppUpdateInfo;
+import com.cupfish.musicplayer.bean.AppUpdateInfo;
 import com.cupfish.musicplayer.global.Constants;
 import com.cupfish.musicplayer.utils.UpdateManager;
 

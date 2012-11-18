@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.cupfish.musicplayer.R;
-import com.cupfish.musicplayer.domain.Song;
+import com.cupfish.musicplayer.bean.Song;
 import com.cupfish.musicplayer.utils.LocalMediaUtil;
 import com.cupfish.musicplayer.utils.TextFormatUtils;
 

@@ -13,7 +13,7 @@ import android.content.Context;
 import android.os.Environment;
 
 import com.cupfish.musicplayer.R;
-import com.cupfish.musicplayer.domain.AppUpdateInfo;
+import com.cupfish.musicplayer.bean.AppUpdateInfo;
 import com.cupfish.musicplayer.utils.UpdateManager;
 
 public class JsonParser {

@@ -2,7 +2,7 @@ package com.cupfish.musicplayer.test;
 
 import android.test.AndroidTestCase;
 
-import com.cupfish.musicplayer.domain.Song;
+import com.cupfish.musicplayer.bean.Song;
 import com.cupfish.musicplayer.exception.NetTimeoutException;
 import com.cupfish.musicplayer.global.Constants;
 import com.cupfish.musicplayer.utils.BaiduTingHelper;

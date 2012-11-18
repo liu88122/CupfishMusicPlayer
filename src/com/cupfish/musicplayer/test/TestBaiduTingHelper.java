@@ -4,8 +4,8 @@ import java.util.List;
 
 import android.test.AndroidTestCase;
 
-import com.cupfish.musicplayer.domain.Album;
-import com.cupfish.musicplayer.domain.Song;
+import com.cupfish.musicplayer.bean.Album;
+import com.cupfish.musicplayer.bean.Song;
 import com.cupfish.musicplayer.exception.NetTimeoutException;
 import com.cupfish.musicplayer.utils.BaiduTingHelper;
 import com.cupfish.musicplayer.utils.GoogleMusicHelper;

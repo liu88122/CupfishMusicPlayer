@@ -74,8 +74,8 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher.ViewFactory;
 
 import com.cupfish.musicplayer.R;
-import com.cupfish.musicplayer.domain.LRC;
-import com.cupfish.musicplayer.domain.Song;
+import com.cupfish.musicplayer.bean.LRC;
+import com.cupfish.musicplayer.bean.Song;
 import com.cupfish.musicplayer.global.BaseApp;
 import com.cupfish.musicplayer.global.Constants;
 import com.cupfish.musicplayer.service.DownloadService;

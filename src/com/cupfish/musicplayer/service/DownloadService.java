@@ -25,7 +25,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.cupfish.musicplayer.R;
-import com.cupfish.musicplayer.domain.Song;
+import com.cupfish.musicplayer.bean.Song;
 import com.cupfish.musicplayer.exception.NetTimeoutException;
 import com.cupfish.musicplayer.global.Constants;
 import com.cupfish.musicplayer.ui.AboutActivity;

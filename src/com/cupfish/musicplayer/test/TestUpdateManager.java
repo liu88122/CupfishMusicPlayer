@@ -2,7 +2,7 @@ package com.cupfish.musicplayer.test;
 
 import android.test.AndroidTestCase;
 
-import com.cupfish.musicplayer.domain.AppUpdateInfo;
+import com.cupfish.musicplayer.bean.AppUpdateInfo;
 import com.cupfish.musicplayer.utils.UpdateManager;
 
 public class TestUpdateManager extends AndroidTestCase {
