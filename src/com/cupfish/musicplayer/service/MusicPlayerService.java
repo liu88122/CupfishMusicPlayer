@@ -1,6 +1,6 @@
 package com.cupfish.musicplayer.service;
 
-import java.io.File;
+import java.io.FileDescriptor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +15,7 @@ import android.media.MediaPlayer.OnBufferingUpdateListener;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -25,11 +26,13 @@ import android.util.Log;
 
 import com.cupfish.musicplayer.bean.Song;
 import com.cupfish.musicplayer.dao.PlayerListDao;
+import com.cupfish.musicplayer.download.DownloadEngine;
 import com.cupfish.musicplayer.exception.NetTimeoutException;
 import com.cupfish.musicplayer.global.BaseApp;
 import com.cupfish.musicplayer.global.Constants;
+import com.cupfish.musicplayer.lrc.LRCController;
+import com.cupfish.musicplayer.lrc.LRCController.OnLrcUpdateListener;
 import com.cupfish.musicplayer.utils.BaiduTingHelper;
-import com.cupfish.musicplayer.utils.DownloadUtil;
 import com.cupfish.musicplayer.utils.GoogleMusicHelper;
 
 public class MusicPlayerService extends Service implements OnCompletionListener, OnPreparedListener, OnBufferingUpdateListener {
@@ -63,17 +66,33 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 		}
 
 	};
+	//歌词控制类
+	private LRCController lrcController = LRCController.getInstance();
 
 	@Override
 	public IBinder onBind(Intent intent) {
 		Log.i(TAG, "onBind");
 		return null;
 	}
+	
+	@Override
+	public boolean onUnbind(Intent intent) {
+		lrcController.stopLrc();
+		return super.onUnbind(intent);
+	}
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		Log.i(TAG, "onCreate");
+		
+		lrcController.setOnLrcUpdateListener(new OnLrcUpdateListener() {
+			
+			@Override
+			public void onUpdate(String statement) {
+				Log.i(TAG, statement);
+			}
+		});
 
 		mPlayList = new ArrayList<Song>();
 		mDao = new PlayerListDao(this);
@@ -237,6 +256,7 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 	private void play() {
 		if (mMediaPlayer != null && !mMediaPlayer.isPlaying()) {
 			mMediaPlayer.start();
+			lrcController.resumeLrc();
 		}
 	}
 
@@ -244,13 +264,7 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 
 		String url = mPlayList.get(index).getUrl();
 		Log.i(TAG, "ID:" + mPlayList.get(index).getId());
-		if (TextUtils.isEmpty(url)) {
-			try {
-				url = GoogleMusicHelper.getDownloadUrlById(mPlayList.get(index).getId());
-			} catch (NetTimeoutException e) {
-				e.printStackTrace();
-			}
-		}
+		
 		if (mMediaPlayer != null) {
 			try {
 				if (mMediaPlayer.isPlaying()) {
@@ -260,13 +274,16 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 				 * mMediaPlayer.release(); mMediaPlayer = new MediaPlayer();
 				 * mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 				 */
+				String dir = Environment.getExternalStorageDirectory() + "/cupfish";
+				String path = DownloadEngine.getInstance().download(getApplicationContext(), url, dir, 1);
 				mMediaPlayer.reset();
-				mMediaPlayer.setDataSource(url);
+				mMediaPlayer.setDataSource(path);
 				mMediaPlayer.setOnPreparedListener(this);
 				mMediaPlayer.setOnCompletionListener(this);
 				mMediaPlayer.setOnBufferingUpdateListener(this);
 				Log.i(TAG, "Download url::" + url);
 				mMediaPlayer.prepareAsync();
+				lrcController.loadLRC(this, mPlayList.get(index), mMediaPlayer);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -285,6 +302,7 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 	private void pause() {
 		if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
 			mMediaPlayer.pause();
+			lrcController.pauseLrc();
 		}
 	}
 
@@ -318,6 +336,7 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 
 	private void seekTo(int msec) {
 		mMediaPlayer.seekTo(msec);
+		lrcController.seekTo(msec);
 	}
 
 	private int addIntoPlaylist(Song song) {
@@ -345,9 +364,10 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 
 	@Override
 	public void onPrepared(MediaPlayer mp) {
-		if (!isFirstTime) {
-			mp.start();
-		}
+//		if (!isFirstTime) {
+//			mp.start();
+//		}
+		mp.start();
 		isFirstTime = false;
 		// 发送当前播放信息
 		Intent intent = new Intent();
