@@ -18,7 +18,7 @@ public class TestLRCReader extends AndroidTestCase {
 	public void testLrcRead() throws Exception{
 
 		Song song = BaiduTingHelper.getSongById("13869261");
-		TreeMap<Long, String> result = LRCReader.getLRC(song, getContext());
+		TreeMap<Long, String> result = LRCReader.getLRCTreeMap(song, getContext());
 		Iterator timeIterator = result.keySet().iterator();
 		while(timeIterator.hasNext()){
 			System.out.println(timeIterator.next());
@@ -26,7 +26,7 @@ public class TestLRCReader extends AndroidTestCase {
 	}
 	
 	public void testLrcReader2() throws Exception{
-		TreeMap<Long, String> result = LRCReader.parseLRC2(new File("/mnt/sdcard/cupfish/lrc/lanlianhua.lrc"));
+		TreeMap<Long, String> result = LRCReader.parseLRCFromFile(new File("/mnt/sdcard/cupfish/lrc/lanlianhua.lrc"));
 		System.out.println(result.size());
 		for(Map.Entry<Long, String> entry : result.entrySet()){
 			System.out.println(entry.getKey() +  ":" + entry.getValue());
