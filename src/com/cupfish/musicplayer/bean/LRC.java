@@ -16,6 +16,7 @@ import com.cupfish.musicplayer.global.Constants;
 import com.cupfish.musicplayer.utils.LRCManager;
 import com.cupfish.musicplayer.utils.LRCReader;
 
+@Deprecated
 public class LRC extends BroadcastReceiver implements Runnable {
 
 	private static final String TAG = "LRC";
@@ -47,7 +48,7 @@ public class LRC extends BroadcastReceiver implements Runnable {
 		pauseTime = System.currentTimeMillis();
 
 		try {
-			lrc = LRCReader.getLRC(mCurrentSong, mContext);
+			lrc = LRCReader.getLRCTreeMap(mCurrentSong, mContext);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}

@@ -1,6 +1,5 @@
 package com.cupfish.musicplayer.service;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +27,9 @@ import com.cupfish.musicplayer.dao.PlayerListDao;
 import com.cupfish.musicplayer.exception.NetTimeoutException;
 import com.cupfish.musicplayer.global.BaseApp;
 import com.cupfish.musicplayer.global.Constants;
+import com.cupfish.musicplayer.lrc.LRCController;
+import com.cupfish.musicplayer.lrc.LRCController.OnLrcUpdateListener;
 import com.cupfish.musicplayer.utils.BaiduTingHelper;
-import com.cupfish.musicplayer.utils.DownloadUtil;
 import com.cupfish.musicplayer.utils.GoogleMusicHelper;
 
 public class MusicPlayerService extends Service implements OnCompletionListener, OnPreparedListener, OnBufferingUpdateListener {
@@ -63,17 +63,33 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 		}
 
 	};
+	//歌词控制类
+	private LRCController lrcController = LRCController.getInstance();
 
 	@Override
 	public IBinder onBind(Intent intent) {
 		Log.i(TAG, "onBind");
 		return null;
 	}
+	
+	@Override
+	public boolean onUnbind(Intent intent) {
+		lrcController.stopLrc();
+		return super.onUnbind(intent);
+	}
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		Log.i(TAG, "onCreate");
+		
+		lrcController.setOnLrcUpdateListener(new OnLrcUpdateListener() {
+			
+			@Override
+			public void onUpdate(String statement) {
+				Log.i(TAG, statement);
+			}
+		});
 
 		mPlayList = new ArrayList<Song>();
 		mDao = new PlayerListDao(this);
@@ -237,6 +253,7 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 	private void play() {
 		if (mMediaPlayer != null && !mMediaPlayer.isPlaying()) {
 			mMediaPlayer.start();
+			lrcController.resumeLrc();
 		}
 	}
 
@@ -267,6 +284,7 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 				mMediaPlayer.setOnBufferingUpdateListener(this);
 				Log.i(TAG, "Download url::" + url);
 				mMediaPlayer.prepareAsync();
+				lrcController.loadLRC(this, mPlayList.get(index), mMediaPlayer);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -285,6 +303,7 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 	private void pause() {
 		if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
 			mMediaPlayer.pause();
+			lrcController.pauseLrc();
 		}
 	}
 
@@ -318,6 +337,7 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 
 	private void seekTo(int msec) {
 		mMediaPlayer.seekTo(msec);
+		lrcController.seekTo(msec);
 	}
 
 	private int addIntoPlaylist(Song song) {

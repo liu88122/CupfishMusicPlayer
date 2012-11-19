@@ -78,6 +78,8 @@ import com.cupfish.musicplayer.bean.LRC;
 import com.cupfish.musicplayer.bean.Song;
 import com.cupfish.musicplayer.global.BaseApp;
 import com.cupfish.musicplayer.global.Constants;
+import com.cupfish.musicplayer.lrc.LRCController;
+import com.cupfish.musicplayer.lrc.LRCController.OnLrcUpdateListener;
 import com.cupfish.musicplayer.service.DownloadService;
 import com.cupfish.musicplayer.service.MusicPlayerService;
 import com.cupfish.musicplayer.ui.adapter.LocalMusicAdapter;
@@ -806,48 +808,19 @@ public class MusicPlayerActivity extends Activity implements OnClickListener, Vi
 				bitmap.recycle();
 			}
 
-			// 更新歌词ver1.0
-			/*
-			 * new Thread() {
-			 * 
-			 * @Override public void run() { long startTime =
-			 * System.currentTimeMillis(); // int duration = //
-			 * MusicPlayerService.mMediaPlayer.getDuration(); TreeMap<Long,
-			 * String> lrc = null; try { lrc = LRCReader.getLRC(mCurrentSong); }
-			 * catch (Exception e1) { e1.printStackTrace(); } if (lrc != null &&
-			 * lrc.size() > 0) { long showTime = 0; String lrcContent = "";
-			 * boolean isEnd = false; Iterator<Long> timeIterator =
-			 * lrc.keySet().iterator(); if (timeIterator.hasNext() &&
-			 * (timeIterator.next() != 3600000)) { showTime =
-			 * timeIterator.next(); lrcContent = lrc.get(showTime); } else {
-			 * Log.i(TAG, "LRC ERROR"); return; }
-			 * 
-			 * while (!isEnd) { long currentTime = System.currentTimeMillis();
-			 * long deltaTime = (currentTime - startTime) / 10 * 10; if
-			 * (deltaTime > showTime) { Message msg = Message.obtain(); msg.obj
-			 * = lrcContent; mLrcHandler.sendMessage(msg); if
-			 * (timeIterator.hasNext()) { showTime = timeIterator.next(); if
-			 * (showTime == 3600000) { isEnd = true; break; } lrcContent =
-			 * lrc.get(showTime); } } try { Thread.sleep(10); } catch
-			 * (InterruptedException e) { e.printStackTrace(); } } Log.i(TAG,
-			 * "LRC FINISH"); } }
-			 * 
-			 * }.start();
-			 */
+			
 
-			// 更新歌词ver2.0
 
-			mLrc = new LRC(MusicPlayerActivity.this, mCurrentSong, mLrcHandler, MusicPlayerService.mMediaPlayer);
-			LRCManager.getInstance().removeLRC();
-			LRCManager.getInstance().addLRC(mLrc);
-			if (isFirstTime) {
-				mLrc.setPause(true);
-				if (mPlayBtn != null) {
-					mPlayBtn.setImageResource(R.drawable.player_play_btn_selector);
+			// 更新歌词ver3.0
+			LRCController.getInstance().setOnLrcUpdateListener(new OnLrcUpdateListener() {
+				@Override
+				public void onUpdate(String statement) {
+					Message msg = Message.obtain();
+					msg.obj = statement;
+					mLrcHandler.sendMessage(msg);
+					System.out.println("setOnLrcUpdateListener");
 				}
-				mAlbumCover.clearAnimation();
-				isFirstTime = false;
-			}
+			});
 
 			new Thread() {
 				@Override

@@ -1,5 +1,8 @@
 package com.cupfish.musicplayer.ui;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -25,18 +28,22 @@ public class SplashActivity extends Activity {
 	protected static final int DOWNLOAD = 0;
 	protected static final int SHOW_UPDATE_DIALOG = 1;
 	protected static final int CANCEL_DOWNLOAD = 3;
+	protected static final int NO_UPDATE = 4;
 	private boolean isPlaylistOk;
 	private InitReceiver initReceiver;
 	// private Typeface mTypeface =
 	// Typeface.createFromFile("/mnt/sdcard/xujinglei_font.ttf");
 	// private TextView mLogoText;
+	
 	private UpdateManager updateManager;
+	private boolean hasUpdate;  /*是否有更新*/
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			switch(msg.what){
 			case SHOW_UPDATE_DIALOG:
 				showUpdateDialog((AppUpdateInfo)msg.obj);
 				break;
+			case NO_UPDATE:
 			case CANCEL_DOWNLOAD:
 				isPlaylistOk = true;
 				Intent intent = new Intent(SplashActivity.this, MusicPlayerActivity.class);
@@ -54,14 +61,6 @@ public class SplashActivity extends Activity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.splash);
 
-		// mLogoText = (TextView) findViewById(R.id.tv_logo);
-		// mLogoText.setTypeface(mTypeface);
-
-		/*
-		 * Intent intent = new Intent(this, MusicPlayerService.class);
-		 * startService(intent);
-		 */
-
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constants.ACTION_PLAYLIST_REFRESH_FINISH);
 		initReceiver = new InitReceiver();
@@ -74,11 +73,9 @@ public class SplashActivity extends Activity {
 			public void run() {
 				AppUpdateInfo info = updateManager.checkUpdate(SplashActivity.this);
 				if(info == null){
-					isPlaylistOk = true;
-					Intent intent = new Intent(SplashActivity.this, MusicPlayerActivity.class);
-					startActivity(intent);
-					finish();
+					mHandler.sendEmptyMessage(NO_UPDATE);
 				}else{
+					hasUpdate = true;
 					Message msg = Message.obtain();
 					msg.obj = info;
 					msg.what = SHOW_UPDATE_DIALOG;
@@ -89,6 +86,15 @@ public class SplashActivity extends Activity {
 			}
 
 		}.start();
+		new Timer().schedule(new TimerTask() {
+			
+			@Override
+			public void run() {
+				if (!hasUpdate) {
+					mHandler.sendEmptyMessage(NO_UPDATE);
+				}
+			}
+		}, 3000);
 	}
 
 	private class InitReceiver extends BroadcastReceiver {
