@@ -1,5 +1,8 @@
 package com.cupfish.musicplayer.ui;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -25,19 +28,25 @@ public class SplashActivity extends Activity {
 	protected static final int DOWNLOAD = 0;
 	protected static final int SHOW_UPDATE_DIALOG = 1;
 	protected static final int CANCEL_DOWNLOAD = 3;
+	protected static final int NO_UPDATE = 4;
 	private boolean isPlaylistOk;
 	private InitReceiver initReceiver;
 	// private Typeface mTypeface =
 	// Typeface.createFromFile("/mnt/sdcard/xujinglei_font.ttf");
 	// private TextView mLogoText;
+
 	private UpdateManager updateManager;
+	private boolean hasUpdate; /* 是否有更新 */
+	private boolean cancel;
 	private Handler mHandler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
-			switch(msg.what){
+			switch (msg.what) {
 			case SHOW_UPDATE_DIALOG:
-				showUpdateDialog((AppUpdateInfo)msg.obj);
+				showUpdateDialog((AppUpdateInfo) msg.obj);
 				break;
+			case NO_UPDATE:
 			case CANCEL_DOWNLOAD:
+				cancel = true;
 				isPlaylistOk = true;
 				Intent intent = new Intent(SplashActivity.this, MusicPlayerActivity.class);
 				startActivity(intent);
@@ -54,41 +63,38 @@ public class SplashActivity extends Activity {
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.splash);
 
-		// mLogoText = (TextView) findViewById(R.id.tv_logo);
-		// mLogoText.setTypeface(mTypeface);
-
-		/*
-		 * Intent intent = new Intent(this, MusicPlayerService.class);
-		 * startService(intent);
-		 */
-
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(Constants.ACTION_PLAYLIST_REFRESH_FINISH);
 		initReceiver = new InitReceiver();
 		registerReceiver(initReceiver, filter);
 
-		 updateManager = UpdateManager.getInstance();
+		updateManager = UpdateManager.getInstance();
 
 		new Thread() {
 			@Override
 			public void run() {
 				AppUpdateInfo info = updateManager.checkUpdate(SplashActivity.this);
-				if(info == null){
-					isPlaylistOk = true;
-					Intent intent = new Intent(SplashActivity.this, MusicPlayerActivity.class);
-					startActivity(intent);
-					finish();
-				}else{
+				if (info != null && !cancel) {
+					hasUpdate = true;
 					Message msg = Message.obtain();
 					msg.obj = info;
 					msg.what = SHOW_UPDATE_DIALOG;
 					mHandler.sendMessage(msg);
 				}
 				// ----------------------------------------------测试用：将isPlaylistOk设置为true------------------------------------------------------------------------------
-				
+
 			}
 
 		}.start();
+		new Timer().schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				if (!hasUpdate) {
+					mHandler.sendEmptyMessage(NO_UPDATE);
+				}
+			}
+		}, 5000);
 	}
 
 	private class InitReceiver extends BroadcastReceiver {
@@ -101,24 +107,24 @@ public class SplashActivity extends Activity {
 		}
 
 	}
-	
-	private void showUpdateDialog(final AppUpdateInfo info){
-		AlertDialog.Builder builder =new AlertDialog.Builder(this);
+
+	private void showUpdateDialog(final AppUpdateInfo info) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("有新的程序包哦").setMessage("");
-		if(!TextUtils.isEmpty(info.updateLog)){
+		if (!TextUtils.isEmpty(info.updateLog)) {
 			String[] updateLogs = info.updateLog.split("#");
-			if(updateLogs!= null){
+			if (updateLogs != null) {
 				StringBuilder sUpdateLog = new StringBuilder();
-				for(int i=0; i<updateLogs.length; i++){
-					sUpdateLog.append(i+1).append(".").append(updateLogs[i]).append("\n");
+				for (int i = 0; i < updateLogs.length; i++) {
+					sUpdateLog.append(i + 1).append(".").append(updateLogs[i]).append("\n");
 				}
 				builder.setMessage(sUpdateLog.toString());
-			}else{
+			} else {
 				builder.setMessage(info.updateLog);
 			}
 		}
 		builder.setPositiveButton("下载", new OnClickListener() {
-			
+
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				updateManager.downloadApk(SplashActivity.this, info.downloadUrl);
@@ -126,7 +132,7 @@ public class SplashActivity extends Activity {
 			}
 		});
 		builder.setNegativeButton("取消", new OnClickListener() {
-			
+
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				// TODO Auto-generated method stub
