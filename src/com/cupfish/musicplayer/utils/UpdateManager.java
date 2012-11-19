@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -19,8 +20,9 @@ import android.net.Uri;
 import android.os.Environment;
 
 import com.cupfish.musicplayer.bean.AppUpdateInfo;
-import com.cupfish.musicplayer.download.DownloadEngine.DownloadListener;
+import com.cupfish.musicplayer.download.DownloadEngine;
 import com.cupfish.musicplayer.download.DownloadTask;
+import com.cupfish.musicplayer.download.DownloadTask.DownloadListener;
 import com.cupfish.musicplayer.parser.JsonParser;
 
 /**
@@ -119,9 +121,9 @@ public class UpdateManager {
 	 * @author <a href="liu88122@gmail.com">LiuZhongde</a>
 	 * @2012-11-16 下午2:49:02
 	 */
-	public void downloadApk(final Context context, final String downloadUrl) {
+	public void downloadApk(final Activity activity, final String downloadUrl) {
 
-		final ProgressDialog dialog = new ProgressDialog(context);
+		final ProgressDialog dialog = new ProgressDialog(activity);
 		dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 		dialog.setTitle("Downloading...");
 		
@@ -136,7 +138,7 @@ public class UpdateManager {
 					HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 					is = conn.getInputStream();
 					dialog.setMax(conn.getContentLength());
-					
+//					
 //					File file = new File(context.getExternalCacheDir(), fileName);
 //					fos = new FileOutputStream(file);
 //					byte[] buffer = new byte[1024 * 8];
@@ -152,40 +154,40 @@ public class UpdateManager {
 //						dialog.dismiss();
 //						installApk(context, file.getPath());
 //					}
-					
+//					
 				} catch (Exception e) {
 					e.printStackTrace();
-				} finally {
-					try {
-						if (fos != null) {
-							fos.close();
-						}
-					} catch (Exception e) {
-					}
-					try {
-						if (is != null) {
-							is.close();
-						}
-					} catch (Exception e) {
-					}
+//				} finally {
+//					try {
+//						if (fos != null) {
+//							fos.close();
+//						}
+//					} catch (Exception e) {
+//					}
+//					try {
+//						if (is != null) {
+//							is.close();
+//						}
+//					} catch (Exception e) {
+//					}
 				}
 				final String dir = Environment.getExternalStorageDirectory() + "/cupfish";
-				DownloadTask task = new DownloadTask(context, downloadUrl, dir, 2);
-				task.setDownloadListener(new DownloadListener() {
-					
+				DownloadEngine.getInstance().download(activity, downloadUrl, dir, 3);
+				DownloadEngine.getInstance().addDownloadListener(downloadUrl, new DownloadListener() {
+
 					@Override
 					public void onDownloading(int size) {
 						dialog.setProgress(size);
-						
+
 					}
-					
+
 					@Override
 					public void onDownloadFinish() {
-						// TODO Auto-generated method stub
-						installApk(context, dir + "/" + fileName);
+						installApk(activity, dir + "/" + fileName);
+						dialog.dismiss();
+
 					}
 				});
-				task.start();
 			}
 		});
 		downloadThread.start();
@@ -207,6 +209,7 @@ public class UpdateManager {
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.setDataAndType(Uri.fromFile(new File(path)), "application/vnd.android.package-archive");
 		context.startActivity(intent);
+		((Activity)context).finish();
 	}
 
 	/**
