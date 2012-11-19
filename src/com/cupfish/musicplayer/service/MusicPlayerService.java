@@ -1,6 +1,5 @@
 package com.cupfish.musicplayer.service;
 
-import java.io.FileDescriptor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +32,6 @@ import com.cupfish.musicplayer.global.Constants;
 import com.cupfish.musicplayer.lrc.LRCController;
 import com.cupfish.musicplayer.lrc.LRCController.OnLrcUpdateListener;
 import com.cupfish.musicplayer.utils.BaiduTingHelper;
-import com.cupfish.musicplayer.utils.GoogleMusicHelper;
 
 public class MusicPlayerService extends Service implements OnCompletionListener, OnPreparedListener, OnBufferingUpdateListener {
 

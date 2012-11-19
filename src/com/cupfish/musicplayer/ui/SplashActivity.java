@@ -35,6 +35,7 @@ public class SplashActivity extends Activity {
 	// Typeface.createFromFile("/mnt/sdcard/xujinglei_font.ttf");
 	// private TextView mLogoText;
 
+	
 	private UpdateManager updateManager;
 	private boolean hasUpdate; /* 是否有更新 */
 	private boolean cancel;
@@ -75,6 +76,8 @@ public class SplashActivity extends Activity {
 			public void run() {
 				AppUpdateInfo info = updateManager.checkUpdate(SplashActivity.this);
 				if (info != null && !cancel) {
+					mHandler.sendEmptyMessage(NO_UPDATE);
+				}else{
 					hasUpdate = true;
 					Message msg = Message.obtain();
 					msg.obj = info;
@@ -95,6 +98,7 @@ public class SplashActivity extends Activity {
 				}
 			}
 		}, 5000);
+			
 	}
 
 	private class InitReceiver extends BroadcastReceiver {

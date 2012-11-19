@@ -21,7 +21,6 @@ import android.os.Environment;
 
 import com.cupfish.musicplayer.bean.AppUpdateInfo;
 import com.cupfish.musicplayer.download.DownloadEngine;
-import com.cupfish.musicplayer.download.DownloadTask;
 import com.cupfish.musicplayer.download.DownloadTask.DownloadListener;
 import com.cupfish.musicplayer.parser.JsonParser;
 
@@ -138,23 +137,23 @@ public class UpdateManager {
 					HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 					is = conn.getInputStream();
 					dialog.setMax(conn.getContentLength());
-//					
-//					File file = new File(context.getExternalCacheDir(), fileName);
-//					fos = new FileOutputStream(file);
-//					byte[] buffer = new byte[1024 * 8];
-//					int len = 0;
-//					int currentLoaded = 0;
-//					while((len = is.read(buffer)) != -1){
-//						fos.write(buffer, 0, len);
-//						currentLoaded += len;
-//						dialog.setProgress(currentLoaded);
-//					}
-//					
-//					if(file.exists()){
-//						dialog.dismiss();
-//						installApk(context, file.getPath());
-//					}
-//					
+					
+					File file = new File(activity.getExternalCacheDir(), fileName);
+					fos = new FileOutputStream(file);
+					byte[] buffer = new byte[1024 * 8];
+					int len = 0;
+					int currentLoaded = 0;
+					while((len = is.read(buffer)) != -1){
+						fos.write(buffer, 0, len);
+						currentLoaded += len;
+						dialog.setProgress(currentLoaded);
+					}
+					
+					if(file.exists()){
+						dialog.dismiss();
+						installApk(activity, file.getPath());
+					}
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 //				} finally {
