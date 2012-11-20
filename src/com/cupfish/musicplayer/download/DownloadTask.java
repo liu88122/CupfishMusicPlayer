@@ -1,8 +1,6 @@
 package com.cupfish.musicplayer.download;
 
 import java.io.File;
-import java.io.FileDescriptor;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
@@ -23,8 +21,8 @@ public class DownloadTask extends Thread {
 	private Context context;
 	private String downloadUrl;
 	private String dir;
+	private String fileName;
 	private RandomAccessFile randomAccessFile;
-	private String filePath;
 	private boolean exited;
 	private int downloaded = 0;
 	private int contentLength = 0;
@@ -35,7 +33,7 @@ public class DownloadTask extends Thread {
 	private DownloadDbHelper mDownloadDbHelper;
 	private List<DownloadListener> mDownloadListeners;
 	
-	public DownloadTask(Context context, String downloadUrl, String dir, int threadNum){
+	public DownloadTask(Context context, String downloadUrl, String dir, String fileName, int threadNum){
 		this.context =context;
 		this.downloadUrl = downloadUrl;
 		this.dir = dir;
@@ -43,6 +41,10 @@ public class DownloadTask extends Thread {
 		mDownloadDbHelper = new DownloadDbHelper(context);
 		this.threadNum = threadNum;
 		mDownloadListeners = new ArrayList<DownloadTask.DownloadListener>();
+		this.fileName = fileName;
+		if (this.fileName == null) {
+			this.fileName = getFileName(downloadUrl);
+		}
 	}
 	
 	public void addDownloadListener(DownloadListener listener){
@@ -56,14 +58,11 @@ public class DownloadTask extends Thread {
 	@Override
 	public void run() {
 		try{
-			String fileName = getFileName(downloadUrl);
 			File directory = new File(dir);
 			if(!directory.exists()){
 				directory.mkdirs();
 			}
 			File file = new File(directory, fileName);
-			file.createNewFile();
-			filePath = file.getPath();
 			randomAccessFile = new RandomAccessFile(file, "rw");
 			
 			URL url = new URL(downloadUrl);
@@ -206,14 +205,6 @@ public class DownloadTask extends Thread {
 	}
 
 	public String getDownloadFilePath() {
-		if(filePath == null){
-			try {
-				sleep(200);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return filePath;
+		return dir + File.separator + fileName;
 	}
 }

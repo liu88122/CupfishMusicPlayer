@@ -34,8 +34,8 @@ public class DownloadEngine {
 		}
 	}
 
-	public String download(Context context, final String downloadUrl, String dir, int threadNum) {
-		final DownloadTask task = new DownloadTask(context, downloadUrl, dir, threadNum);
+	public String download(Context context, final String downloadUrl, String dir, String fileName, int threadNum) {
+		final DownloadTask task = new DownloadTask(context, downloadUrl, dir, fileName, threadNum);
 		task.addDownloadListener(new DownloadListener() {
 			@Override
 			public void onDownloading(int size, int length) {
