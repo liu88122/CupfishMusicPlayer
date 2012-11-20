@@ -38,7 +38,7 @@ public class DownloadEngine {
 		final DownloadTask task = new DownloadTask(context, downloadUrl, dir, threadNum);
 		task.addDownloadListener(new DownloadListener() {
 			@Override
-			public void onDownloading(int size) {
+			public void onDownloading(int size, int length) {
 				
 			}
 			@Override

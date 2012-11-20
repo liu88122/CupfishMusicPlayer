@@ -76,7 +76,7 @@ public class DownloadTask extends Thread {
 			}
 			if(mDownloadDao.getThreadNum(downloadUrl) < 1 && file.exists() && file.length() == length){
 				for(DownloadListener listener : mDownloadListeners){
-					listener.onDownloading(length);
+					listener.onDownloading(length, length);
 					listener.onDownloadFinish();
 				}
 				return;
@@ -137,7 +137,7 @@ public class DownloadTask extends Thread {
 		synchronized (this) {
 			downloaded += size;
 			for(DownloadListener listener : mDownloadListeners){
-				listener.onDownloading(downloaded);
+				listener.onDownloading(downloaded, contentLength);
 			}
 		}
 	}
@@ -201,7 +201,7 @@ public class DownloadTask extends Thread {
 	}
 	
 	public static interface DownloadListener {
-		void onDownloading(int size);
+		void onDownloading(int size, int length);
 		void onDownloadFinish();
 	}
 
