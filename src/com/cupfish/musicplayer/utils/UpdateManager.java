@@ -171,7 +171,7 @@ public class UpdateManager {
 //					}
 				}
 				final String dir = Environment.getExternalStorageDirectory() + "/cupfish";
-				DownloadEngine.getInstance().download(activity, downloadUrl, dir, 3);
+				DownloadEngine.getInstance().download(activity, downloadUrl, dir, null, 3);
 				DownloadEngine.getInstance().addDownloadListener(downloadUrl, new DownloadListener() {
 
 					@Override

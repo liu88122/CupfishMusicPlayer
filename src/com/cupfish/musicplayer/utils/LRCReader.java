@@ -84,39 +84,37 @@ public class LRCReader {
 
 	public static TreeMap<Long, String> parseLRCFromFile(File file){
 
-		if (file == null || !file.exists()) {
-			return null;
-		}
+		
 		TreeMap<Long, String> result = new TreeMap<Long, String>(new Comparator<Long>() {
-
 			@Override
 			public int compare(Long time1, Long time2) {
 				return (int) (time1 - time2);
 			}
 
 		});
+		if (file != null && file.exists()) {
+			BufferedReader reader;
+			try {
+				reader = new BufferedReader(new FileReader(file));
 
-		BufferedReader reader;
-		try {
-			reader = new BufferedReader(new FileReader(file));
-
-			// \\[(\\d{2}:\\d{2}\\.\\d{2})\\]
-			// \\[([^\\]]+)\\]
-			// Pattern pattern =
-			// Pattern.compile("\\[(\\d{2}:\\d{2}\\.\\d{2})\\]");
-			Pattern pattern = Pattern.compile("\\[(\\d{2}:\\d{2}\\.\\d{2})\\]");
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				// [01:15.59]好儿郎 一生要 志在四方
-				matchLrc(result, pattern, line);
+				// \\[(\\d{2}:\\d{2}\\.\\d{2})\\]
+				// \\[([^\\]]+)\\]
+				// Pattern pattern =
+				// Pattern.compile("\\[(\\d{2}:\\d{2}\\.\\d{2})\\]");
+				Pattern pattern = Pattern.compile("\\[(\\d{2}:\\d{2}\\.\\d{2})\\]");
+				String line = null;
+				while ((line = reader.readLine()) != null) {
+					// [01:15.59]好儿郎 一生要 志在四方
+					matchLrc(result, pattern, line);
+				}
+				reader.close();
+				result.put((long) 3600000, "end");
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			reader.close();
-			result.put((long) 3600000, "end");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		return result;
 	}
