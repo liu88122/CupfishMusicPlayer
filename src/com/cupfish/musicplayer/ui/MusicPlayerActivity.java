@@ -1,5 +1,6 @@
 package com.cupfish.musicplayer.ui;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ import android.gesture.Prediction;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.ExifInterface;
@@ -165,7 +167,7 @@ public class MusicPlayerActivity extends Activity implements OnClickListener, Vi
 	private LRC mLrc;
 	private SharedPreferences mSp;
 	// 歌词字体
-	//private Typeface mTypeface = Typeface.createFromFile("/mnt/sdcard/xujinglei_font.ttf");
+	private Typeface mTypeface;
 	// 是否更新当前播放歌曲的时间进度
 	private boolean mWillUpdate = true;
 	// 是否为第一次初始化播放界面，若为第一次打开，歌曲处于停止状态，不需要更新歌词
@@ -263,7 +265,10 @@ public class MusicPlayerActivity extends Activity implements OnClickListener, Vi
 		setContentView(R.layout.main);
 
 		mSp = getSharedPreferences("config", Context.MODE_PRIVATE);
-
+		File file = new File("/mnt/sdcard/xujinglei_font.ttf");
+		if(file.exists()){
+			mTypeface = Typeface.createFromFile(file);
+		}
 		// 获取音频管理服务，主要用于调节音量
 		mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
@@ -988,9 +993,9 @@ public class MusicPlayerActivity extends Activity implements OnClickListener, Vi
 		mTextSwitcherTv.setTextSize(20);
 		mTextSwitcherTv.setTextColor(getResources().getColor(R.color.white));
 
-		/*if (mTypeface != null) {
+		if (mTypeface != null) {
 			mTextSwitcherTv.setTypeface(mTypeface);
-		}*/
+		}
 
 		return mTextSwitcherTv;
 	}
