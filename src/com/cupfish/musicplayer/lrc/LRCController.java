@@ -151,6 +151,9 @@ public class LRCController {
 
 		@Override
 		public void run() {
+			if(lrc==null){
+				return;
+			}
 			nextTimepoint = lrc.getNextTimeline(0);
 			while (!exit) {
 				if (!pause) {
