@@ -183,8 +183,9 @@
             android:paddingLeft="10dip"
             android:paddingRight="10dip"
             android:progress="0"
-            android:progressDrawable="@drawable/player_seekbar_bg"
-            android:thumb="@drawable/player_bar_point" />
+            android:progressDrawable="@drawable/scrubber_progress_horizontal_holo_light"
+            android:thumb="@drawable/scrubber_control_selector_holo"
+            android:thumbOffset="15dp" />
 
         <RelativeLayout
             android:layout_width="fill_parent"
