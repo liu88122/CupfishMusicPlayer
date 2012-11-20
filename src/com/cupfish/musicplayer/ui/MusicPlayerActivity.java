@@ -76,6 +76,8 @@ import android.widget.ViewSwitcher.ViewFactory;
 import com.cupfish.musicplayer.R;
 import com.cupfish.musicplayer.bean.LRC;
 import com.cupfish.musicplayer.bean.Song;
+import com.cupfish.musicplayer.download.DownloadEngine;
+import com.cupfish.musicplayer.download.DownloadTask.DownloadListener;
 import com.cupfish.musicplayer.global.BaseApp;
 import com.cupfish.musicplayer.global.Constants;
 import com.cupfish.musicplayer.lrc.LRCController;
@@ -231,6 +233,9 @@ public class MusicPlayerActivity extends Activity implements OnClickListener, Vi
 
 	// 音量控制相关
 	private static final int CLOSE_WINDOW = 0;
+	protected static final int CACHING = 1;
+	protected static final int TIME_LINE_UPDATE = 2;
+	protected static final int CACHED = 3;
 	private PopupWindow mVolumeWindow;
 	private ImageView mVolumeBtn;
 	private SeekBar mVolumeControlBar;
@@ -706,10 +711,23 @@ public class MusicPlayerActivity extends Activity implements OnClickListener, Vi
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case 2:
-				long currentPosition = MusicPlayerService.mMediaPlayer.getCurrentPosition();
+			
+			case CACHING:
+				int size = msg.arg1;
+				int length = msg.arg2;
+				if(size != 0 && length != 0){
+					int secondProgress = (int) (size * ((double) length / mMainPlayerProgress.getMax()));
+					mMainPlayerProgress.setSecondaryProgress(secondProgress);
+				}
+				break;
+			
+			case CACHED:
+				mMainPlayerProgress.setSecondaryProgress(mMainPlayerProgress.getMax());
+				break;
+			case TIME_LINE_UPDATE:
+				int currentPosition = MusicPlayerService.mMediaPlayer.getCurrentPosition();
 				mCurrentDuration.setText(TextFormatUtils.getPrettyFormatDuration(currentPosition));
-				mMainPlayerProgress.setProgress((int) currentPosition);
+				mMainPlayerProgress.setProgress(currentPosition);
 				if ("00:00".equals(mTotalDuration.getText().toString())) {
 					long duration = MusicPlayerService.mMediaPlayer.getDuration();
 					mTotalDuration.setText(TextFormatUtils.getPrettyFormatDuration(duration));
@@ -827,7 +845,7 @@ public class MusicPlayerActivity extends Activity implements OnClickListener, Vi
 				public void run() {
 					while (mWillUpdate) {
 						Message msg = Message.obtain();
-						msg.what = 2;
+						msg.what = TIME_LINE_UPDATE;
 						mDurationUpdateHandler.sendMessage(msg);
 						try {
 							Thread.sleep(1000);
@@ -837,6 +855,26 @@ public class MusicPlayerActivity extends Activity implements OnClickListener, Vi
 					}
 				}
 			}.start();
+			
+			DownloadEngine.getInstance().addDownloadListener(mCurrentSong.getUrl(), new DownloadListener() {
+				
+				@Override
+				public void onDownloading(int size, int length) {
+					Message msg = Message.obtain();
+					msg.what = CACHING;
+					msg.arg1 = size;
+					msg.arg2 = length;
+					mDurationUpdateHandler.sendMessage(msg);
+				}
+				
+				@Override
+				public void onDownloadFinish() {
+					Message msg = Message.obtain();
+					msg.what = CACHED;
+					mDurationUpdateHandler.sendMessage(msg);
+					
+				}
+			});
 		}
 		if (MusicPlayerService.mMediaPlayer != null) {
 			long duration = MusicPlayerService.mMediaPlayer.getDuration();
