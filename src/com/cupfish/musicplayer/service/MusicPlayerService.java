@@ -39,7 +39,7 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 	private static final int INIT_SONG_INFO_FINISH = 200;
 	public static MediaPlayer mMediaPlayer;
 	private List<Song> mPlayList;
-	private PlayerListDao mDao;
+//	private PlayerListDao mDao;
 	private int mCurrentSongIndex = 0;
 	private Song mCurrentSong;
 	private int flag;
@@ -92,22 +92,24 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 			}
 		});
 
+		//TODO 第一次启动程序，应该加载上次的播放列表，并将播放界面恢复为上次退出的状态
 		mPlayList = new ArrayList<Song>();
-		mDao = new PlayerListDao(this);
-		new Thread() {
-
-			@Override
-			public void run() {
-				mPlayList = mDao.getPlaylist();
-				((BaseApp) getApplication()).playlist = mPlayList;
-
-				// 刷新Playlist完成后发送广播
-				Intent intent = new Intent();
-				intent.setAction(Constants.ACTION_PLAYLIST_REFRESH_FINISH);
-				sendBroadcast(intent);
-			}
-
-		}.start();
+		((BaseApp) getApplication()).playlist = mPlayList;
+//		mDao = new PlayerListDao(this);
+//		new Thread() {
+//
+//			@Override
+//			public void run() {
+//				mPlayList = mDao.getPlaylist();
+//				((BaseApp) getApplication()).playlist = mPlayList;
+//
+//				// 刷新Playlist完成后发送广播
+//				Intent intent = new Intent();
+//				intent.setAction(Constants.ACTION_PLAYLIST_REFRESH_FINISH);
+//				sendBroadcast(intent);
+//			}
+//
+//		}.start();
 
 		mMediaPlayer = new MediaPlayer();
 		mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -282,7 +284,7 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 				Log.i(TAG, "Download url::" + url);
 				mMediaPlayer.prepareAsync();
 				lrcController.loadLRC(this, mPlayList.get(index), mMediaPlayer);
-
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -338,19 +340,19 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 	}
 
 	private int addIntoPlaylist(Song song) {
-		for (int i = 0; i < mPlayList.size(); i++) {
-			if (mPlayList.get(i).getTitle().equals(song.getTitle())) {
-				return i;
-			}
+		
+		if(mPlayList.contains(song)){
+			return mPlayList.indexOf(song);
+		} else {
+			mPlayList.add(song);
+			return mPlayList.size() - 1;
 		}
-		mPlayList.add(song);
-		return mPlayList.size() - 1;
 	}
 
 	@Override
 	public void onDestroy() {
-		mDao.deleteAll();
-		mDao.insertPlayList(mPlayList);
+//		mDao.deleteAll();
+//		mDao.insertPlayList(mPlayList);
 		unregisterReceiver(mControllerReceiver);
 		super.onDestroy();
 	}
