@@ -175,7 +175,7 @@ public class UpdateManager {
 				DownloadEngine.getInstance().addDownloadListener(downloadUrl, new DownloadListener() {
 
 					@Override
-					public void onDownloading(int size) {
+					public void onDownloading(int size, int length) {
 						dialog.setProgress(size);
 
 					}
