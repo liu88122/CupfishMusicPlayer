@@ -15,7 +15,7 @@ public class TestDownloadEngine extends AndroidTestCase {
 		task.addDownloadListener(new DownloadListener() {
 			
 			@Override
-			public void onDownloading(int size) {
+			public void onDownloading(int size, int length) {
 				// TODO Auto-generated method stub
 				System.out.println(size);
 				
