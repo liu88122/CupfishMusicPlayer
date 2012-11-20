@@ -76,8 +76,6 @@ public class SplashActivity extends Activity {
 			public void run() {
 				AppUpdateInfo info = updateManager.checkUpdate(SplashActivity.this);
 				if (info != null && !cancel) {
-					mHandler.sendEmptyMessage(NO_UPDATE);
-				}else{
 					hasUpdate = true;
 					Message msg = Message.obtain();
 					msg.obj = info;
@@ -139,7 +137,6 @@ public class SplashActivity extends Activity {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
 				mHandler.sendEmptyMessage(CANCEL_DOWNLOAD);
 				dialog.dismiss();
 			}
