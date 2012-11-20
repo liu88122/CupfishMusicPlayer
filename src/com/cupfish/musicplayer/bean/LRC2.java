@@ -38,6 +38,10 @@ public class LRC2 {
 	 * @2012-11-19 下午4:55:19
 	 */
 	public long getNextTimeline(long time){
-		return lrcs.ceilingKey(time);
+		Long result = lrcs.ceilingKey(time);
+		if( result != null){
+			return result;
+		}
+		return Long.MAX_VALUE;
 	}
 }
