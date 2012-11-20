@@ -11,7 +11,7 @@ public class TestDownloadEngine extends AndroidTestCase {
 	public void testDownload(){
 		String url = "http://www.cupfish.com/apk/CupfishMusicPlayer2.0.apk";
 		String dir = Environment.getExternalStorageDirectory() + "/cupfish";
-		DownloadTask task = new DownloadTask(getContext(), url, dir, 2);
+		DownloadTask task = new DownloadTask(getContext(), url, dir, null, 2);
 		task.addDownloadListener(new DownloadListener() {
 			
 			@Override
