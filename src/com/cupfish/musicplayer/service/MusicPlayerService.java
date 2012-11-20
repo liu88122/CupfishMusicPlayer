@@ -1,5 +1,6 @@
 package com.cupfish.musicplayer.service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -262,10 +263,14 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 
 	private void play(int index) {
 
-		String url = mPlayList.get(index).getUrl();
+		Song song = mPlayList.get(index);
+		if(song == null){
+			return;
+		}
+		String url = song.getUrl();
 		Log.i(TAG, "ID:" + mPlayList.get(index).getId());
 		
-		if (mMediaPlayer != null) {
+		if (mMediaPlayer != null && url != null) {
 			try {
 				if (mMediaPlayer.isPlaying()) {
 					mMediaPlayer.stop();
@@ -274,10 +279,13 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 				 * mMediaPlayer.release(); mMediaPlayer = new MediaPlayer();
 				 * mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 				 */
-				String dir = Environment.getExternalStorageDirectory() + "/cupfish";
-				String path = DownloadEngine.getInstance().download(getApplicationContext(), url, dir, 1);
+				
+				if(!new File(url).exists()){
+					String dir = Environment.getExternalStorageDirectory() + "/cupfish";
+					url = DownloadEngine.getInstance().download(getApplicationContext(), url, dir, song.getTitle()+".mp3", 1);
+				}
 				mMediaPlayer.reset();
-				mMediaPlayer.setDataSource(path);
+				mMediaPlayer.setDataSource(url);
 				mMediaPlayer.setOnPreparedListener(this);
 				mMediaPlayer.setOnCompletionListener(this);
 				mMediaPlayer.setOnBufferingUpdateListener(this);
