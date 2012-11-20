@@ -116,6 +116,14 @@ public class Song implements Serializable {
 	}
 
 	@Override
+	public boolean equals(Object o) {
+		Song temp = (Song) o;
+		if(this.title.equals(temp.title) && this.id == temp.id){
+			return true;
+		}
+		return false;
+	}
+	@Override
 	public String toString() {
 		return "Song [id=" + id + ", title=" + title + ", album=" + album + ", albumId=" + albumId + ", authorListSize=" + authorList.size()
 				+ ", url=" + url + ", albumCover=" + albumCover + ", lrcUrl=" + lrcUrl + ", duration=" + duration + ", isLocal=" + isLocal + "]";
