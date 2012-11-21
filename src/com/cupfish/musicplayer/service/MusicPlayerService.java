@@ -30,8 +30,8 @@ import com.cupfish.musicplayer.download.DownloadEngine;
 import com.cupfish.musicplayer.exception.NetTimeoutException;
 import com.cupfish.musicplayer.global.BaseApp;
 import com.cupfish.musicplayer.global.Constants;
-import com.cupfish.musicplayer.lrc.LRCController;
-import com.cupfish.musicplayer.lrc.LRCController.OnLrcUpdateListener;
+import com.cupfish.musicplayer.lrc.LrcController;
+import com.cupfish.musicplayer.lrc.LrcController.OnLrcUpdateListener;
 import com.cupfish.musicplayer.utils.BaiduTingHelper;
 
 public class MusicPlayerService extends Service implements OnCompletionListener, OnPreparedListener, OnBufferingUpdateListener {
@@ -66,7 +66,7 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 
 	};
 	//歌词控制类
-	private LRCController lrcController = LRCController.getInstance();
+	private LrcController lrcController = LrcController.getInstance();
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -85,11 +85,17 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 		super.onCreate();
 		Log.i(TAG, "onCreate");
 		
-		lrcController.setOnLrcUpdateListener(new OnLrcUpdateListener() {
+		lrcController.addOnLrcUpdateListener(new OnLrcUpdateListener() {
 			
 			@Override
-			public void onUpdate(String statement) {
+			public void onUpdate(long time, String statement) {
 				Log.i(TAG, statement);
+			}
+
+			@Override
+			public void onStart() {
+				// TODO Auto-generated method stub
+				
 			}
 		});
 
