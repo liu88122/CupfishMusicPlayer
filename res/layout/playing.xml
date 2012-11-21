@@ -7,7 +7,7 @@
 
     <FrameLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1" >
 
         <LinearLayout
@@ -66,16 +66,22 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dip" >
-
-                <com.cupfish.musicplayer.ui.view.MyImageView
-                    android:id="@+id/iv_album_cover"
+                <FrameLayout
+                    android:id="@+id/fl_cover_lrc_container"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_centerHorizontal="true"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/start_cover_default" />
+                    android:layout_centerHorizontal="true" >
+
+                    <com.cupfish.musicplayer.ui.view.MyImageView
+                        android:layout_marginTop="5dp"
+                        android:id="@+id/iv_album_cover"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/start_cover_default" />
+                </FrameLayout>
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -98,7 +104,7 @@
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
-
+        
         <android.gesture.GestureOverlayView
             android:id="@+id/myGestureView"
             android:layout_width="fill_parent"
@@ -110,6 +116,7 @@
             android:orientation="horizontal"
             android:uncertainGestureColor="@color/yellow_light"
             android:visibility="gone" />
+
     </FrameLayout>
 
     <LinearLayout
