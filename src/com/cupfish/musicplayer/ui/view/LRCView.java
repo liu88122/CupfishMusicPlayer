@@ -4,11 +4,14 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -30,6 +33,10 @@ public class LRCView extends ScrollView {
 	private Handler mLrcHandler;
 	private TreeMap<Long, String> statements;
 	private LinearLayout statementContainer;
+	private int lastY;
+	private int deltaY;
+	
+	private Paint paint;
 	
 	public LRCView(Context context) {
 		super(context);
@@ -43,6 +50,10 @@ public class LRCView extends ScrollView {
 		setVerticalScrollBarEnabled(false);
 		load();
 		
+		paint = new Paint();
+		paint.setColor(context.getResources().getColor(R.color.red_light));
+		paint.setAntiAlias(true);
+		paint.setTextSize(18);
 	}
 	
 	private void load(){
@@ -66,6 +77,7 @@ public class LRCView extends ScrollView {
 					tv.setText(entry.getValue());
 					tv.setTag(entry.getKey());
 					tv.setTextColor(Color.WHITE);
+					tv.setTextSize(18);
 					ViewGroup.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 					tv.setGravity(Gravity.CENTER_HORIZONTAL);
 					statementContainer.addView(tv, params);
@@ -82,20 +94,57 @@ public class LRCView extends ScrollView {
 		}
 	}
 	
+	@Override
+	protected void onDraw(Canvas canvas) {
+		super.onDraw(canvas);
+		canvas.drawText("我爱的音乐", 0, this.getHeight() / 2 + getScrollY() - deltaY, paint);
+	}
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent ev) {
+		int scrollY = getScrollY();
+		if(getChildAt(0) != null){
+			if(scrollY == 0 || scrollY == (getChildAt(0).getHeight() - getHeight())){
+				switch(ev.getAction()){
+				case MotionEvent.ACTION_DOWN:
+					lastY = (int) ev.getY();
+					break;
+				case MotionEvent.ACTION_MOVE:
+					int currentY = (int) ev.getY();
+					deltaY = currentY - lastY;
+					if(scrollY == 0 && deltaY > 0){
+						if(deltaY > getHeight() /2){
+							deltaY = getHeight() / 2;
+						}
+						return true;
+					}
+					if(scrollY == (getChildAt(0).getHeight() - getHeight()) && deltaY < 0){
+						if(Math.abs(deltaY) > getHeight() /2){
+							deltaY = - getHeight() / 2;
+						}
+						return true;
+					}
+					invalidate();
+					break;
+				case MotionEvent.ACTION_UP:
+					break;
+				}
+			}
+		}
+		return super.onTouchEvent(ev);
+	}
+	
 	private class LrcListener implements OnLrcUpdateListener{
 		
 		private Handler handler;
-		private int lineNum;
 		
 		public LrcListener(Handler handler){
 			this.handler = handler;
 		}
 		@Override
 		public void onUpdate(long time, String statement) {
-			lineNum ++;
 			Message msg = Message.obtain();
 			msg.what = LRC_UPDATE;
-			msg.arg1 = lineNum;
 			Bundle data= new Bundle();
 			data.putLong("time", time);
 			data.putString("statement", statement);
@@ -104,7 +153,6 @@ public class LRCView extends ScrollView {
 		}
 		@Override
 		public void onStart() {
-			lineNum = 0;
 			mLrcHandler.sendEmptyMessage(LRC_START);
 		}
 		
@@ -121,16 +169,17 @@ public class LRCView extends ScrollView {
 				break;
 			case LRC_UPDATE:
 				Bundle data = msg.getData();
-				int lineNum = msg.arg1;
+				Long time = (Long) data.get("time");
 				if(statementContainer!=null){
 					if(tv!= null){
 						tv.setTextColor(Color.WHITE);
 					}
-					tv = (TextView) statementContainer.getChildAt(lineNum);
+					tv = (TextView) statementContainer.findViewWithTag(time);
 					tv.setTextColor(context.getResources().getColor(R.color.green_light));
 					int height = getHeight();
+//					tv.getlo;
 					if(tv.getTop() > (height / 2)){
-						scrollBy(0, tv.getHeight());
+						scrollTo(0, tv.getTop() - height/2 + tv.getHeight());
 					}
 				}
 				break;
@@ -138,4 +187,5 @@ public class LRCView extends ScrollView {
 			
 		}
 	}
+	
 }
