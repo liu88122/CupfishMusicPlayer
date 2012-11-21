@@ -1,6 +1,11 @@
 package com.cupfish.musicplayer.bean;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.TreeMap;
+
+import com.cupfish.musicplayer.global.Constants;
 
 /**
  * 新的歌词LRC类
@@ -43,5 +48,29 @@ public class LRC2 {
 			return result;
 		}
 		return Long.MAX_VALUE;
+	}
+	
+	public long getCurrentTimeLine(long time){
+		Long result = lrcs.floorKey(time);
+		if( result != null){
+			return result;
+		}
+		return Long.MAX_VALUE;
+	}
+	
+	@Deprecated
+	public ArrayList<String> getStatementList(){
+		ArrayList<String> result = new ArrayList<String>();
+		if (lrcs != null && lrcs.size() > 0) {
+			for (Map.Entry<Long, String> entry : lrcs.entrySet()) {
+				result.add(entry.getValue().replace(Constants.LRC_AD, "\n"));
+			}
+		}
+		return result;
+		
+	}
+	
+	public TreeMap<Long, String> getLrcsMap(){
+		return lrcs;
 	}
 }
