@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.cupfish.musicplayer.R;
 import com.cupfish.musicplayer.bean.LRC2;
-import com.cupfish.musicplayer.global.Constants;
 import com.cupfish.musicplayer.lrc.LrcController;
 import com.cupfish.musicplayer.lrc.LrcController.OnLrcUpdateListener;
 
