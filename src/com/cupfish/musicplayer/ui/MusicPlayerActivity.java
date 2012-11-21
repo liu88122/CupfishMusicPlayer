@@ -64,6 +64,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -82,12 +83,13 @@ import com.cupfish.musicplayer.download.DownloadEngine;
 import com.cupfish.musicplayer.download.DownloadTask.DownloadListener;
 import com.cupfish.musicplayer.global.BaseApp;
 import com.cupfish.musicplayer.global.Constants;
-import com.cupfish.musicplayer.lrc.LRCController;
-import com.cupfish.musicplayer.lrc.LRCController.OnLrcUpdateListener;
+import com.cupfish.musicplayer.lrc.LrcController;
+import com.cupfish.musicplayer.lrc.LrcController.OnLrcUpdateListener;
 import com.cupfish.musicplayer.service.DownloadService;
 import com.cupfish.musicplayer.service.MusicPlayerService;
 import com.cupfish.musicplayer.ui.adapter.LocalMusicAdapter;
 import com.cupfish.musicplayer.ui.adapter.MainPagerAdapter;
+import com.cupfish.musicplayer.ui.view.LRCView;
 import com.cupfish.musicplayer.ui.view.MyViewPager;
 import com.cupfish.musicplayer.utils.ConnectivityHelper;
 import com.cupfish.musicplayer.utils.FileManageAssistant;
@@ -342,8 +344,22 @@ public class MusicPlayerActivity extends Activity implements OnClickListener, Vi
 		mVolumeBtn = (ImageView) mPlayingContent.findViewById(R.id.iv_volume);
 
 		// 歌词相关初始化
+		final FrameLayout lrcViewContainer = (FrameLayout) mPlayingContent.findViewById(R.id.fl_cover_lrc_container);
 		mLrcSwitcher = (TextSwitcher) mPlayingContent.findViewById(R.id.ts_lrc);
 		mLrcSwitcher.setFactory(this);
+		mLrcSwitcher.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (lrcViewContainer.getChildCount() > 1) {
+					lrcViewContainer.removeViewAt(1);
+				} else {
+					LRCView lrcView = new LRCView(MusicPlayerActivity.this);
+					lrcView.setBackgroundColor(Color.parseColor("#66333333"));
+					lrcViewContainer.addView(lrcView);
+				}
+			}
+		});
 		Animation inAnimation = AnimationUtils.loadAnimation(this, R.anim.push_up_in);
 		Animation outAnimation = AnimationUtils.loadAnimation(this, R.anim.push_up_out);
 		mLrcSwitcher.setInAnimation(inAnimation);
@@ -835,13 +851,18 @@ public class MusicPlayerActivity extends Activity implements OnClickListener, Vi
 
 
 			// 更新歌词ver3.0
-			LRCController.getInstance().setOnLrcUpdateListener(new OnLrcUpdateListener() {
+			LrcController.getInstance().addOnLrcUpdateListener(new OnLrcUpdateListener() {
 				@Override
-				public void onUpdate(String statement) {
+				public void onUpdate(long time, String statement) {
 					Message msg = Message.obtain();
 					msg.obj = statement;
 					mLrcHandler.sendMessage(msg);
 					System.out.println("setOnLrcUpdateListener");
+				}
+
+				@Override
+				public void onStart() {
+					
 				}
 			});
 
