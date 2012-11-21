@@ -353,10 +353,12 @@ public class MusicPlayerActivity extends Activity implements OnClickListener, Vi
 				// TODO Auto-generated method stub
 				if (lrcViewContainer.getChildCount() > 1) {
 					lrcViewContainer.removeViewAt(1);
+					v.setVisibility(View.VISIBLE);
 				} else {
 					LRCView lrcView = new LRCView(MusicPlayerActivity.this);
 					lrcView.setBackgroundColor(Color.parseColor("#66333333"));
 					lrcViewContainer.addView(lrcView);
+					v.setVisibility(View.INVISIBLE);
 				}
 			}
 		});
