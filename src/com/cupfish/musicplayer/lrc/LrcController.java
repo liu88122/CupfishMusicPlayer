@@ -1,5 +1,8 @@
 package com.cupfish.musicplayer.lrc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.media.MediaPlayer;
 
@@ -16,21 +19,24 @@ import com.cupfish.musicplayer.utils.LRCReader;
  * @author <a href="liu88122@gmail.com">LiuZhongde</a>
  * @2012-11-19下午4:56:28
  */
-public class LRCController {
+public class LrcController {
 
-	private static LRCController sLrcController;
+	private static LrcController sLrcController;
 	private static Object sLock = new Object();
 	
 	private MediaPlayer mMediaPlayer;
 	private LrcUpdateThread mLrcUpdateThread;
-	private OnLrcUpdateListener mLrcUpdateListener;
+	private List<OnLrcUpdateListener> mLrcListeners;
+	private LRC2 mCurrentLrc;
 	
-	private LRCController(){ }
+	private LrcController(){
+		mLrcListeners = new ArrayList<LrcController.OnLrcUpdateListener>();
+	}
 	
-	public static LRCController getInstance(){
+	public static LrcController getInstance(){
 		synchronized (sLock) {
 			if(sLrcController == null){
-				sLrcController = new LRCController();
+				sLrcController = new LrcController();
 			}
 			return sLrcController;
 		}
@@ -48,8 +54,8 @@ public class LRCController {
 	public void loadLRC(Context context, Song song, MediaPlayer player){
 		stopLrc(); //如果还有歌词在显示，直接停止
 		mMediaPlayer = player;
-		LRC2 lrc = LRCReader.getLRC(song, context);
-		mLrcUpdateThread = new LrcUpdateThread(lrc);
+		mCurrentLrc = LRCReader.getLRC(song, context);
+		mLrcUpdateThread = new LrcUpdateThread(mCurrentLrc);
 		mLrcUpdateThread.start();
 	}
 	
@@ -103,6 +109,10 @@ public class LRCController {
 		}
 	}
 	
+	public LRC2 getCurrentLRC(){
+		return mCurrentLrc;
+	}
+	
 	/**
 	 * 设置歌词更新监听类
 	 * @param listener
@@ -110,8 +120,19 @@ public class LRCController {
 	 * @author <a href="liu88122@gmail.com">LiuZhongde</a>
 	 * @2012-11-19 下午5:04:11
 	 */
-	public void setOnLrcUpdateListener(OnLrcUpdateListener listener){
-		mLrcUpdateListener = listener;
+	public void addOnLrcUpdateListener(OnLrcUpdateListener listener){
+		mLrcListeners.add(listener);
+	}
+	
+	/**
+	 * 取消歌词更新监听类
+	 * @param listener
+	 * void
+	 * @author <a href="liu88122@gmail.com">LiuZhongde</a>
+	 * @2012-11-19 下午5:04:11
+	 */
+	public void removeOnLrcUpdateListener(OnLrcUpdateListener listener){
+		mLrcListeners.remove(listener);
 	}
 	
 	/**
@@ -143,7 +164,13 @@ public class LRCController {
 		}
 
 		public void seekTo(long time) {
-			if(lrc!=null){
+			if(lrc != null){
+				long currentTimeline = lrc.getCurrentTimeLine(time);
+				if (currentTimeline != Long.MAX_VALUE) {
+					String statement = lrc.getStatement(currentPosition);
+					onLrcUpdateNotify(currentTimeline, statement);
+
+				}
 				nextTimepoint = lrc.getNextTimeline(time);
 			}
 			
@@ -154,15 +181,14 @@ public class LRCController {
 			if(lrc==null){
 				return;
 			}
+			onLrcStartNotify();
 			nextTimepoint = lrc.getNextTimeline(0);
 			while (!exit) {
 				if (!pause) {
 					currentPosition = mMediaPlayer.getCurrentPosition();
 					if (currentPosition > nextTimepoint) {
 						String statement = lrc.getStatement(currentPosition);
-						if (mLrcUpdateListener != null) {
-							mLrcUpdateListener.onUpdate(statement);
-						}
+						onLrcUpdateNotify(currentPosition, statement);
 						nextTimepoint = lrc.getNextTimeline(currentPosition);
 					}
 					if (nextTimepoint == 3600000) {
@@ -185,12 +211,25 @@ public class LRCController {
 		}
 	}
 	
+	private void onLrcUpdateNotify(long time, String statement){
+		for(OnLrcUpdateListener listener : mLrcListeners){
+			listener.onUpdate(time, statement);
+		}
+	}
+	
+	private void onLrcStartNotify(){
+		for(OnLrcUpdateListener listener : mLrcListeners){
+			listener.onStart();
+		}
+	}
+	
 	/**
 	 * 歌词更新监听类
 	 * @author <a href="liu88122@gmail.com">LiuZhongde</a>
 	 * @2012-11-19下午5:05:50
 	 */
 	public static interface OnLrcUpdateListener{
-		void onUpdate(String statement);
+		void onStart();
+		void onUpdate(long time, String statement);
 	}
 }
