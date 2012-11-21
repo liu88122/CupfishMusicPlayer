@@ -188,7 +188,7 @@ public class LrcController {
 					currentPosition = mMediaPlayer.getCurrentPosition();
 					if (currentPosition > nextTimepoint) {
 						String statement = lrc.getStatement(currentPosition);
-						onLrcUpdateNotify(currentPosition, statement);
+						onLrcUpdateNotify(lrc.getCurrentTimeLine(currentPosition), statement);
 						nextTimepoint = lrc.getNextTimeline(currentPosition);
 					}
 					if (nextTimepoint == 3600000) {
