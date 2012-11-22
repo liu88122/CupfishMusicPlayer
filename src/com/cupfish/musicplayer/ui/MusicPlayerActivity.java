@@ -49,6 +49,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
@@ -1137,7 +1138,7 @@ public class MusicPlayerActivity extends Activity implements OnClickListener, Vi
 		});
 		mVolumeWindow = new PopupWindow(view);
 		mVolumeWindow.setWidth(display.getWidth() * 2 / 3);
-		mVolumeWindow.setHeight(150);
+		mVolumeWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
 		mVolumeWindow.setTouchInterceptor(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -1152,7 +1153,7 @@ public class MusicPlayerActivity extends Activity implements OnClickListener, Vi
 		mVolumeWindow.setAnimationStyle(R.anim.fade_in);
 		mVolumeWindow.setTouchable(true);
 		mVolumeWindow.setOutsideTouchable(true);
-		mVolumeWindow.showAtLocation(parent, Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, 50);
+		mVolumeWindow.showAtLocation(parent, Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, 100);
 		if (!isVolumeBarClicked) {
 			new Timer().schedule(new TimerTask() {
 				@Override

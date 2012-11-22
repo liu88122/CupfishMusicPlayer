@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:background="@drawable/volume_controll_bg" >
+    android:background="@drawable/volume_controller_bg" >
 
     <TextView
         android:layout_width="wrap_content"
