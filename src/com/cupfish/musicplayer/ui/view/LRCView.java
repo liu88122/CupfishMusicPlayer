@@ -7,13 +7,18 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Spannable;
+import android.text.Spannable.Factory;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
+import android.widget.OverScroller;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -33,10 +38,12 @@ public class LRCView extends ScrollView {
 	private Handler mLrcHandler;
 	private TreeMap<Long, String> statements;
 	private LinearLayout statementContainer;
+	private Typeface mTypeface;
 	private int lastY;
 	private int deltaY;
-	
+	private int timelineY = Integer.MAX_VALUE;
 	private Paint paint;
+	
 	
 	public LRCView(Context context) {
 		super(context);
@@ -46,45 +53,52 @@ public class LRCView extends ScrollView {
 		mController = LrcController.getInstance();
 		mController.addOnLrcUpdateListener(mLRCListener);
 		
+		statementContainer = new LinearLayout(context);
+		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.MATCH_PARENT, 
+				LinearLayout.LayoutParams.MATCH_PARENT);
+		statementContainer.setOrientation(LinearLayout.VERTICAL);
+		statementContainer.setLayoutParams(param);
+		addView(statementContainer);
+		
 		//隐藏scrollBar
 		setVerticalScrollBarEnabled(false);
-		load();
+		loadLrc();
 		
 		paint = new Paint();
 		paint.setColor(context.getResources().getColor(R.color.red_light));
 		paint.setAntiAlias(true);
 		paint.setTextSize(18);
+		
+		setPadding(0, 0, 0, 60);
 	}
 	
-	private void load(){
+	private void loadLrc(){
 		mLrc = mController.getCurrentLRC();
 		addLrcStatementToView();
 	}
 	
 	private void addLrcStatementToView(){
-		removeAllViews();
+		statementContainer.removeAllViews();
 		if(mLrc != null){
 			statements = mLrc.getLrcsMap();
-			statementContainer = new LinearLayout(context);
-			LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
-					LinearLayout.LayoutParams.MATCH_PARENT, 
-					LinearLayout.LayoutParams.MATCH_PARENT);
-			statementContainer.setOrientation(LinearLayout.VERTICAL);
-			statementContainer.setLayoutParams(param);
 			if (statements != null && statements.size() > 0) {
 				for (Map.Entry<Long, String> entry : statements.entrySet()) {
 					TextView tv = new TextView(context);
 					tv.setText(entry.getValue());
 					tv.setTag(entry.getKey());
 					tv.setTextColor(Color.WHITE);
-					tv.setTextSize(18);
+					tv.setTextSize(17);
+					tv.setPadding(2, 2, 2, 2);
+					if(mTypeface != null){
+						tv.setTypeface(mTypeface);
+					}
 					ViewGroup.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 					tv.setGravity(Gravity.CENTER_HORIZONTAL);
 					statementContainer.addView(tv, params);
 				}
 			}
 			
-			addView(statementContainer);
 		}else{
 			TextView tv = new TextView(context);
 			tv.setText("NO LRC");
@@ -97,7 +111,13 @@ public class LRCView extends ScrollView {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		canvas.drawText("我爱的音乐", 0, this.getHeight() / 2 + getScrollY() - deltaY, paint);
+		if(timelineY == Integer.MAX_VALUE && getHeight() != 0){
+			timelineY  = getHeight() / 2;
+		}
+		if(timelineY < 0){
+			timelineY = 0;
+		}
+//		canvas.drawText("我爱的音乐", 0, timelineY + getScrollY(), paint);
 	}
 	
 	@Override
@@ -112,18 +132,18 @@ public class LRCView extends ScrollView {
 				case MotionEvent.ACTION_MOVE:
 					int currentY = (int) ev.getY();
 					deltaY = currentY - lastY;
-					if(scrollY == 0 && deltaY > 0){
-						if(deltaY > getHeight() /2){
-							deltaY = getHeight() / 2;
-						}
-						return true;
-					}
-					if(scrollY == (getChildAt(0).getHeight() - getHeight()) && deltaY < 0){
-						if(Math.abs(deltaY) > getHeight() /2){
-							deltaY = - getHeight() / 2;
-						}
-						return true;
-					}
+//					if (scrollY == 0 && timelineY != 0) {
+//						timelineY -= deltaY;
+//						return true;
+//					} else if (scrollY == (getChildAt(0).getHeight() - getHeight()) && deltaY < 0){
+//						if(Math.abs(deltaY) > getHeight() /2){
+//							deltaY = - getHeight() / 2;
+//						}
+//						return true;
+//					}else{
+//						timelineY = getHeight() / 2;
+//					}
+					lastY = currentY;
 					invalidate();
 					break;
 				case MotionEvent.ACTION_UP:
@@ -159,13 +179,13 @@ public class LRCView extends ScrollView {
 	}
 	
 	private class LRCHandler extends Handler{
-		TextView tv ;
+		TextView tv;
 		@Override
 		public void handleMessage(Message msg) {
 			switch(msg.what){
 			case LRC_START:
 				scrollTo(0, 0);
-				load();
+				loadLrc();
 				break;
 			case LRC_UPDATE:
 				Bundle data = msg.getData();
@@ -175,17 +195,20 @@ public class LRCView extends ScrollView {
 						tv.setTextColor(Color.WHITE);
 					}
 					tv = (TextView) statementContainer.findViewWithTag(time);
-					tv.setTextColor(context.getResources().getColor(R.color.green_light));
+					tv.setTextColor(context.getResources().getColor(R.color.yellow_light));
 					int height = getHeight();
-//					tv.getlo;
 					if(tv.getTop() > (height / 2)){
-						scrollTo(0, tv.getTop() - height/2 + tv.getHeight());
+						smoothScrollTo(0, tv.getTop() - height/2 + tv.getHeight());
 					}
 				}
 				break;
 			}
-			
 		}
+	}
+	
+	public void setLrcTypeface(Typeface typeface){
+		mTypeface = typeface;
+		addLrcStatementToView();
 	}
 	
 }
