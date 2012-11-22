@@ -1,6 +1,12 @@
 杯里鱼音乐播放器 <br/>
 字体下载地址：http://www.cupfish.com/files/xujinglei_font.ttf  <br/>
 
+v2012.11.22<br />
+
+1.LRCView功能完善,优化歌词滚动<br />
+2.修正单行歌词与全屏歌词切换问题<br />
+
+
 v2012.11.21<br />
 
 1.LRCView功能基本实现,解决歌词滚动问题<br />
