@@ -32,7 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.MusicPlayerActivity" />
+        <activity android:name=".ui.MusicPlayerActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.PlaylistActivity" />
         <activity android:name=".ui.NewTopActivity" />
         <activity android:name=".ui.TestActivity" />
