@@ -77,7 +77,6 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher.ViewFactory;
 
 import com.cupfish.musicplayer.R;
-import com.cupfish.musicplayer.bean.LRC;
 import com.cupfish.musicplayer.bean.Song;
 import com.cupfish.musicplayer.download.DownloadEngine;
 import com.cupfish.musicplayer.download.DownloadTask.DownloadListener;
@@ -93,7 +92,6 @@ import com.cupfish.musicplayer.ui.view.LRCView;
 import com.cupfish.musicplayer.ui.view.MyViewPager;
 import com.cupfish.musicplayer.utils.ConnectivityHelper;
 import com.cupfish.musicplayer.utils.FileManageAssistant;
-import com.cupfish.musicplayer.utils.LRCManager;
 import com.cupfish.musicplayer.utils.LocalMediaUtil;
 import com.cupfish.musicplayer.utils.MyImageUtils;
 import com.cupfish.musicplayer.utils.MyImageUtils.ImageCallback;
@@ -166,7 +164,6 @@ public class MusicPlayerActivity extends Activity implements OnClickListener, Vi
 	private TextSwitcher mLrcSwitcher;
 	// TextSwitcher使用到的TextView
 	private TextView mTextSwitcherTv;
-	private LRC mLrc;
 	private SharedPreferences mSp;
 	// 歌词字体
 	private Typeface mTypeface;
@@ -309,6 +306,22 @@ public class MusicPlayerActivity extends Activity implements OnClickListener, Vi
 			mSearch.setEnabled(false);
 			mSearch.setText("语音识别当前不可用");
 		}
+		
+		// 更新歌词ver3.0
+		LrcController.getInstance().addOnLrcUpdateListener(new OnLrcUpdateListener() {
+			@Override
+			public void onUpdate(long time, String statement) {
+				Message msg = Message.obtain();
+				msg.obj = statement;
+				mLrcHandler.sendMessage(msg);
+				System.out.println("switcher:" + statement);
+			}
+
+			@Override
+			public void onStart() {
+
+			}
+		});
 	}
 
 	/**
@@ -353,12 +366,13 @@ public class MusicPlayerActivity extends Activity implements OnClickListener, Vi
 				// TODO Auto-generated method stub
 				if (lrcViewContainer.getChildCount() > 1) {
 					lrcViewContainer.removeViewAt(1);
-					v.setVisibility(View.VISIBLE);
+					mLrcSwitcher.setTag(true);
 				} else {
 					LRCView lrcView = new LRCView(MusicPlayerActivity.this);
 					lrcView.setBackgroundColor(Color.parseColor("#66333333"));
 					lrcViewContainer.addView(lrcView);
-					v.setVisibility(View.INVISIBLE);
+					mLrcSwitcher.setTag(false);
+					mLrcSwitcher.setText("杯里鱼音乐");
 				}
 			}
 		});
@@ -770,6 +784,12 @@ public class MusicPlayerActivity extends Activity implements OnClickListener, Vi
 			super.handleMessage(msg);
 			if (msg.obj != null) {
 				String content = (String) msg.obj;
+				Boolean show = (Boolean) mLrcSwitcher.getTag();
+				if(show != null){
+					if(!show){
+						return;
+					}
+				}
 				mLrcSwitcher.setText(content);
 			}
 		}
@@ -848,25 +868,6 @@ public class MusicPlayerActivity extends Activity implements OnClickListener, Vi
 				mAlbumCover.clearAnimation();
 				bitmap.recycle();
 			}
-
-			
-
-
-			// 更新歌词ver3.0
-			LrcController.getInstance().addOnLrcUpdateListener(new OnLrcUpdateListener() {
-				@Override
-				public void onUpdate(long time, String statement) {
-					Message msg = Message.obtain();
-					msg.obj = statement;
-					mLrcHandler.sendMessage(msg);
-					System.out.println("setOnLrcUpdateListener");
-				}
-
-				@Override
-				public void onStart() {
-					
-				}
-			});
 
 			new Thread() {
 				@Override
@@ -970,7 +971,6 @@ public class MusicPlayerActivity extends Activity implements OnClickListener, Vi
 		if (mCurrentPlayingReceiver != null) {
 			unregisterReceiver(mCurrentPlayingReceiver);
 		}
-		LRCManager.getInstance().removeLRC();
 		if (MusicPlayerService.mMediaPlayer != null) {
 			if (MusicPlayerService.mMediaPlayer.isPlaying()) {
 				MusicPlayerService.mMediaPlayer.stop();
@@ -1015,7 +1015,6 @@ public class MusicPlayerActivity extends Activity implements OnClickListener, Vi
 		mTextSwitcherTv.setGravity(Gravity.CENTER);
 		mTextSwitcherTv.setTextSize(20);
 		mTextSwitcherTv.setTextColor(getResources().getColor(R.color.white));
-
 		if (mTypeface != null) {
 			mTextSwitcherTv.setTypeface(mTypeface);
 		}
