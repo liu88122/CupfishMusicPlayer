@@ -57,6 +57,6 @@ public interface Constants {
 	int FLAG_GOOGLE_MUSIC = 2011;
 	int FLAG_BAIDU_MUSIC = 2012;
 	
-	String LRC_AD = "";
+	String LRC_AD = "~music~";
 
 }
