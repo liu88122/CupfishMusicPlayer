@@ -84,23 +84,27 @@
                 </FrameLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_single_lrc_container"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:background="#33333333"
-                    android:orientation="vertical" >
+                    android:orientation="vertical"
+                    >
 
                     <TextSwitcher
                         android:id="@+id/ts_lrc"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:background="#8833B5E5"
-                        android:padding="5dip" />
+                        android:background="#00000000"
+                        android:padding="5dip"
+                       />
 
                     <View
                         android:layout_width="fill_parent"
                         android:layout_height="1dip"
-                        android:background="@color/main_blue_light" />
+                        android:background="@color/main_blue_light" 
+                       />
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
