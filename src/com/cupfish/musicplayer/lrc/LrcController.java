@@ -8,7 +8,6 @@ import android.media.MediaPlayer;
 
 import com.cupfish.musicplayer.bean.LRC2;
 import com.cupfish.musicplayer.bean.Song;
-import com.cupfish.musicplayer.utils.LRCReader;
 
 /**
  * 歌词控制类<br/>
@@ -54,7 +53,7 @@ public class LrcController {
 	public void loadLRC(Context context, Song song, MediaPlayer player){
 		stopLrc(); //如果还有歌词在显示，直接停止
 		mMediaPlayer = player;
-		mCurrentLrc = LRCReader.getLRC(song, context);
+		mCurrentLrc = LrcReader.getLRC(song, context);
 		mLrcUpdateThread = new LrcUpdateThread(mCurrentLrc);
 		mLrcUpdateThread.start();
 	}
