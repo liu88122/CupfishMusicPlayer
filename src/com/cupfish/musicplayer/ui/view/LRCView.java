@@ -11,14 +11,10 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.Spannable;
-import android.text.Spannable.Factory;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.LinearLayout;
-import android.widget.OverScroller;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -42,8 +38,10 @@ public class LRCView extends ScrollView {
 	private int lastY;
 	private int deltaY;
 	private int timelineY = Integer.MAX_VALUE;
+	private boolean autoScroll = true;
 	private Paint paint;
-	
+	private MotionEvent lastDownMotionEvent;
+	private boolean isFirstDown = true;
 	
 	public LRCView(Context context) {
 		super(context);
@@ -68,7 +66,7 @@ public class LRCView extends ScrollView {
 		paint = new Paint();
 		paint.setColor(context.getResources().getColor(R.color.red_light));
 		paint.setAntiAlias(true);
-		paint.setTextSize(18);
+		paint.setTextSize(30);
 		
 		setPadding(0, 0, 0, 60);
 	}
@@ -112,48 +110,76 @@ public class LRCView extends ScrollView {
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		if(timelineY == Integer.MAX_VALUE && getHeight() != 0){
-			timelineY  = getHeight() / 2;
+			timelineY  = 0;
 		}
 		if(timelineY < 0){
 			timelineY = 0;
 		}
-//		canvas.drawText("我爱的音乐", 0, timelineY + getScrollY(), paint);
+		if (!autoScroll) {
+			canvas.drawText("我爱的音乐", 0, timelineY + getScrollY() - 10, paint);
+			canvas.drawLine(0, timelineY + getScrollY(), getWidth(), timelineY + getScrollY(), paint);
+		}
 	}
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
-		int scrollY = getScrollY();
-		if(getChildAt(0) != null){
-			if(scrollY == 0 || scrollY == (getChildAt(0).getHeight() - getHeight())){
-				switch(ev.getAction()){
-				case MotionEvent.ACTION_DOWN:
-					lastY = (int) ev.getY();
-					break;
-				case MotionEvent.ACTION_MOVE:
-					int currentY = (int) ev.getY();
-					deltaY = currentY - lastY;
-//					if (scrollY == 0 && timelineY != 0) {
-//						timelineY -= deltaY;
-//						return true;
-//					} else if (scrollY == (getChildAt(0).getHeight() - getHeight()) && deltaY < 0){
-//						if(Math.abs(deltaY) > getHeight() /2){
-//							deltaY = - getHeight() / 2;
-//						}
-//						return true;
-//					}else{
-//						timelineY = getHeight() / 2;
-//					}
-					lastY = currentY;
-					invalidate();
-					break;
-				case MotionEvent.ACTION_UP:
-					break;
-				}
-			}
-		}
 		return super.onTouchEvent(ev);
 	}
 	
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		int scrollY = getScrollY();
+		if (getChildAt(0) != null) {
+			switch (ev.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				autoScroll = false;
+				lastY = (int) ev.getY();
+				// if(scrollY == 0){
+				// return true;
+				// }
+				lastDownMotionEvent = ev;
+			case MotionEvent.ACTION_MOVE:
+				int currentY = (int) ev.getY();
+				deltaY = currentY - lastY;
+				System.out.println("ScrollY:" + scrollY + " lastY:" + lastY + " currentY:" +currentY+ " deltaY:" + deltaY);
+				lastY = currentY;
+				try {
+					if (scrollY == 0) {
+						timelineY -= deltaY;
+						if (timelineY < getHeight() / 2) {
+							invalidate();
+							return true;
+						}else{
+							timelineY = getHeight() / 2;
+							if(isFirstDown){
+								isFirstDown = false;
+								lastDownMotionEvent.setLocation(ev.getX(), currentY - deltaY);
+								return super.onTouchEvent(lastDownMotionEvent);
+							}
+							return super.dispatchTouchEvent(ev);
+						}
+					} else {
+						timelineY = getHeight() / 2;
+					}
+//					if (timelineY == Integer.MAX_VALUE && getHeight() != 0) {
+//						timelineY = getHeight() / 2;
+//					}
+					if (timelineY < 0) {
+						timelineY = 0;
+					}
+				} finally {
+					System.out.println(timelineY);
+					invalidate();
+				}
+				break;
+			}
+		}
+		if (ev.getAction() == MotionEvent.ACTION_UP) {
+			autoScroll = true;
+		}
+		return super.dispatchTouchEvent(ev);
+	}
+
 	private class LrcListener implements OnLrcUpdateListener{
 		
 		private Handler handler;
@@ -197,7 +223,7 @@ public class LRCView extends ScrollView {
 					tv = (TextView) statementContainer.findViewWithTag(time);
 					tv.setTextColor(context.getResources().getColor(R.color.yellow_light));
 					int height = getHeight();
-					if(tv.getTop() > (height / 2)){
+					if(tv.getTop() > (height / 2) && autoScroll){
 						smoothScrollTo(0, tv.getTop() - height/2 + tv.getHeight());
 					}
 				}
