@@ -69,7 +69,7 @@ public class OnlineListAdapter extends BaseAdapter {
 		}
 		//TODO 需要将所有的artist都显示
 		if(song.getAuthorList() != null	){
-			holder.artist.setText(song.getAuthorList().get(0).name);
+			holder.artist.setText(song.getAuthorList().get(0).getName());
 		}
 		holder.download.setOnClickListener(new OnClickListener() {
 			@Override

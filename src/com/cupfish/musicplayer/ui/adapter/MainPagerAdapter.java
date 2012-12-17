@@ -2,39 +2,27 @@ package com.cupfish.musicplayer.ui.adapter;
 
 import java.util.List;
 
-import android.support.v4.view.PagerAdapter;
-import android.view.View;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 
-import com.cupfish.musicplayer.ui.view.MyViewPager;
+public class MainPagerAdapter extends FragmentPagerAdapter {
 
-public class MainPagerAdapter extends PagerAdapter {
+	private List<Fragment> fragments;
 
-	private List<View> mViews;
-	
-	public MainPagerAdapter(List<View> mViews){
-		this.mViews = mViews;
-	}
-	
-	@Override
-	public int getCount() {
-		return mViews.size();
+	public MainPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
+		super(fm);
+		this.fragments = fragments;
 	}
 
 	@Override
-	public boolean isViewFromObject(View arg0, Object arg1) {
-		return arg0 == arg1;
+	public Fragment getItem(int location) {
+		return fragments.get(location);
 	}
 
 	@Override
-	public void destroyItem(View container, int position, Object object) {
-		((MyViewPager)container).removeView(mViews.get(position));
+	public int getCount() {
+		return fragments.size();
 	}
 
-	@Override
-	public Object instantiateItem(View container, int position) {
-		((MyViewPager)container).addView(mViews.get(position));
-		return mViews.get(position);
-	}
-
-	
 }

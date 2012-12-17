@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,7 +29,6 @@ public class LRCView extends ScrollView {
 	public static final int LRC_UPDATE = 0;
 	public static final int LRC_START = 1;
 	private Context context;
-	private LRC2 mLrc;
 	private LrcController mController;
 	private LrcListener mLRCListener;
 	private Handler mLrcHandler;
@@ -69,38 +69,40 @@ public class LRCView extends ScrollView {
 		paint.setTextSize(30);
 		
 		setPadding(0, 0, 0, 60);
+		
+		//屏幕常亮
+		setKeepScreenOn(true);
 	}
 	
 	private void loadLrc(){
-		mLrc = mController.getCurrentLRC();
+		statements = mController.getCurrentLrcTreeMap();
 		addLrcStatementToView();
 	}
 	
 	private void addLrcStatementToView(){
 		statementContainer.removeAllViews();
-		if(mLrc != null){
-			statements = mLrc.getLrcsMap();
-			if (statements != null && statements.size() > 0) {
-				for (Map.Entry<Long, String> entry : statements.entrySet()) {
-					TextView tv = new TextView(context);
-					tv.setText(entry.getValue());
-					tv.setTag(entry.getKey());
-					tv.setTextColor(Color.WHITE);
-					tv.setTextSize(17);
-					tv.setPadding(2, 2, 2, 2);
-					if(mTypeface != null){
-						tv.setTypeface(mTypeface);
-					}
-					ViewGroup.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-					tv.setGravity(Gravity.CENTER_HORIZONTAL);
-					statementContainer.addView(tv, params);
+		if (statements != null && statements.size() > 0) {
+			for (Map.Entry<Long, String> entry : statements.entrySet()) {
+				TextView tv = new TextView(context);
+				tv.setText(entry.getValue());
+				tv.setTag(entry.getKey());
+				tv.setTextColor(Color.WHITE);
+				tv.setTextSize(17);
+				tv.setPadding(2, 2, 2, 2);
+				if (mTypeface != null) {
+					tv.setTypeface(mTypeface);
 				}
+				ViewGroup.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+						ViewGroup.LayoutParams.WRAP_CONTENT);
+				tv.setGravity(Gravity.CENTER_HORIZONTAL);
+				statementContainer.addView(tv, params);
 			}
-			
-		}else{
+
+		} else {
 			TextView tv = new TextView(context);
 			tv.setText("NO LRC");
-			ViewGroup.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+			ViewGroup.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+					ViewGroup.LayoutParams.WRAP_CONTENT);
 			tv.setGravity(Gravity.CENTER_HORIZONTAL);
 			addView(tv, params);
 		}
@@ -218,10 +220,20 @@ public class LRCView extends ScrollView {
 				Long time = (Long) data.get("time");
 				if(statementContainer!=null){
 					if(tv!= null){
+						tv.getPaint().setFakeBoldText(false);
 						tv.setTextColor(Color.WHITE);
+						tv.setTextSize(17);
+						tv.setShadowLayer(0, 0, 0, Color.WHITE);
+						//TODO 应该将当前歌词粗体改为正常
 					}
 					tv = (TextView) statementContainer.findViewWithTag(time);
-					tv.setTextColor(context.getResources().getColor(R.color.yellow_light));
+					tv.setTextSize(20);
+					tv.setTextColor(Color.WHITE);
+//					Paint mPaint = tv.getPaint();
+//					mPaint.setFlags(Paint.FAKE_BOLD_TEXT_FLAG);
+//					mPaint.setAntiAlias(true);
+					tv.getPaint().setFakeBoldText(true);
+					tv.setShadowLayer(3, 2, 2, context.getResources().getColor(R.color.purple_light));
 					int height = getHeight();
 					if(tv.getTop() > (height / 2) && autoScroll){
 						smoothScrollTo(0, tv.getTop() - height/2 + tv.getHeight());

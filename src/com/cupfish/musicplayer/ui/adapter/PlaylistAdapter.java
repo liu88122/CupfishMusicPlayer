@@ -78,12 +78,12 @@ public class PlaylistAdapter extends BaseAdapter {
 		holder.title.setText(song.getTitle());
 		//TODO 需要将所有的artist都显示
 		if(song.getAuthorList() != null && song.getAuthorList().size() > 0){
-			holder.artist.setText(song.getAuthorList().get(0).name);
+			holder.artist.setText(song.getAuthorList().get(0).getName());
 		}
 		holder.remove.setOnClickListener(new OnClickListener() {
 			int mPosition = position;
 			@Override
-			public void onClick(View v) {
+			public void onClick(View v) { 
 				Log.i(TAG, "REMOVE:" + mPosition);
 				mPlaylist.remove(mPosition);
 				notifyDataSetChanged();
