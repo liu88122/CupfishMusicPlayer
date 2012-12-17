@@ -4,10 +4,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Song implements Serializable {
+import android.widget.AnalogClock;
+
+import com.cupfish.musicplayer.utils.PinyinUtil;
+
+public class Song implements Serializable, Comparable<Song> {
 
 	private String id;
 	private String title;
+	private String titlePinyin;
 	private String album;
 	private String albumId;
 	private ArrayList<Artist> authorList = new ArrayList<Artist>();
@@ -16,7 +21,6 @@ public class Song implements Serializable {
 	private String lrcUrl;
 	private long duration;
 	private boolean isLocal = false;
-
 	public Song() {
 	}
 
@@ -33,6 +37,17 @@ public class Song implements Serializable {
 		this.lrcUrl = lrcUrl;
 		this.duration = duration;
 		this.isLocal = isLocal;
+		this.titlePinyin = PinyinUtil.toPinyinString(title);
+	}
+
+	
+	
+	public String getTitlePinyin() {
+		return titlePinyin;
+	}
+
+	public void setTitlePinyin(String titlePinyin) {
+		this.titlePinyin = titlePinyin;
 	}
 
 	public ArrayList<Artist> getAuthorList() {
@@ -80,6 +95,7 @@ public class Song implements Serializable {
 	}
 
 	public void setTitle(String title) {
+		this.titlePinyin = PinyinUtil.toPinyinString(title);
 		this.title = title;
 	}
 
@@ -127,6 +143,21 @@ public class Song implements Serializable {
 	public String toString() {
 		return "Song [id=" + id + ", title=" + title + ", album=" + album + ", albumId=" + albumId + ", authorListSize=" + authorList.size()
 				+ ", url=" + url + ", albumCover=" + albumCover + ", lrcUrl=" + lrcUrl + ", duration=" + duration + ", isLocal=" + isLocal + "]";
+	}
+
+	@Override
+	public int compareTo(Song another) {
+		
+		char thisChar = this.titlePinyin.charAt(0);
+		char anotherChar = another.getTitlePinyin().charAt(0);
+		if( thisChar== '#' && anotherChar != '#'){
+			return 1;
+		}else if(thisChar != '#' &&  anotherChar == '#'){
+			return -1;
+		}else if(thisChar == '#' && anotherChar == '#'){
+			return 0;
+		}
+		return this.titlePinyin.compareTo(another.titlePinyin);
 	}
 
 }
