@@ -24,5 +24,11 @@
     <string name="customize_lrc_tip">请输入自定义个性歌词</string>
     <string name="et_customize_lrc_hint">字数不宜过长哦</string>
     <string name="copyright">版权声明:所有在线音乐、图像、文字和其他内容资料均来自互联网，杯里鱼自身不存储任何资源，也不对链接的内容进行编辑、修改，所有在线音乐、图像、文字和其他内容版权均属百度公司、谷歌公司、内容提供商、唱片发行公司及歌曲作者所有，所有内容仅供个人、非商业、娱乐用途，支持正版，人人有责！</string>
+    <string name="local_all_songs">所有歌曲</string>
+    <string name="local_album">专辑</string>
+    <string name="local_artist">歌手</string>
+    <string name="local_folder">文件夹</string>
+    <string name="local_favorate">我的最爱</string>
+    <string name="local_playlist">播放列表</string>
 
 </resources>

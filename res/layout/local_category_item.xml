@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    android:background="@drawable/top_list_selector" >
+
+    <ImageView
+        android:id="@+id/background_cover"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:scaleType="fitCenter" 
+        android:background="@drawable/music_local_all"
+        />
+
+    <ImageView
+        android:id="@+id/foreground_cover"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:scaleType="fitCenter" 
+        android:background="@drawable/nav_item_decco_album"/>
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/foreground_cover"
+        android:layout_alignLeft="@id/background_cover"
+        android:background="@color/translucent_gray"
+        android:text="@string/local_all_songs"
+        android:textColor="@color/white" 
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/foreground_cover"
+        android:layout_alignRight="@id/background_cover"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:layout_marginBottom="2dp" />
+
+</RelativeLayout>

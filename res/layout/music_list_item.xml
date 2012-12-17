@@ -1,62 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="10dip"
-        android:gravity="bottom"
-        android:orientation="vertical"
-        android:padding="10dip" >
+    <include layout="@layout/music_list_item_section_title" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
         <ImageView
-            android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/iv_album_cover"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
             android:padding="2dip"
             android:scaleType="fitCenter"
-            android:src="@drawable/list_item_indicator" />
+            android:src="@drawable/local_item"
+            />
 
-        <TextView
-            android:id="@+id/tv_duration"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dip"
-            android:text="03:14"
-            android:textColor="@color/main_blue_light"
-            android:textSize="14sp" />
-    </LinearLayout>
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/iv_album_cover"
+            android:gravity="bottom"
+            android:orientation="vertical"
+            android:padding="10dip" >
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:gravity="bottom"
-        android:orientation="vertical"
-        android:padding="10dip" >
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                android:singleLine="true"
+                android:textColor="#ff666666"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="2dip"
-            android:text="第一次"
-            android:textColor="@color/main_blue_light"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/tv_artist"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                android:padding="2dip"
+                android:textColor="@color/gray_light"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </RelativeLayout>
 
-        <TextView
-            android:id="@+id/tv_artist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="2dip"
-            android:text="光良"
-            android:textColor="@color/main_blue_light"
-            android:textSize="14sp" />
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>
