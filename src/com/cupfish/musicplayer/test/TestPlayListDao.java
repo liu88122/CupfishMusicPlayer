@@ -6,19 +6,19 @@ import java.util.List;
 import android.test.AndroidTestCase;
 
 import com.cupfish.musicplayer.bean.Song;
-import com.cupfish.musicplayer.dao.PlayerListDao;
+import com.cupfish.musicplayer.dao.PlayerlistDao;
 
 public class TestPlayListDao extends AndroidTestCase {
 
 	
 	
 	public void testDeleteAll(){
-		PlayerListDao dao = new PlayerListDao(getContext());
+		PlayerlistDao dao = new PlayerlistDao(getContext());
 		dao.deleteAll();
 	}
 	
 	public void testGetPlaylist(){
-		PlayerListDao dao = new PlayerListDao(getContext());
+		PlayerlistDao dao = new PlayerlistDao(getContext());
 		List<Song> list = dao.getPlaylist();
 		System.out.println(list.size());
 	}
