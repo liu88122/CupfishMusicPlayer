@@ -28,8 +28,6 @@ import com.cupfish.musicplayer.R;
 import com.cupfish.musicplayer.bean.Song;
 import com.cupfish.musicplayer.exception.NetTimeoutException;
 import com.cupfish.musicplayer.global.Constants;
-import com.cupfish.musicplayer.ui.AboutActivity;
-import com.cupfish.musicplayer.ui.MusicPlayerActivity;
 import com.cupfish.musicplayer.utils.BaiduTingHelper;
 import com.cupfish.musicplayer.utils.DownloadUtil;
 import com.cupfish.musicplayer.utils.GoogleMusicHelper;
