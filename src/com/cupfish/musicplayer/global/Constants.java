@@ -17,6 +17,7 @@ public interface Constants {
 	String ACTION_SEEK_TO = "com.cupfish.action.ACTION_SEEK_TO";
 	String ACTION_NEXT = "com.cupfish.action.ACTION_NEXT";
 	String ACTION_PREVIOUS = "com.cupfish.action.ACTION_PREVIOUS";
+	String ACTION_GET_CURRENT = "com.cupfish.action.GET_CURRENT";
 	String ACTION_CURRENT_SONG_INDEX = "com.cupfish.action.ACTION_SONG_INDEX";
 	String ACTION_ADD_TO_PLAYLIST = "com.cupfish.action.ACTION_ADD_TO_PLAYLIST";
 	String ACTION_PLAYLIST_REFRESH = "com.cupfish.action.ACTION_PLAYLIST_REFRESH";
@@ -58,5 +59,6 @@ public interface Constants {
 	int FLAG_BAIDU_MUSIC = 2012;
 	
 	String LRC_AD = "~music~";
+	
 
 }
