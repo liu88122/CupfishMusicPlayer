@@ -25,6 +25,8 @@ import com.cupfish.musicplayer.utils.UpdateManager;
 
 public class SplashActivity extends Activity {
 
+	private static final int DELAY_TIME = 1000;
+	
 	protected static final int DOWNLOAD = 0;
 	protected static final int SHOW_UPDATE_DIALOG = 1;
 	protected static final int CANCEL_DOWNLOAD = 3;
@@ -49,7 +51,7 @@ public class SplashActivity extends Activity {
 			case CANCEL_DOWNLOAD:
 				cancel = true;
 				isPlaylistOk = true;
-				Intent intent = new Intent(SplashActivity.this, MusicPlayerActivity.class);
+				Intent intent = new Intent(SplashActivity.this, MainActivity.class);
 				startActivity(intent);
 				finish();
 				break;
@@ -95,7 +97,7 @@ public class SplashActivity extends Activity {
 					mHandler.sendEmptyMessage(NO_UPDATE);
 				}
 			}
-		}, 5000);
+		}, DELAY_TIME);
 			
 	}
 
