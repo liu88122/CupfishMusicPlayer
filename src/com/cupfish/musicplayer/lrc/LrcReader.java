@@ -44,6 +44,7 @@ public class LrcReader {
 		File file = new File(Constants.SDCARD_LRC_SAVE_PATH + "/" + title + ".lrc");
 
 		if (!file.exists()  && !TextUtils.isEmpty(lrcUrl)) {
+			//TODO 搜索歌词文件
 			file = DownloadUtil.load(title, lrcUrl, null, Constants.DOWNLOAD_FILE_LRC);
 		}else{
 			//TODO 如果是没有歌词文件的歌曲，需要直接下载

@@ -2,6 +2,7 @@ package com.cupfish.musicplayer.lrc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import android.content.Context;
 import android.media.MediaPlayer;
@@ -108,8 +109,11 @@ public class LrcController {
 		}
 	}
 	
-	public LRC2 getCurrentLRC(){
-		return mCurrentLrc;
+	public TreeMap<Long, String> getCurrentLrcTreeMap(){
+		if (mCurrentLrc != null) {
+			return mCurrentLrc.getLrcsMap();
+		}
+		return null;
 	}
 	
 	/**
