@@ -103,8 +103,8 @@ public class BaiduTingHelper {
 					for (Element e : singersEle) {
 						artist = new Artist();
 						String artistIdTemp = e.attr("href");
-						artist.id = artistIdTemp.substring(artistIdTemp.lastIndexOf("/"));
-						artist.name = e.text();
+						artist.setId(artistIdTemp.substring(artistIdTemp.lastIndexOf("/")));
+						artist.setName(e.text());
 						song.getAuthorList().add(artist);
 					}
 				}
@@ -201,8 +201,8 @@ public class BaiduTingHelper {
 				for (Element e : singersEle) {
 					artist = new Artist();
 					String artistIdTemp = e.attr("href");
-					artist.id = artistIdTemp.substring(artistIdTemp.lastIndexOf("/"));
-					artist.name = e.text();
+					artist.setId(artistIdTemp.substring(artistIdTemp.lastIndexOf("/")));
+					artist.setName(e.text());
 					album.getAuthorList().add(artist);
 				}
 			}
@@ -241,8 +241,8 @@ public class BaiduTingHelper {
 				for (Element e : singersEle) {
 					artist = new Artist();
 					String artistIdTemp = e.attr("href");
-					artist.id = artistIdTemp.substring(artistIdTemp.lastIndexOf("/"));
-					artist.name = e.text();
+					artist.setId(artistIdTemp.substring(artistIdTemp.lastIndexOf("/")));
+					artist.setName(e.text());
 					song.getAuthorList().add(artist);
 				}
 			}

@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.content.ContentResolver;
@@ -17,6 +18,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 
 import com.cupfish.musicplayer.R;
 import com.cupfish.musicplayer.bean.Artist;
@@ -46,20 +48,20 @@ public class LocalMediaUtil {
 			String albumId = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
 
 			String albumCover = "";
-			/*Cursor mAlbumCursor = resolver.query(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI, new String[] { MediaStore.Audio.Albums.ALBUM_ART },
-					MediaStore.Audio.Albums._ID + "=?", new String[] { albumId }, null);
-			if (mAlbumCursor.moveToFirst()) {
-				String temp = mAlbumCursor.getString(0);
-				if (temp != null) {
-					albumCover = temp;
-				}
-				mAlbumCursor.close();
-			}*/
+			
 			String artistName = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));
 			String url = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
 			long duration = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
+			
+			if(!TextUtils.isEmpty(title)){
+				String[] temp = title.split("_");
+				if(temp!= null && temp.length == 2){
+					title = temp[0];
+					artistName = temp[1];
+				}
+			}
 			Artist artist = new Artist();
-			artist.name = artistName;
+			artist.setName(artistName);
 			ArrayList<Artist> artists = new ArrayList<Artist>();
 			artists.add(artist);
 			song = new Song(id, title, album, albumId, artists, url, albumCover, "", duration, true);
@@ -67,6 +69,8 @@ public class LocalMediaUtil {
 			song = null;
 		}
 		cursor.close();
+		//对结果进行排序
+		Collections.sort(localSongs);
 		return localSongs;
 	}
 
