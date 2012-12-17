@@ -32,7 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.MusicPlayerActivity" android:screenOrientation="portrait"/>
+        <activity android:name="com.cupfish.musicplayer.ui.MainActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.PlaylistActivity" />
         <activity android:name=".ui.NewTopActivity" />
         <activity android:name=".ui.TestActivity" />
@@ -40,6 +40,7 @@
         <activity android:name=".ui.TopListNameActivity" />
         <activity android:name=".ui.TopListActivity" />
         <activity android:name=".ui.AboutActivity" />
+        <activity android:name=".ui.LocalAllActivity" />
 
         <service android:name=".service.MusicPlayerService" />
         <service android:name=".service.DownloadService" />
