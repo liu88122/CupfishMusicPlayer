@@ -11,12 +11,12 @@ import android.provider.MediaStore.Audio.Playlists;
 import com.cupfish.musicplayer.bean.Song;
 import com.cupfish.musicplayer.utils.PlayerListDbHelper;
 
-public class PlayerListDao {
+public class PlayerlistDao {
 
 	private static PlayerListDbHelper helper;
 	private SQLiteDatabase db;
 
-	public PlayerListDao(Context context) {
+	public PlayerlistDao(Context context) {
 		helper = new PlayerListDbHelper(context);
 	}
 
