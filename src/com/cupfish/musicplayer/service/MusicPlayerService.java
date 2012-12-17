@@ -25,7 +25,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.cupfish.musicplayer.bean.Song;
-import com.cupfish.musicplayer.dao.PlayerListDao;
 import com.cupfish.musicplayer.download.DownloadEngine;
 import com.cupfish.musicplayer.exception.NetTimeoutException;
 import com.cupfish.musicplayer.global.BaseApp;
@@ -135,6 +134,7 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 		filter.addAction(Constants.ACTION_START);
 		filter.addAction(Constants.ACTION_PLAYLIST_REFRESH);
 		filter.addAction(Constants.ACTION_ADD_TO_PLAYLIST);
+		filter.addAction(Constants.ACTION_GET_CURRENT);
 		registerReceiver(mControllerReceiver, filter);
 
 		// 监听电话状态
@@ -234,28 +234,19 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 				} else {
 					play();
 				}
-			}
-
-			if (Constants.ACTION_PAUSE.equals(action)) {
+			}else if (Constants.ACTION_PAUSE.equals(action)) {
 				pause();
-			}
-
-			if (Constants.ACTION_NEXT.equals(action)) {
+			}else if (Constants.ACTION_NEXT.equals(action)) {
 				next();
-			}
-
-			if (Constants.ACTION_PREVIOUS.equals(action)) {
+			}else if (Constants.ACTION_PREVIOUS.equals(action)) {
 				previous();
-			}
-
-			if (Constants.ACTION_SEEK_TO.equals(action)) {
+			}else if (Constants.ACTION_SEEK_TO.equals(action)) {
 				int msec = intent.getIntExtra("msec", 0);
 				seekTo(msec);
-			}
-
-			if (Constants.ACTION_PLAYLIST_REFRESH.equals(action)) {
+			}else if (Constants.ACTION_PLAYLIST_REFRESH.equals(action)) {
 				Log.i(TAG, "PlaylistSize:" + mPlayList.size());
-				
+			} else if(Constants.ACTION_GET_CURRENT.equals(action)){
+				sendCurrentPlayInfo();
 			}
 		}
 	}
@@ -362,6 +353,15 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 			return mPlayList.size() - 1;
 		}
 	}
+	
+	private void sendCurrentPlayInfo() {
+		// 发送当前播放信息
+		Intent intent = new Intent();
+		intent.putExtra("currentSongIndex", mCurrentSongIndex);
+		intent.setAction(Constants.ACTION_CURRENT_SONG_INDEX);
+		sendBroadcast(intent);
+		Log.i(TAG, "ACTION_CURRENT_SONG_INDEX");
+	}
 
 	@Override
 	public void onDestroy() {
@@ -383,12 +383,7 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 //		}
 		mp.start();
 		isFirstTime = false;
-		// 发送当前播放信息
-		Intent intent = new Intent();
-		intent.putExtra("currentSongIndex", mCurrentSongIndex);
-		intent.setAction(Constants.ACTION_CURRENT_SONG_INDEX);
-		sendBroadcast(intent);
-		Log.i(TAG, "ACTION_CURRENT_SONG_INDEX");
+		sendCurrentPlayInfo();
 	}
 
 	@Override
