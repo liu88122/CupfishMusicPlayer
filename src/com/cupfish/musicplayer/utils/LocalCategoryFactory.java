@@ -8,6 +8,7 @@ import android.content.Context;
 import com.cupfish.musicplayer.R;
 import com.cupfish.musicplayer.bean.LocalItem;
 import com.cupfish.musicplayer.ui.LocalAllActivity;
+import com.cupfish.musicplayer.ui.LocalFolderActivity;
 
 public class LocalCategoryFactory {
 
@@ -29,6 +30,7 @@ public class LocalCategoryFactory {
 				break;
 			case 3:
 				item.setItemNum(LocalManager.getAllFolders(context).size());
+				item.setTarget(LocalFolderActivity.class);
 				break;
 			case 4:
 				item.setItemNum(LocalManager.getAllFavorites(context).size());
