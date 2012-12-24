@@ -72,6 +72,9 @@ public class LrcView2 extends ViewGroup {
 	}
 
 	private void init() {
+		
+		setKeepScreenOn(true);
+		
 		mLrcTextNormalSize = 18;
 		mLrcTextFocusSize = 22;
 
@@ -214,6 +217,7 @@ public class LrcView2 extends ViewGroup {
 		if(MusicPlayerService.mMediaPlayer != null){
 			if(mCurrentTime > 0 && mCurrentTime < 3600000){
 				MusicPlayerService.mMediaPlayer.seekTo((int)mCurrentTime);
+				mLrcController.seekTo(mCurrentTime);
 			}
 		}
 		
