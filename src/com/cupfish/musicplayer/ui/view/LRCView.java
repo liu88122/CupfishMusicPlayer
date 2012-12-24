@@ -24,6 +24,7 @@ import com.cupfish.musicplayer.bean.LRC2;
 import com.cupfish.musicplayer.lrc.LrcController;
 import com.cupfish.musicplayer.lrc.LrcController.OnLrcUpdateListener;
 
+@Deprecated
 public class LRCView extends ScrollView {
 
 	public static final int LRC_UPDATE = 0;
