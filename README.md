@@ -1,11 +1,16 @@
 杯里鱼音乐播放器 <br/>
 字体下载地址：http://www.cupfish.com/files/xujinglei_font.ttf  <br/>
 
+
+v2012.12.25<br/>
+1.修改 splash界面背景及延迟时间<br/>
+2.修改版本号<br/>
+
 git i love u, wow!<br/>
 
 v2012.12.24<br />
 WOW, HAPPY CHRISTMAS EVE!<br/>
-1.LrcView终于可以按需求进行工作了，哈哈，后期继续完善
+1.LrcView终于可以按需求进行工作了，哈哈，后期继续完善<br/>
 TODO:<br/>
 1.下一个目标：本地文件夹管理
 
@@ -13,9 +18,9 @@ TODO:<br/>
 v2012.12.17<br />
 1.增加 LocalManager，对本地听进行管理，功能有待完善<br/>
 2.将原来的一个主activity重构为3个fragment构成，修改本地听相关方法，增加字母索引View，增加PinnedHeaderListView，重写LrcView(还未完成)<br/>
-3.更新 相关bean类，加入titlePinyin字段 ,更新按照字母排序的方法
-4.增加命令，当播放器主界面resume时获取当前播放的歌曲信息，用于刷新播放器界面
-5.目前本地所有歌曲列表采用PinnedHeaderListView和字母索引方式展示，歌曲头像显示目前不可用
+3.更新 相关bean类，加入titlePinyin字段 ,更新按照字母排序的方法<br/>
+4.增加命令，当播放器主界面resume时获取当前播放的歌曲信息，用于刷新播放器界面<br/>
+5.目前本地所有歌曲列表采用PinnedHeaderListView和字母索引方式展示，歌曲头像显示目前不可用<br/>
 
 v2012.11.22<br />
 
