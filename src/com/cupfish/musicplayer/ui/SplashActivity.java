@@ -25,7 +25,7 @@ import com.cupfish.musicplayer.utils.UpdateManager;
 
 public class SplashActivity extends Activity {
 
-	private static final int DELAY_TIME = 1000;
+	private static final int DELAY_TIME = 3000;
 	
 	protected static final int DOWNLOAD = 0;
 	protected static final int SHOW_UPDATE_DIALOG = 1;
