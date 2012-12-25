@@ -1,6 +1,7 @@
 杯里鱼音乐播放器 <br/>
 字体下载地址：http://www.cupfish.com/files/xujinglei_font.ttf  <br/>
 
+git i love u, wow!<br/>
 
 v2012.12.24<br />
 WOW, HAPPY CHRISTMAS EVE!<br/>
