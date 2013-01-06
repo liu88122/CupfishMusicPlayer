@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Scroller;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cupfish.musicplayer.lrc.LrcController;
 import com.cupfish.musicplayer.service.MusicPlayerService;
@@ -50,6 +51,7 @@ public class LrcView2 extends ViewGroup {
 	private TreeMap<Long, String> statements;
 
 	private int mLastMotionY;
+	private int mLastDownY;
 	private boolean mDrawTimeline;
 	private long mCurrentTime;
 
@@ -94,6 +96,7 @@ public class LrcView2 extends ViewGroup {
 	}
 
 	private void loadLrc() {
+		removeAllViews();
 		statements = mLrcController.getCurrentLrcTreeMap();
 		addLrcStatementToView();
 		requestLayout();
@@ -145,9 +148,16 @@ public class LrcView2 extends ViewGroup {
 			canvas.drawLine(0, mTopBottomPadding + mCurrentScrollY, mMeasuredWidth, mTopBottomPadding + mCurrentScrollY, mLrcHighlightPaint);
 			View view = getChildAt(0);
 			if (view.getMeasuredHeight() > 0) {
-				int currentChild = mCurrentScrollY / getChildAt(0).getMeasuredHeight();
-				if (currentChild > 0 && currentChild < getChildCount()) {
-					View child = getChildAt(currentChild);
+				View child = null;
+				int tempHeight = 0;
+				for (int i = 0; i < getChildCount(); i++) {
+					child = getChildAt(i);
+					tempHeight += child.getMeasuredHeight();
+					if(tempHeight > mCurrentScrollY){
+						break;
+					}
+				}
+				if (child != null) {
 					mCurrentTime = (Long) child.getTag();
 					String text = TextFormatUtils.getPrettyFormatDuration(mCurrentTime);
 					if (mCurrentTime == 3600000) {
@@ -175,6 +185,7 @@ public class LrcView2 extends ViewGroup {
 			mDrawTimeline = true;
 
 			mLastMotionY = (int) event.getY();
+			mLastDownY = mLastMotionY;
 			if (!mScroller.isFinished()) {
 				mScroller.abortAnimation();
 			}
@@ -192,6 +203,7 @@ public class LrcView2 extends ViewGroup {
 
 			mDrawTimeline = false;
 			seekToCurrentTimeline();
+			
 			if (!mScroller.isFinished()) {
 				mScroller.abortAnimation();
 				mScroller.forceFinished(true);
@@ -214,9 +226,12 @@ public class LrcView2 extends ViewGroup {
 		if(MusicPlayerService.mMediaPlayer != null){
 			if(mCurrentTime > 0 && mCurrentTime < 3600000){
 				MusicPlayerService.mMediaPlayer.seekTo((int)mCurrentTime);
+				mLrcController.seekTo(mCurrentTime);
+			} else if(mCurrentTime == 3600000){
+				Toast.makeText(context, "已到终点了哦亲", Toast.LENGTH_SHORT).show();
+				
 			}
 		}
-		
 	}
 
 	@Override
@@ -292,6 +307,7 @@ public class LrcView2 extends ViewGroup {
 
 			switch (msg.what) {
 			case LRC_START:
+				loadLrc();
 				scrollTo(0, 0);
 				break;
 			case LRC_UPDATE:
@@ -309,7 +325,6 @@ public class LrcView2 extends ViewGroup {
 								if (!mDrawTimeline) {
 									mScroller.startScroll(0, getScrollY(), 0, tv.getTop() - getScrollY() - mTopBottomPadding, 1000);
 									System.out.println("top::::" + tv.getTop());
-									;
 								}
 							} else {
 								tv.setTextColor(Color.WHITE);
