@@ -1,6 +1,8 @@
 杯里鱼音乐播放器 <br/>
 字体下载地址：http://www.cupfish.com/files/xujinglei_font.ttf  <br/>
 
+v2013.01.06<br/>
+1.修正 如果歌词长度过长导致换行后 拖动快进时时间不准确的bug<br/>
 
 v2012.12.25<br/>
 1.修改 splash界面背景及延迟时间<br/>
