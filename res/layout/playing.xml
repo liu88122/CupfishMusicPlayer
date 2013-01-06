@@ -25,8 +25,11 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginRight="80dp"
+                    android:ellipsize="end"
                     android:paddingLeft="15dip"
                     android:paddingTop="2dip"
+                    android:singleLine="true"
                     android:text="@string/love_music"
                     android:textColor="@color/main_blue_light"
                     android:textSize="30sp" />
@@ -47,8 +50,11 @@
                 android:id="@+id/tv_song_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="120dp"
+                android:ellipsize="end"
                 android:paddingLeft="15dip"
                 android:paddingTop="2dip"
+                android:singleLine="true"
                 android:text="@string/love_life"
                 android:textColor="@color/main_blue_light"
                 android:textSize="20sp" />
@@ -57,8 +63,11 @@
                 android:id="@+id/tv_song_album"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="150dp"
+                android:ellipsize="end"
                 android:paddingLeft="15dip"
                 android:paddingTop="5dip"
+                android:singleLine="true"
                 android:textColor="@color/main_blue_light"
                 android:textSize="10sp" />
 
@@ -66,6 +75,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dip" >
+
                 <FrameLayout
                     android:id="@+id/fl_cover_lrc_container"
                     android:layout_width="match_parent"
@@ -73,10 +83,10 @@
                     android:layout_centerHorizontal="true" >
 
                     <com.cupfish.musicplayer.ui.view.MyImageView
-                        android:layout_marginTop="5dp"
                         android:id="@+id/iv_album_cover"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
                         android:clickable="true"
                         android:focusable="true"
                         android:scaleType="fitCenter"
@@ -89,26 +99,23 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:background="#33333333"
-                    android:orientation="vertical"
-                    >
+                    android:orientation="vertical" >
 
                     <TextSwitcher
                         android:id="@+id/ts_lrc"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="#00000000"
-                        android:padding="5dip"
-                       />
+                        android:padding="5dip" />
 
                     <View
                         android:layout_width="fill_parent"
                         android:layout_height="1dip"
-                        android:background="@color/main_blue_light" 
-                       />
+                        android:background="@color/main_blue_light" />
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
-        
+
         <android.gesture.GestureOverlayView
             android:id="@+id/myGestureView"
             android:layout_width="fill_parent"
@@ -120,7 +127,6 @@
             android:orientation="horizontal"
             android:uncertainGestureColor="@color/yellow_light"
             android:visibility="gone" />
-
     </FrameLayout>
 
     <LinearLayout
