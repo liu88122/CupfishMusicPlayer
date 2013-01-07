@@ -193,16 +193,15 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 				if (bundle != null) {
 					final Song song = (Song) bundle.getSerializable("song");
 					if (song != null) {
-						if (!TextUtils.isEmpty(song.getUrl())) {
+						if (!TextUtils.isEmpty(song.getsPath())) {
 							// 如果是本地歌曲，则song的url属性不为空，可以直接播放
 							// 如果是在线歌曲，url属性为空，必须在线获取
 							int index = addIntoPlaylist(song);
 							mCurrentSongIndex = index;
 							play(mCurrentSongIndex);
-							Log.i(TAG, "-------------------------------------" + song.getUrl());
 						} else {
-							if (!TextUtils.isEmpty(song.getId())) {
-								final String songId = song.getId();
+							if (!TextUtils.isEmpty(song.getsId())) {
+								final String songId = song.getsId();
 								new Thread() {
 									@Override
 									public void run() {
@@ -264,10 +263,9 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 		if(song == null){
 			return;
 		}
-		String url = song.getUrl();
-		Log.i(TAG, "ID:" + mPlayList.get(index).getId());
+		String path = song.getsPath();
 		
-		if (mMediaPlayer != null && url != null) {
+		if (mMediaPlayer != null && path != null) {
 			try {
 				if (mMediaPlayer.isPlaying()) {
 					mMediaPlayer.stop();
@@ -277,16 +275,16 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 				 * mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 				 */
 				
-				if(!new File(url).exists()){
+				if(!new File(path).exists()){
 					String dir = Environment.getExternalStorageDirectory() + "/cupfish";
-					url = DownloadEngine.getInstance().download(getApplicationContext(), url, dir, song.getTitle()+".mp3", 1);
+					path = DownloadEngine.getInstance().download(getApplicationContext(), path, dir, song.getTitle()+".mp3", 1);
 				}
 				mMediaPlayer.reset();
-				mMediaPlayer.setDataSource(url);
+				mMediaPlayer.setDataSource(path);
 				mMediaPlayer.setOnPreparedListener(this);
 				mMediaPlayer.setOnCompletionListener(this);
 				mMediaPlayer.setOnBufferingUpdateListener(this);
-				Log.i(TAG, "Download url::" + url);
+				Log.i(TAG, "Download url::" + path);
 				mMediaPlayer.prepareAsync();
 				lrcController.loadLRC(this, mPlayList.get(index), mMediaPlayer);
 				

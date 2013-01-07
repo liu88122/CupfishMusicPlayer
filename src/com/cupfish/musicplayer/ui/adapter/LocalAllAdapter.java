@@ -104,7 +104,7 @@ public class LocalAllAdapter extends BaseAdapter implements PinnedHeaderAdapter,
 		}
 		Song song = mLocalSongs.get(position);
 		holder.title.setText(song.getTitle());
-		List<Artist> artist = song.getAuthorList();
+		List<Artist> artist = song.getArtists();
 		if(artist != null){
 			StringBuilder sb = new StringBuilder();
 			for(Artist a : artist){

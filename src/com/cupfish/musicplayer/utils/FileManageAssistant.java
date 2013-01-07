@@ -12,7 +12,7 @@ public class FileManageAssistant {
 	private static final String TAG = "FileManageAssistant";
 
 	public static void delete(Song song){
-		String songUrl = song.getUrl();
+		String songUrl = song.getsPath();
 		if(TextUtils.isEmpty(songUrl)){
 			return;
 		}

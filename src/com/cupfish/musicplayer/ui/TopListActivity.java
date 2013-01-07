@@ -33,7 +33,6 @@ import com.cupfish.musicplayer.global.BaseApp;
 import com.cupfish.musicplayer.global.Constants;
 import com.cupfish.musicplayer.ui.adapter.OnlineListAdapter;
 import com.cupfish.musicplayer.utils.BaiduTingHelper;
-import com.cupfish.musicplayer.utils.GoogleMusicHelper;
 
 public class TopListActivity extends Activity implements OnClickListener {
 
@@ -120,10 +119,7 @@ public class TopListActivity extends Activity implements OnClickListener {
 		mBack.setText(topType);
 		if (flag == Constants.FLAG_BAIDU_MUSIC) {
 			topType = BaiduTingHelper.getTopListTypeByName(topType);
-		} else if (flag == Constants.FLAG_GOOGLE_MUSIC) {
-			topType = GoogleMusicHelper.getTopListTypeByName(topType);
 		}
-
 		mLoadingDialog = new ProgressDialog(this);
 		mLoadingDialog.setMessage("正在加载歌曲哦亲");
 		
@@ -206,17 +202,7 @@ public class TopListActivity extends Activity implements OnClickListener {
 						dataHandler.sendEmptyMessage(msgWhat);
 						break;
 					case Constants.FLAG_GOOGLE_MUSIC:
-						Log.i(TAG, "GoogleMusicHelper, HELPING");
-						List<Song> tempGoogleSongs = null;
-						try {
-							tempGoogleSongs = GoogleMusicHelper.getSongsFromGoogle(topType, start);
-						} catch (NetTimeoutException e) {
-							errorHandler.sendEmptyMessage(ERROR);
-						}
-						if (tempGoogleSongs != null) {
-							mSongs.addAll(tempGoogleSongs);
-						}
-						dataHandler.sendEmptyMessage(msgWhat);
+						
 						break;
 					}
 				}

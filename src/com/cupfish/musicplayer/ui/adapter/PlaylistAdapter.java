@@ -77,8 +77,8 @@ public class PlaylistAdapter extends BaseAdapter {
 		holder.index.setText(String.valueOf(position + 1));
 		holder.title.setText(song.getTitle());
 		//TODO 需要将所有的artist都显示
-		if(song.getAuthorList() != null && song.getAuthorList().size() > 0){
-			holder.artist.setText(song.getAuthorList().get(0).getName());
+		if(song.getArtists() != null && song.getArtists().size() > 0){
+			holder.artist.setText(song.getArtists().get(0).getName());
 		}
 		holder.remove.setOnClickListener(new OnClickListener() {
 			int mPosition = position;

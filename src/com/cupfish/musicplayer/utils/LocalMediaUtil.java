@@ -21,6 +21,7 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import com.cupfish.musicplayer.R;
+import com.cupfish.musicplayer.bean.Album;
 import com.cupfish.musicplayer.bean.Artist;
 import com.cupfish.musicplayer.bean.Song;
 
@@ -42,17 +43,15 @@ public class LocalMediaUtil {
 		Cursor cursor = resolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, null, null, null);
 		Song song;
 		while (cursor.moveToNext()) {
-			String id = "" + cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
+			String songId = "" + cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
 			String title = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE));
-			String album = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM));
+			String albumTitle = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM));
 			String albumId = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
-
-			String albumCover = "";
-			
 			String artistName = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));
 			String url = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
 			long duration = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
 			
+			//for special songs (duo mi)
 			if(!TextUtils.isEmpty(title)){
 				String[] temp = title.split("_");
 				if(temp!= null && temp.length == 2){
@@ -60,11 +59,21 @@ public class LocalMediaUtil {
 					artistName = temp[1];
 				}
 			}
+			
+			Album album = new Album();
+			album.setId(albumId);
+			album.setTitle(albumTitle);
+			
 			Artist artist = new Artist();
 			artist.setName(artistName);
 			ArrayList<Artist> artists = new ArrayList<Artist>();
 			artists.add(artist);
-			song = new Song(id, title, album, albumId, artists, url, albumCover, "", duration, true);
+			song = new Song();
+			song.setsId(songId);
+			song.setTitle(title);
+			song.setsPath(url);
+			song.setAlbum(album);
+			song.setArtists(artists);
 			localSongs.add(song);
 			song = null;
 		}

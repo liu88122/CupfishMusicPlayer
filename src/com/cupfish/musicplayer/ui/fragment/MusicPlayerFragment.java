@@ -41,6 +41,7 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher.ViewFactory;
 
 import com.cupfish.musicplayer.R;
+import com.cupfish.musicplayer.bean.Album;
 import com.cupfish.musicplayer.bean.Song;
 import com.cupfish.musicplayer.download.DownloadEngine;
 import com.cupfish.musicplayer.download.DownloadTask.DownloadListener;
@@ -304,58 +305,56 @@ public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClic
 		}
 
 		if (mCurrentSong != null) {
-			if (mCurrentSong.getAuthorList() != null && mCurrentSong.getAuthorList().size() > 0) {
-				mArtist.setText(mCurrentSong.getAuthorList().get(0).getName());
+			//artists
+			if (mCurrentSong.getArtists() != null && mCurrentSong.getArtists().size() > 0) {
+				mArtist.setText(mCurrentSong.getArtists().get(0).getName());
 			} else {
 				mArtist.setText(R.string.love_life);
 			}
-			mAlbum.setText(mCurrentSong.getAlbum());
-			mTitle.setText(mCurrentSong.getTitle());
-			String imageUrl = mCurrentSong.getAlbumCover();
-			Bitmap bitmap = null;
+			//album
+			Album album = mCurrentSong.getAlbum();
+			if (album != null) {
+				mAlbum.setText(album.getTitle());
+				mTitle.setText(mCurrentSong.getTitle());
+				String imageUrl = album.getCoverUrl();
+				Bitmap bitmap = null;
 
-			BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inDither = false;
-			options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-			long albumId = 0;
-			long songId = 0;
-			try {
-				albumId = Long.parseLong(mCurrentSong.getAlbumId());
-				songId = Long.parseLong(mCurrentSong.getId());
-			} catch (Exception e) {
-				e.printStackTrace();
+				BitmapFactory.Options options = new BitmapFactory.Options();
+				options.inDither = false;
+				options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+				long albumId = 0;
+				long songId = 0;
+				try {
+					albumId = Long.parseLong(album.getId());
+					songId = Long.parseLong(mCurrentSong.getsId());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				bitmap = MyImageUtils.createReflectionImageWithOrigin(LocalMediaUtil.getArtwork(getActivity(), songId, albumId));
+
+				// TODO 专辑封面下载有问题，待修复
+				if (bitmap == null) {
+					String imageName = MyImageUtils.md5(mCurrentSong.getTitle());
+					Log.i(TAG, "Loading ImageCover");
+					bitmap = MyImageUtils.loadImage(imageName, imageUrl, new ImageCallback() {
+						@Override
+						public void loadImage(Bitmap bitmap, String imagePath) {
+							isDefaultAlbum = false;
+							mAlbumCover.setImageBitmap(MyImageUtils.getFitableBitmapWithReflection(getActivity(), bitmap));
+						}
+					});
+				}
+
+				if (bitmap == null) {
+					bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.music_album_default);
+					mAlbumCover.setImageBitmap(MyImageUtils.zoomBitmap(bitmap, 0.8f));
+				} else {
+					isDefaultAlbum = false;
+					mAlbumCover.setImageBitmap(MyImageUtils.getFitableBitmapWithReflection(getActivity(), bitmap));
+					bitmap.recycle();
+				}
 			}
-			
-			bitmap = MyImageUtils.createReflectionImageWithOrigin(LocalMediaUtil.getArtwork(getActivity(), songId,
-					albumId));
-
-			// TODO 专辑封面下载有问题，待修复
-			if (bitmap == null) {
-				String imageName = MyImageUtils.md5(mCurrentSong.getTitle());
-				Log.i(TAG, "Loading ImageCover");
-				bitmap = MyImageUtils.loadImage(imageName, imageUrl, new ImageCallback() {
-					@Override
-					public void loadImage(Bitmap bitmap, String imagePath) {
-						isDefaultAlbum = false;
-						mAlbumCover.clearAnimation();
-						mAlbumCover.setImageBitmap(MyImageUtils.getFitableBitmapWithReflection(getActivity(),
-								bitmap));
-					}
-				});
-			}
-
-			if (bitmap == null) {
-				bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.music_album_default);
-				mAlbumCover.setImageBitmap(MyImageUtils.zoomBitmap(bitmap, 0.8f));
-				Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.roate_circle);
-				mAlbumCover.startAnimation(animation);
-			} else {
-				isDefaultAlbum = false;
-				mAlbumCover.setImageBitmap(MyImageUtils.getFitableBitmapWithReflection(getActivity(), bitmap));
-				mAlbumCover.clearAnimation();
-				bitmap.recycle();
-			}
-
 			new Thread() {
 				@Override
 				public void run() {
@@ -372,7 +371,7 @@ public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClic
 				}
 			}.start();
 
-			DownloadEngine.getInstance().addDownloadListener(mCurrentSong.getUrl(), new DownloadListener() {
+			DownloadEngine.getInstance().addDownloadListener(mCurrentSong.getsUrl(), new DownloadListener() {
 
 				@Override
 				public void onDownloading(int size, int length) {
@@ -409,14 +408,9 @@ public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClic
 				if (MusicPlayerService.mMediaPlayer.isPlaying()) {
 					sendPlayerCommand(Constants.ACTION_PAUSE, null);
 					mPlayBtn.setImageResource(R.drawable.player_play_btn_selector);
-					mAlbumCover.clearAnimation();
 				} else {
 					sendPlayerCommand(Constants.ACTION_PLAY, null);
 					mPlayBtn.setImageResource(R.drawable.player_pause_btn_selector);
-					Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.roate_circle);
-					if (isDefaultAlbum) {
-						mAlbumCover.startAnimation(animation);
-					}
 				}
 			}
 			break;

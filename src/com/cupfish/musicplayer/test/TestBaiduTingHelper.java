@@ -8,7 +8,6 @@ import com.cupfish.musicplayer.bean.Album;
 import com.cupfish.musicplayer.bean.Song;
 import com.cupfish.musicplayer.exception.NetTimeoutException;
 import com.cupfish.musicplayer.utils.BaiduTingHelper;
-import com.cupfish.musicplayer.utils.GoogleMusicHelper;
 
 public class TestBaiduTingHelper extends AndroidTestCase {
 
@@ -34,7 +33,7 @@ public class TestBaiduTingHelper extends AndroidTestCase {
 		List<Song> songs = BaiduTingHelper.getSongsFromBaidu(BaiduTingHelper.TopListType.NEW_100);
 		System.out.println("SIZE:" + songs.size());
 		for(Song song : songs){
-			System.out.println("TITLE:" + song.getTitle() + " ID:" + song.getId());
+			System.out.println("TITLE:" + song.getTitle() + " ID:" + song.getsId());
 		}
 	}
 	

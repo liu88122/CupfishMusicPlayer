@@ -30,7 +30,6 @@ import com.cupfish.musicplayer.exception.NetTimeoutException;
 import com.cupfish.musicplayer.global.Constants;
 import com.cupfish.musicplayer.utils.BaiduTingHelper;
 import com.cupfish.musicplayer.utils.DownloadUtil;
-import com.cupfish.musicplayer.utils.GoogleMusicHelper;
 import com.cupfish.musicplayer.utils.LocalMediaUtil;
 
 public class DownloadService extends Service {
@@ -154,7 +153,7 @@ public class DownloadService extends Service {
 			}
 		}
 		if (!isLocal) {
-			if (TextUtils.isEmpty(mCurrentDownloadSong.getId())) {
+			if (TextUtils.isEmpty(mCurrentDownloadSong.getsId())) {
 				return;
 			}
 			// 根据songId获取歌曲的下载地址
@@ -162,17 +161,13 @@ public class DownloadService extends Service {
 			switch (flag) {
 			case Constants.FLAG_BAIDU_MUSIC:
 				try {
-					tempUrl = BaiduTingHelper.getDownloadUrlBySongId(mCurrentDownloadSong.getId());
+					tempUrl = BaiduTingHelper.getDownloadUrlBySongId(mCurrentDownloadSong.getsId());
 				} catch (NetTimeoutException e) {
 					e.printStackTrace();
 				}
 				break;
 			case Constants.FLAG_GOOGLE_MUSIC:
-				try {
-					tempUrl = GoogleMusicHelper.getDownloadUrlById(mCurrentDownloadSong.getId());
-				} catch (NetTimeoutException e) {
-					e.printStackTrace();
-				}
+				
 				break;
 			}
 			final String fileUrl = tempUrl;
@@ -187,7 +182,7 @@ public class DownloadService extends Service {
 				@Override
 				public void run() {
 					File file = DownloadUtil.load(fileName, fileUrl, handler, Constants.DOWNLOAD_FILE_MP3);
-					mCurrentDownloadSong.setUrl(file.getPath());
+					mCurrentDownloadSong.setsPath(file.getPath());
 				}
 			}.start();
 		}

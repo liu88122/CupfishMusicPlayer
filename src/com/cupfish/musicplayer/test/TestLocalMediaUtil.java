@@ -14,7 +14,6 @@ public class TestLocalMediaUtil extends AndroidTestCase {
 		System.out.println(list.size());
 		for(Song song : list){
 			System.out.println(song.getTitle());
-			System.out.println(song.getAlbumCover());
 		}
 	}
 	

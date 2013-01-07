@@ -15,39 +15,27 @@ public class Album implements Serializable, Comparable<Album>{
 	private String title;
 	private String titlePinyin;
 	private List<Artist> authorList = new ArrayList<Artist>();
-	private String coverImg;
+	private String coverPath;
+	private String coverUrl;
+	private String coverHdUrl;
 	private String desc;
-	private HashMap<String, String> songs;
+	private List<Song> songs;
 
 	public Album(){
 		
 	}
 	
-	public Album(String id, String title, List<Artist> authorList, String coverImg, String desc,
-			HashMap<String, String> songs) {
+	public Album(String id, String title, List<Artist> authorList, String coverPath, String coverUrl, String coverHdUrl,
+			String desc, List<Song> songs) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.titlePinyin = PinyinUtil.toPinyinString(title);
 		this.authorList = authorList;
-		this.coverImg = coverImg;
+		this.coverPath = coverPath;
+		this.coverUrl = coverUrl;
+		this.coverHdUrl = coverHdUrl;
 		this.desc = desc;
-		this.songs = songs;
-	}
-
-	public List<Artist> getAuthorList() {
-		return authorList;
-	}
-
-	public void setAuthorList(List<Artist> authorList) {
-		this.authorList = authorList;
-	}
-
-	public HashMap<String, String> getSongs() {
-		return songs;
-	}
-
-	public void setSongs(HashMap<String, String> songs) {
 		this.songs = songs;
 	}
 
@@ -68,6 +56,42 @@ public class Album implements Serializable, Comparable<Album>{
 		this.titlePinyin = PinyinUtil.toPinyinString(title);
 	}
 
+	public String getTitlePinyin() {
+		return titlePinyin;
+	}
+
+	public List<Artist> getAuthorList() {
+		return authorList;
+	}
+
+	public void setAuthorList(List<Artist> authorList) {
+		this.authorList = authorList;
+	}
+
+	public String getCoverPath() {
+		return coverPath;
+	}
+
+	public void setCoverPath(String coverPath) {
+		this.coverPath = coverPath;
+	}
+
+	public String getCoverUrl() {
+		return coverUrl;
+	}
+
+	public void setCoverUrl(String coverUrl) {
+		this.coverUrl = coverUrl;
+	}
+
+	public String getCoverHdUrl() {
+		return coverHdUrl;
+	}
+
+	public void setCoverHdUrl(String coverHdUrl) {
+		this.coverHdUrl = coverHdUrl;
+	}
+
 	public String getDesc() {
 		return desc;
 	}
@@ -76,12 +100,12 @@ public class Album implements Serializable, Comparable<Album>{
 		this.desc = desc;
 	}
 
-	public String getCoverImg() {
-		return coverImg;
+	public List<Song> getSongs() {
+		return songs;
 	}
 
-	public void setCoverImg(String coverImg) {
-		this.coverImg = coverImg;
+	public void setSongs(List<Song> songs) {
+		this.songs = songs;
 	}
 
 	@Override

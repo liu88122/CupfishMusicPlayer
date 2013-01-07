@@ -10,52 +10,107 @@ import com.cupfish.musicplayer.utils.PinyinUtil;
 
 public class Song implements Serializable, Comparable<Song> {
 
-	private String id;
+	private String _id;
+	private String sId;
 	private String title;
 	private String titlePinyin;
-	private String album;
-	private String albumId;
-	private ArrayList<Artist> authorList = new ArrayList<Artist>();
-	private String url;
-	private String albumCover;
+	private String artist;
+	private Album album;
+	private String sPath;
+	private String sUrl;
+	private String lrcPath;
 	private String lrcUrl;
+	private String audioType;
 	private long duration;
-	private boolean isLocal = false;
+	private ArrayList<Artist> artists = new ArrayList<Artist>();
+	
 	public Song() {
+		
 	}
 
-	public Song(String id, String title, String album, String albumId, ArrayList<Artist> authorList, String url, String albumCover, String lrcUrl,
-			long duration, boolean isLocal) {
+	public Song(String _id, String sId, String title, String artist, Album album, String sPath, String sUrl, String lrcPath, String lrcUrl,
+			String audioType, long duration, ArrayList<Artist> artists) {
 		super();
-		this.id = id;
+		this._id = _id;
+		this.sId = sId;
 		this.title = title;
+		this.titlePinyin = PinyinUtil.toPinyinString(title);
+		this.artist = artist;
 		this.album = album;
-		this.albumId = albumId;
-		this.authorList = authorList;
-		this.url = url;
-		this.albumCover = albumCover;
+		this.sPath = sPath;
+		this.sUrl = sUrl;
+		this.lrcPath = lrcPath;
 		this.lrcUrl = lrcUrl;
+		this.audioType = audioType;
 		this.duration = duration;
-		this.isLocal = isLocal;
+		this.artists = artists;
+	}
+
+
+
+	public String get_id() {
+		return _id;
+	}
+
+	public void set_id(String _id) {
+		this._id = _id;
+	}
+
+	public String getsId() {
+		return sId;
+	}
+
+	public void setsId(String sId) {
+		this.sId = sId;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 		this.titlePinyin = PinyinUtil.toPinyinString(title);
 	}
 
-	
-	
-	public String getTitlePinyin() {
-		return titlePinyin;
+	public String getArtist() {
+		return artist;
 	}
 
-	public void setTitlePinyin(String titlePinyin) {
-		this.titlePinyin = titlePinyin;
+	public void setArtist(String artist) {
+		this.artist = artist;
 	}
 
-	public ArrayList<Artist> getAuthorList() {
-		return authorList;
+	public Album getAlbum() {
+		return album;
 	}
 
-	public void setAuthorList(ArrayList<Artist> authorList) {
-		this.authorList = authorList;
+	public void setAlbum(Album album) {
+		this.album = album;
+	}
+
+	public String getsPath() {
+		return sPath;
+	}
+
+	public void setsPath(String sPath) {
+		this.sPath = sPath;
+	}
+
+	public String getsUrl() {
+		return sUrl;
+	}
+
+	public void setsUrl(String sUrl) {
+		this.sUrl = sUrl;
+	}
+
+	public String getLrcPath() {
+		return lrcPath;
+	}
+
+	public void setLrcPath(String lrcPath) {
+		this.lrcPath = lrcPath;
 	}
 
 	public String getLrcUrl() {
@@ -66,61 +121,12 @@ public class Song implements Serializable, Comparable<Song> {
 		this.lrcUrl = lrcUrl;
 	}
 
-	public String getAlbumCover() {
-		return albumCover;
+	public String getAudioType() {
+		return audioType;
 	}
 
-	public void setAlbumCover(String albumCover) {
-		this.albumCover = albumCover;
-	}
-
-	public boolean isLocal() {
-		return isLocal;
-	}
-
-	public void setLocal(boolean isLocal) {
-		this.isLocal = isLocal;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.titlePinyin = PinyinUtil.toPinyinString(title);
-		this.title = title;
-	}
-
-	public String getAlbum() {
-		return album;
-	}
-
-	public void setAlbum(String album) {
-		this.album = album;
-	}
-
-	public String getAlbumId() {
-		return albumId;
-	}
-
-	public void setAlbumId(String albumId) {
-		this.albumId = albumId;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
+	public void setAudioType(String audioType) {
+		this.audioType = audioType;
 	}
 
 	public long getDuration() {
@@ -131,18 +137,16 @@ public class Song implements Serializable, Comparable<Song> {
 		this.duration = duration;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		Song temp = (Song) o;
-		if(this.title.equals(temp.title) && this.id == temp.id){
-			return true;
-		}
-		return false;
+	public ArrayList<Artist> getArtists() {
+		return artists;
 	}
-	@Override
-	public String toString() {
-		return "Song [id=" + id + ", title=" + title + ", album=" + album + ", albumId=" + albumId + ", authorListSize=" + authorList.size()
-				+ ", url=" + url + ", albumCover=" + albumCover + ", lrcUrl=" + lrcUrl + ", duration=" + duration + ", isLocal=" + isLocal + "]";
+
+	public void setArtists(ArrayList<Artist> artists) {
+		this.artists = artists;
+	}
+
+	public String getTitlePinyin() {
+		return titlePinyin;
 	}
 
 	@Override

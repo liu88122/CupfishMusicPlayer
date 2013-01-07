@@ -19,8 +19,8 @@ public class TestActivity extends Activity {
 
 		try{
 		Song song = BaiduTingHelper.getSongById("13931930");
-		System.out.println(song.getId());
-		String fileUrl = BaiduTingHelper.getDownloadUrlBySongId(song.getId());
+		System.out.println(song.getsId());
+		String fileUrl = BaiduTingHelper.getDownloadUrlBySongId(song.getsId());
 		System.out.println(fileUrl);
 		DownloadUtil.load(song.getTitle(), fileUrl, null, Constants.DOWNLOAD_FILE_MP3);
 		}catch (Exception e) {

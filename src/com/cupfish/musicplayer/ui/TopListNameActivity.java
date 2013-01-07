@@ -2,28 +2,21 @@ package com.cupfish.musicplayer.ui;
 
 import java.util.List;
 
-import com.cupfish.musicplayer.R;
-import com.cupfish.musicplayer.bean.Song;
-import com.cupfish.musicplayer.global.Constants;
-import com.cupfish.musicplayer.ui.adapter.MusicListNameAdapter;
-import com.cupfish.musicplayer.ui.adapter.SearchResultAdapter;
-import com.cupfish.musicplayer.utils.BaiduTingHelper;
-import com.cupfish.musicplayer.utils.GoogleMusicHelper;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
+
+import com.cupfish.musicplayer.R;
+import com.cupfish.musicplayer.bean.Song;
+import com.cupfish.musicplayer.global.Constants;
+import com.cupfish.musicplayer.ui.adapter.MusicListNameAdapter;
 
 public class TopListNameActivity extends Activity implements OnClickListener {
 

@@ -6,7 +6,6 @@ import java.util.List;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.provider.MediaStore.Audio.Playlists;
 
 import com.cupfish.musicplayer.bean.Song;
 import com.cupfish.musicplayer.utils.PlayerListDbHelper;
@@ -27,8 +26,8 @@ public class PlayerlistDao {
 			if (db.isOpen()) {
 				String sql = "insert into playlist (id, title, album, albumid, artist, url, duration, islocal) values(?,?,?,?,?,?,?,?)";
 				for (Song song : playlist) {
-					Object[] params = { song.getId(), song.getTitle(), song.getAlbum(), song.getAlbumId(), song.getAuthorList(), song.getUrl(), song.getDuration(),
-							song.isLocal()?1:0 };
+					Object[] params = { song.getsId(), song.getTitle(), song.getAlbum(), song.getAlbum().getId(), song.getArtist(), song.getsUrl(), song.getDuration(),
+							1 };
 					db.execSQL(sql, params);
 				}
 				db.close();
@@ -73,8 +72,8 @@ public class PlayerlistDao {
 					long duration = cursor.getLong(cursor.getColumnIndex("duration"));
 					int isLocal = cursor.getInt(cursor.getColumnIndex("islocal"));
 					
-					//TODO artistList已经发生变化(原来是String，现在改为List)，相应的方法都需要修改
-					song = new Song(id, title, album, albumId, null, url, "", "", duration, isLocal==1?true:false);
+					//TODO artistList已经发生变化(原来是String，现在改为List)，相应的方法都需要修改,没有赋值
+					song = new Song();
 					result.add(song);
 				}
 				cursor.close();

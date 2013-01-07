@@ -83,8 +83,11 @@ public class BaiduTingHelper {
 					String albumId = albumIdTmp.substring(albumIdTmp.lastIndexOf("/") + 1);
 					String albumName = albumEle.attr("title");
 
-					song.setAlbumId(albumId);
-					song.setAlbum(albumName);
+					Album album = new Album();
+					album.setTitle(albumName);
+					album.setId(albumId);
+					song.setAlbum(album);
+					
 				}
 
 				// 解析歌曲名称及歌曲ID
@@ -93,7 +96,7 @@ public class BaiduTingHelper {
 				String songIdTemp = songEle.attr("href");
 				String songId = songIdTemp.substring(songIdTemp.lastIndexOf("/") + 1);
 
-				song.setId(songId);
+				song.setsId(songId);
 				song.setTitle(songTitle);
 
 				// 解析歌手
@@ -105,11 +108,10 @@ public class BaiduTingHelper {
 						String artistIdTemp = e.attr("href");
 						artist.setId(artistIdTemp.substring(artistIdTemp.lastIndexOf("/")));
 						artist.setName(e.text());
-						song.getAuthorList().add(artist);
+						song.getArtists().add(artist);
 					}
 				}
 
-				song.setLocal(false);
 				// sb.append(songId).append("|").append(songTitle).append("|").append(singer);
 				songs.add(song);
 				song = null;
@@ -151,16 +153,17 @@ public class BaiduTingHelper {
 					String artist = singerEle.text();
 					String idStr = titleEle.attr("href");
 					String songId = idStr.substring(idStr.lastIndexOf("/") + 1);
-					song.setId(songId);
+					song.setsId(songId);
 					// song.setArtist(artist);
 					String songTitle = titleEle.attr("title");
 					song.setTitle(songTitle);
 				}
 				if (albumEle != null) {
-					String album = albumEle.text();
+					String albumStr = albumEle.text();
+					Album album = new Album();
+					album.setTitle(albumStr);
 					song.setAlbum(album);
 				}
-				song.setLocal(false);
 				// sb.append(songId).append("|").append(songTitle).append("|").append(singer);
 				result.add(song);
 				song = null;
@@ -208,20 +211,23 @@ public class BaiduTingHelper {
 			}
 			
 			Elements songsElements = document.select("span.song-title");
-			HashMap<String, String> songs = new HashMap<String, String>();
+			List<Song> songs = new ArrayList<Song>();
 			if (containSongDetail) {
 				for (Element ele : songsElements) {
 					String songHrefStr = ele.select("a").first().attr("href");
 					String songId = songHrefStr.substring(songHrefStr.lastIndexOf("/") + 1);
 					String songTitle = ele.select("a").first().text();
-					songs.put(songId, songTitle);
+					Song song = new Song();
+					song.setsId(songId);
+					song.setTitle(songTitle);
+					songs.add(song);
 				}
 			}
 			album.setId(albumId);
-			album.setCoverImg(coverImg);
+			album.setCoverUrl(coverImg);
 			album.setTitle(title);
-			album.setDesc(desc);
 			album.setSongs(songs);
+			album.setDesc(desc);
 			return album;
 		} catch (Exception e) {
 			throw new NetTimeoutException(e);
@@ -243,7 +249,7 @@ public class BaiduTingHelper {
 					String artistIdTemp = e.attr("href");
 					artist.setId(artistIdTemp.substring(artistIdTemp.lastIndexOf("/")));
 					artist.setName(e.text());
-					song.getAuthorList().add(artist);
+					song.getArtists().add(artist);
 				}
 			}
 			
@@ -272,24 +278,24 @@ public class BaiduTingHelper {
 			String downloadUrl = getDownloadUrlBySongId(songId);
 
 			String albumCover = "";
-			String album = "";
+			String albumStr = "";
 			if (!TextUtils.isEmpty(albumId)) {
 				Album album2 = getAlbumById(albumId, false);
-				albumCover = album2.getCoverImg();
-				album = album2.getTitle();
+				albumCover = album2.getCoverUrl();
+				albumStr = album2.getTitle();
 			}
 
 			if (!TextUtils.isEmpty(albumId) && getAlbumById(albumId, false) != null) {
-				albumCover = getAlbumById(albumId, false).getCoverImg();
+				albumCover = getAlbumById(albumId, false).getCoverUrl();
 			}
-			song.setId(songId);
+			song.setsId(songId);
 			// song.setArtist(singerEle.text());
 			song.setTitle(titleEle.text());
-			song.setAlbumId(albumId);
-			song.setUrl(downloadUrl);
-			song.setLocal(false);
+			song.setsUrl(downloadUrl);
+			Album album = new Album();
+			album.setTitle(albumStr);
+			album.setCoverPath(albumCover);
 			song.setAlbum(album);
-			song.setAlbumCover(albumCover);
 			song.setLrcUrl(BASE_URL + lrcUrl);
 			return song;
 		} catch (Exception e) {
