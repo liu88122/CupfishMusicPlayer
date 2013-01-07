@@ -168,13 +168,7 @@ public class LrcController {
 
 		public void seekTo(long time) {
 			if(lrc != null){
-				long currentTimeline = lrc.getCurrentTimeLine(time);
-				if (currentTimeline != Long.MAX_VALUE) {
-					String statement = lrc.getStatement(currentPosition);
-					onLrcUpdateNotify(currentTimeline, statement);
-
-				}
-				nextTimepoint = lrc.getNextTimeline(time);
+				nextTimepoint = lrc.getCurrentTimeLine(time);
 			}
 			
 		}
