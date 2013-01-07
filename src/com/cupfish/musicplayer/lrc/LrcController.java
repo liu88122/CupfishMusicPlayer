@@ -168,13 +168,7 @@ public class LrcController {
 
 		public void seekTo(long time) {
 			if(lrc != null){
-				long currentTimeline = lrc.getCurrentTimeLine(time);
-				if (currentTimeline != Long.MAX_VALUE) {
-					String statement = lrc.getStatement(currentPosition);
-					onLrcUpdateNotify(currentTimeline, statement);
-
-				}
-				nextTimepoint = lrc.getNextTimeline(time);
+				nextTimepoint = lrc.getCurrentTimeLine(time);
 			}
 			
 		}
@@ -188,6 +182,7 @@ public class LrcController {
 			nextTimepoint = lrc.getNextTimeline(0);
 			while (!exit) {
 				if (!pause) {
+					//TODO 退出程序时有问题
 					currentPosition = mMediaPlayer.getCurrentPosition();
 					if (currentPosition > nextTimepoint) {
 						String statement = lrc.getStatement(currentPosition);

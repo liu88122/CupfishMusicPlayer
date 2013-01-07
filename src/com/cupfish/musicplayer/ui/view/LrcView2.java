@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -30,6 +31,8 @@ public class LrcView2 extends ViewGroup {
 
 	private static final int LRC_START = 0;
 	private static final int LRC_UPDATE = 1;
+
+	public static final String TAG = LrcView2.class.getSimpleName();
 
 	private int mMeasuredWidth;
 	private int mMeasuredHeight;
@@ -92,7 +95,12 @@ public class LrcView2 extends ViewGroup {
 		mLrcHandler = new LrcUpdateHandler();
 		mLrcUpdateListener = new LrcUpdateListener(mLrcHandler);
 		mLrcController.addOnLrcUpdateListener(mLrcUpdateListener);
+		
 		loadLrc();
+		
+		if(MusicPlayerService.mMediaPlayer != null && MusicPlayerService.mMediaPlayer.isPlaying()){
+			mLrcController.seekTo(MusicPlayerService.mMediaPlayer.getCurrentPosition());
+		}
 	}
 
 	private void loadLrc() {
@@ -229,6 +237,7 @@ public class LrcView2 extends ViewGroup {
 				mLrcController.seekTo(mCurrentTime);
 			} else if(mCurrentTime == 3600000){
 				Toast.makeText(context, "已到终点了哦亲", Toast.LENGTH_SHORT).show();
+				mLrcController.seekTo(MusicPlayerService.mMediaPlayer.getCurrentPosition());
 				
 			}
 		}
@@ -296,6 +305,7 @@ public class LrcView2 extends ViewGroup {
 			data.putString("statement", statement);
 			msg.setData(data);
 			handler.sendMessage(msg);
+			Log.i(TAG, "CurrentLrc:" + statement);
 		}
 
 	}
