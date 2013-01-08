@@ -1,6 +1,7 @@
 package com.cupfish.music.utils;
 
 import com.cupfish.music.dao.LocalMusicFolderDao;
+import com.cupfish.music.dao.MusicDao;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,6 +20,7 @@ public class MusicDbHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(LocalMusicFolderDao.SQL_TABLE_LOCAL_FOLDER_CREATE);
+		MusicDao.createTables(db);
 	}
 
 	@Override

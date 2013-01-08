@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.widget.AnalogClock;
-
 import com.cupfish.music.utils.PinyinUtil;
 
 public class Song implements Serializable, Comparable<Song> {
@@ -22,14 +20,17 @@ public class Song implements Serializable, Comparable<Song> {
 	private String lrcUrl;
 	private String audioType;
 	private long duration;
-	private ArrayList<Artist> artists = new ArrayList<Artist>();
-	
+	private String source;
+	private String category;
+
+	private List<Artist> artists = new ArrayList<Artist>();
+
 	public Song() {
-		
+
 	}
 
 	public Song(String _id, String sId, String title, String artist, Album album, String sPath, String sUrl, String lrcPath, String lrcUrl,
-			String audioType, long duration, ArrayList<Artist> artists) {
+			String audioType, long duration, List<Artist> artists, String source, String category) {
 		super();
 		this._id = _id;
 		this.songId = sId;
@@ -44,9 +45,9 @@ public class Song implements Serializable, Comparable<Song> {
 		this.audioType = audioType;
 		this.duration = duration;
 		this.artists = artists;
+		this.source = source;
+		this.category = category;
 	}
-
-
 
 	public String get_id() {
 		return _id;
@@ -137,7 +138,7 @@ public class Song implements Serializable, Comparable<Song> {
 		this.duration = duration;
 	}
 
-	public ArrayList<Artist> getArtists() {
+	public List<Artist> getArtists() {
 		return artists;
 	}
 
@@ -149,19 +150,44 @@ public class Song implements Serializable, Comparable<Song> {
 		return titlePinyin;
 	}
 
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
 	@Override
 	public int compareTo(Song another) {
-		
+
 		char thisChar = this.titlePinyin.charAt(0);
 		char anotherChar = another.getTitlePinyin().charAt(0);
-		if( thisChar== '#' && anotherChar != '#'){
+		if (thisChar == '#' && anotherChar != '#') {
 			return 1;
-		}else if(thisChar != '#' &&  anotherChar == '#'){
+		} else if (thisChar != '#' && anotherChar == '#') {
 			return -1;
-		}else if(thisChar == '#' && anotherChar == '#'){
+		} else if (thisChar == '#' && anotherChar == '#') {
 			return 0;
 		}
 		return this.titlePinyin.compareTo(another.titlePinyin);
 	}
 
+	@Override
+	public String toString() {
+		return "Song [_id=" + _id + ", songId=" + songId + ", title=" + title + ", titlePinyin=" + titlePinyin + ", artist=" + artist + ", album="
+				+ album + ", songPath=" + songPath + ", songUrl=" + songUrl + ", lrcPath=" + lrcPath + ", lrcUrl=" + lrcUrl + ", audioType="
+				+ audioType + ", duration=" + duration + ", source=" + source + ", category=" + category + ", artists=" + artists + "]";
+	}
+
+	
+	
 }

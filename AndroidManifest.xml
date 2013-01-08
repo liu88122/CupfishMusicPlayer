@@ -14,7 +14,7 @@
 
     <instrumentation
         android:name="android.test.InstrumentationTestRunner"
-        android:targetPackage="com.cupfish.musicplayer" />
+        android:targetPackage="com.cupfish.music" />
 
     <application
         android:name=".global.BaseApp"
