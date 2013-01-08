@@ -1,6 +1,10 @@
 杯里鱼音乐播放器 <br/>
 字体下载地址：http://www.cupfish.com/files/xujinglei_font.ttf  <br/>
 
+v2013.01.08 <br/>
+
+1.重构包名<br/>
+
 v2013.01.07<br/>
 
 1.完美解决歌词显示 seek to问题<br/>
