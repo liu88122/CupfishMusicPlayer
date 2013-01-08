@@ -10,7 +10,7 @@
         layout="@layout/tab_bar" />
     
 
-    <com.cupfish.musicplayer.ui.view.MyViewPager
+    <com.cupfish.music.ui.view.MyViewPager
         android:id="@+id/vp_main"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
