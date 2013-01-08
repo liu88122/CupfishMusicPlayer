@@ -70,7 +70,7 @@
             android:layout_height="1px"
             android:background="@color/red_light" />
 
-        <com.cupfish.musicplayer.ui.view.MyTextView
+        <com.cupfish.music.ui.view.MyTextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:padding="5dip"
