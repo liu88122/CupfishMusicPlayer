@@ -17,7 +17,12 @@ import com.cupfish.music.utils.MusicDbHelper;
 public class MusicDao {
 	
 	public static final String TABLE_LOCAL_MUSIC = "local_music";
-	public static final String TABLE_ONLINE_MUSIC = "online_music";
+	
+	private MusicDbHelper mDbHelper;
+	
+	public MusicDao(Context context){
+		mDbHelper = new MusicDbHelper(context);
+	}
 	
 	/**
 	 * 创建相应的表
@@ -29,7 +34,6 @@ public class MusicDao {
 	public static void createTables(SQLiteDatabase db){
 		if(db != null && db.isOpen()){
 			createTable(db, TABLE_LOCAL_MUSIC);
-			createTable(db, TABLE_ONLINE_MUSIC);
 		}
 	}
 	
@@ -67,59 +71,30 @@ public class MusicDao {
 	 * @author <a href="liu88122@gmail.com">LiuZhongde</a>
 	 * @2013-1-8 下午4:58:28
 	 */
-	public void insertLocalSongs(SQLiteDatabase db, List<Song> songs) {
+	public void insertSongs(SQLiteDatabase db, List<Song> songs) {
 		if (db != null && db.isOpen()) {
 			if (songs != null && songs.size() > 0) {
 				Iterator<Song> iterator = songs.iterator();
 				while (iterator.hasNext()) {
-					insertLocalSong(db, iterator.next());
+					insertSong(db, iterator.next());
 				}
 			}
 		}
 	}
 	
 	/**
-	 * 插入在线歌曲集合到数据库
-	 * @param db
-	 * @param songs
-	 * void
-	 * @author <a href="liu88122@gmail.com">LiuZhongde</a>
-	 * @2013-1-8 下午4:58:53
-	 */
-	public void insertOnlineSongs(SQLiteDatabase db, List<Song> songs) {
-		if (db != null && db.isOpen()) {
-			if (songs != null && songs.size() > 0) {
-				Iterator<Song> iterator = songs.iterator();
-				while (iterator.hasNext()) {
-					insertOnlineSong(db, iterator.next());
-				}
-			}
-		}
-	}
-	
-	/**
-	 * 插入本地歌曲到数据库
+	 * 插入歌曲到数据库
 	 * @param db
 	 * @param song
 	 * void
 	 * @author <a href="liu88122@gmail.com">LiuZhongde</a>
 	 * @2013-1-8 下午4:59:09
 	 */
-	public void insertLocalSong(SQLiteDatabase db, Song song){
+	public void insertSong(SQLiteDatabase db, Song song){
 		insert(db, song, TABLE_LOCAL_MUSIC);
 	}
 	
-	/**
-	 * 插入在线歌曲到数据库
-	 * @param db
-	 * @param song
-	 * void
-	 * @author <a href="liu88122@gmail.com">LiuZhongde</a>
-	 * @2013-1-8 下午4:59:21
-	 */
-	public void insertOnlineSong(SQLiteDatabase db, Song song){
-		insert(db, song, TABLE_ONLINE_MUSIC);
-	}
+	
 	private void insert(SQLiteDatabase db, Song song, String table){
 		
 		if(song == null){
@@ -199,6 +174,42 @@ public class MusicDao {
 		}
 	}
 	
+	/**
+	 * 根据本地Id查找歌曲
+	 * @param context
+	 * @param table
+	 * @param id
+	 * @return
+	 * Song
+	 * @author <a href="liu88122@gmail.com">LiuZhongde</a>
+	 * @2013-1-9 上午11:05:06
+	 */
+	public Song querySongById(Context context,String table, String id){
+		SQLiteDatabase db = new MusicDbHelper(context).getReadableDatabase();
+		Song song = null;
+		if(db.isOpen()){
+			String sql = "SELECT * FROM " + table 
+							+ " WHERE " + Columns._ID + " = ? " ;
+			String[] params = { id };
+			Cursor cursor = db.rawQuery(sql, params);
+			if(cursor.moveToFirst()){
+				song = extractSongFromCursor(cursor);
+				cursor.close();
+			}
+		}
+		return song;
+	}
+	
+	/**
+	 * 根据歌曲在线id查找歌曲，可能不完善，有待更新
+	 * @param context
+	 * @param table
+	 * @param songId
+	 * @return
+	 * Song
+	 * @author <a href="liu88122@gmail.com">LiuZhongde</a>
+	 * @2013-1-9 上午11:05:24
+	 */
 	public Song querySongBySongId(Context context,String table, String songId){
 		SQLiteDatabase db = new MusicDbHelper(context).getReadableDatabase();
 		Song song = null;
@@ -215,11 +226,185 @@ public class MusicDao {
 		return song;
 	}
 	
+	/**
+	 * 根据歌曲名和歌手获取歌曲,这里还没有处理类型不同但歌曲名和歌手一致的情况
+	 * @return
+	 * Song
+	 * @author <a href="liu88122@gmail.com">LiuZhongde</a>
+	 * @2013-1-9 下午5:15:19
+	 */
+	public Song querySongByTitleAndArtist(String songTitle, String artistName){
+		if(songTitle == null){
+			return null;
+		}
+		Song song = null;
+		SQLiteDatabase db = mDbHelper.getReadableDatabase();
+		String sql = null;
+		String[] params = null;
+		if(TextUtils.isEmpty(artistName)){
+			sql = "SELECT * FROM " + TABLE_LOCAL_MUSIC
+					+ " WHERE " + Columns.TITLE + " = ?";
+			params = new String[]{ songTitle };
+		}else{
+			sql = "SELECT * FROM " + TABLE_LOCAL_MUSIC
+					+ " WHERE " + Columns.TITLE 
+					+ " = ? AND " + Columns.ARTIST + " = ?";
+			params = new String[]{ songTitle, artistName };
+		}
+		Cursor cursor = db.rawQuery(sql, params);
+		if(cursor.moveToFirst()){
+			song = extractSongFromCursor(cursor);
+			cursor.close();
+		}
+		return song;
+	}
+	
+	/**
+	 * 查找所有本地歌曲
+	 * @return
+	 * List<Song>
+	 * @author <a href="liu88122@gmail.com">LiuZhongde</a>
+	 * @2013-1-9 上午11:12:51
+	 */
+	public List<Song> queryAllLocalSongs(){
+		List<Song> songs = new ArrayList<Song>();
+		SQLiteDatabase db = mDbHelper.getReadableDatabase();
+		String sql = "SELECT * FROM " + TABLE_LOCAL_MUSIC 
+						+ " WHERE " + Columns.SONG_PATH + " IS NOT NULL";
+		Cursor cursor = db.rawQuery(sql, new String[]{});
+		while(cursor.moveToNext()){
+			Song song = extractSongFromCursor(cursor);
+			songs.add(song);
+		}
+		cursor.close();
+		return songs;
+	}
+	
+	/**
+	 * 根据歌手查找歌曲
+	 * @param artist
+	 * @return
+	 * List<Song>
+	 * @author <a href="liu88122@gmail.com">LiuZhongde</a>
+	 * @2013-1-9 下午3:04:12
+	 */
+	public List<Song> queryLocalSongsByArtist(Artist artist){
+		if(artist == null || TextUtils.isEmpty(artist.getName())){
+			return null;
+		}
+		List<Song> songs = new ArrayList<Song>();
+		SQLiteDatabase db = mDbHelper.getReadableDatabase();
+		if(db.isOpen()){
+			String sql = "SELECT * FROM " + TABLE_LOCAL_MUSIC 
+							+ " WHERE " + Columns.ARTIST + " = ?";
+			String[] params = {artist.getName()};
+			Cursor cursor = db.rawQuery(sql, params);
+			while(cursor.moveToNext()){
+				Song song = extractSongFromCursor(cursor);
+				songs.add(song);
+			}
+			cursor.close();
+		}
+		return songs;
+	}
+	
+	/**
+	 * 根据专辑获取歌曲
+	 * @param album
+	 * @return
+	 * List<Song>
+	 * @author <a href="liu88122@gmail.com">LiuZhongde</a>
+	 * @2013-1-9 下午4:13:00
+	 */
+	public List<Song> queryLocalSongsByAlbum(Album album){
+		if(album == null || TextUtils.isEmpty(album.getTitle())){
+			return null;
+		}
+		StringBuilder artistsBuilder = new StringBuilder();
+		List<Artist> artists = album.getArtists();
+		if(artists != null && artists.size() > 0){
+			Iterator<Artist> iterator = artists.iterator();
+			while(iterator.hasNext()){
+				artistsBuilder.append(iterator.next().getName() + ",");
+			}
+			artistsBuilder.deleteCharAt(artistsBuilder.length() - 1);
+		}
+		List<Song> songs = new ArrayList<Song>();
+		SQLiteDatabase db = mDbHelper.getReadableDatabase();
+		if(db.isOpen()){
+			String sql = "SELECT * FROM " + TABLE_LOCAL_MUSIC
+							+ " WHERE " + Columns.ALBUM_TITLE
+							+ " = ? AND " + Columns.ARTIST + " LINK %?%";
+			String[] params = {album.getTitle(), artistsBuilder.toString()};
+			Cursor cursor = db.rawQuery(sql, params);
+			while(cursor.moveToNext()){
+				Song song = extractSongFromCursor(cursor);
+				songs.add(song);
+			}
+			cursor.close();
+		}
+		return songs;
+	}
+	
+	/**
+	 * 根据歌曲文件夹名查找歌曲
+	 * @param folderPath
+	 * @return
+	 * List<Song>
+	 * @author <a href="liu88122@gmail.com">LiuZhongde</a>
+	 * @2013-1-9 下午4:53:52
+	 */
+	public List<Song> queryLocalSongsByFolder(String folderPath){
+		if(TextUtils.isEmpty(folderPath)){
+			return null;
+		}
+		List<Song> songs = new ArrayList<Song>();
+		SQLiteDatabase db = mDbHelper.getReadableDatabase();
+		if(db.isOpen()){
+			String sql = "SELECT * FROM " + TABLE_LOCAL_MUSIC
+							+ " WHERE " + Columns.SONG_PATH + " IS NOT NULL";
+			Cursor cursor = db.rawQuery(sql, new String[]{});
+			while(cursor.moveToNext()){
+				Song song  = extractSongFromCursor(cursor);
+				if(song != null){
+					String songPath = song.getSongPath();
+					if(songPath != null){
+						int index = songPath.lastIndexOf("/");
+						if(index > 0){
+							String subPath = songPath.substring(0, index);
+							if(folderPath.equalsIgnoreCase(subPath)){
+								songs.add(song);
+							}
+						}
+					}
+				}
+			}
+		}
+		return songs;
+	}
+	
+	public List<Artist> queryLocalArtists(){
+		List<Artist> artists = new ArrayList<Artist>();
+		
+		return artists;
+	}
+	
+	public List<String> queryLocalFolders(){
+		List<String> folders = new ArrayList<String>();
+		
+		return folders;
+	}
+	
+	public List<Album> queryLocalAlbums(){
+		List<Album> albums = new ArrayList<Album>();
+		
+		return albums;
+	}
+	
 	private Song extractSongFromCursor(Cursor cursor) {
 		String _id = cursor.getString(cursor.getColumnIndex(Columns._ID));
 		String songId = cursor.getString(cursor.getColumnIndex(Columns.SONG_ID));
 		String title = cursor.getString(cursor.getColumnIndex(Columns.TITLE));
-		String titlePinyin = cursor.getString(cursor.getColumnIndex(Columns.TITLE_PINYIN));
 		String albumId = cursor.getString(cursor.getColumnIndex(Columns.ALBUM_ID));
 		String albumTitle = cursor.getString(cursor.getColumnIndex(Columns.ALBUM_TITLE));
 		String artist = cursor.getString(cursor.getColumnIndex(Columns.ARTIST));
@@ -253,7 +438,7 @@ public class MusicDao {
 		album.setCoverUrl(coverUrl);
 		album.setDesc(albumDesc);
 		
-		Song song = new Song(_id, songId, albumTitle, artist, album, songPath, songUrl, lrcPath, lrcUrl, audioType, duration, artists, source, category);
+		Song song = new Song(_id, songId, title, artist, album, songPath, songUrl, lrcPath, lrcUrl, audioType, duration, artists, source, category);
 		return song;
 	}
 

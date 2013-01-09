@@ -206,7 +206,7 @@ public class BaiduTingHelper {
 					String artistIdTemp = e.attr("href");
 					artist.setId(artistIdTemp.substring(artistIdTemp.lastIndexOf("/")));
 					artist.setName(e.text());
-					album.getAuthorList().add(artist);
+					album.getArtists().add(artist);
 				}
 			}
 			

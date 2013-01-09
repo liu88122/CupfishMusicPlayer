@@ -14,7 +14,7 @@ public class Album implements Serializable, Comparable<Album>{
 	private String id;
 	private String title;
 	private String titlePinyin;
-	private List<Artist> authorList = new ArrayList<Artist>();
+	private List<Artist> artists = new ArrayList<Artist>();
 	private String coverPath;
 	private String coverUrl;
 	private String coverHdUrl;
@@ -31,7 +31,7 @@ public class Album implements Serializable, Comparable<Album>{
 		this.id = id;
 		this.title = title;
 		this.titlePinyin = PinyinUtil.toPinyinString(title);
-		this.authorList = authorList;
+		this.artists = authorList;
 		this.coverPath = coverPath;
 		this.coverUrl = coverUrl;
 		this.coverHdUrl = coverHdUrl;
@@ -60,12 +60,12 @@ public class Album implements Serializable, Comparable<Album>{
 		return titlePinyin;
 	}
 
-	public List<Artist> getAuthorList() {
-		return authorList;
+	public List<Artist> getArtists() {
+		return artists;
 	}
 
-	public void setAuthorList(List<Artist> authorList) {
-		this.authorList = authorList;
+	public void setArtists(List<Artist> artists) {
+		this.artists = artists;
 	}
 
 	public String getCoverPath() {
