@@ -1,8 +1,11 @@
 package com.cupfish.music.dao;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -11,6 +14,7 @@ import android.text.TextUtils;
 
 import com.cupfish.music.bean.Album;
 import com.cupfish.music.bean.Artist;
+import com.cupfish.music.bean.MusicFolder;
 import com.cupfish.music.bean.Song;
 import com.cupfish.music.utils.MusicDbHelper;
 
@@ -383,20 +387,103 @@ public class MusicDao {
 		return songs;
 	}
 	
+	/**
+	 * 获取所有的歌手
+	 * @return
+	 */
 	public List<Artist> queryLocalArtists(){
 		List<Artist> artists = new ArrayList<Artist>();
-		
+		SQLiteDatabase db = mDbHelper.getReadableDatabase();
+		if(db.isOpen()){
+			String sql = "SELECT DISTINCT " + Columns.ARTIST  + " FROM " + TABLE_LOCAL_MUSIC;
+			Cursor cursor = db.rawQuery(sql, new String[]{});
+			while(cursor.moveToNext()){
+				Artist artist = new Artist();
+				String name = cursor.getString(cursor.getColumnIndex(Columns.ARTIST));
+				artist.setName(name);
+				artists.add(artist);
+			}
+			cursor.close();
+		}
 		return artists;
 	}
 	
-	public List<String> queryLocalFolders(){
-		List<String> folders = new ArrayList<String>();
-		
+	public List<MusicFolder> queryLocalFolders(){
+		List<MusicFolder> folders = new ArrayList<MusicFolder>();
+		Map<String, Integer> tempFolders = new HashMap<String, Integer>();
+		SQLiteDatabase db = mDbHelper.getReadableDatabase();
+		if(db.isOpen()){
+			String sql = "SELECT " + Columns.SONG_PATH + " FROM " + TABLE_LOCAL_MUSIC;
+			Cursor cursor = db.rawQuery(sql, new String[]{});
+			while(cursor.moveToNext()){
+				String songPath = cursor.getString(cursor.getColumnIndex(Columns.SONG_PATH));
+				if(!TextUtils.isEmpty(songPath)){
+					int index = songPath.lastIndexOf(File.separator);
+					if(index > 0){
+						String subPath = songPath.substring(0, index + 1);
+						int count = tempFolders.get(subPath) + 1;
+						tempFolders.put(subPath, count);
+					}
+				}
+			}
+			if(tempFolders.size() > 0){
+				for(Map.Entry<String, Integer> entry : tempFolders.entrySet()){
+					String folderPath = entry.getKey();
+					String folderTitle = null;
+					int index = folderPath.lastIndexOf(File.separator);
+					if(index > 0){
+						folderTitle = folderPath.substring(index);
+					}
+					int count = entry.getValue();
+					MusicFolder folder = new MusicFolder(folderTitle, folderPath, count);
+					folders.add(folder);
+				}
+			}
+			
+		}
 		return folders;
 	}
 	
 	public List<Album> queryLocalAlbums(){
 		List<Album> albums = new ArrayList<Album>();
+		SQLiteDatabase db = mDbHelper.getReadableDatabase();
+		if(db.isOpen()){
+			String sql = "SELECT　DISTINCT " + Columns.ALBUM_TITLE 
+								+ " , DISTINCT " + Columns.ARTIST + ", "
+								 + Columns.ALBUM_ID + ", "
+								+  Columns.ALBUM_DESC 
+								+ " FROM " + TABLE_LOCAL_MUSIC;
+			Cursor cursor = db.rawQuery(sql, new String[]{});
+			while(cursor.moveToNext()){
+				String albumId = cursor.getString(cursor.getColumnIndex(Columns.ALBUM_ID));
+				String albumTitle = cursor.getString(cursor.getColumnIndex(Columns.ALBUM_TITLE));
+				String artist = cursor.getString(cursor.getColumnIndex(Columns.ARTIST));
+				String desc = cursor.getString(cursor.getColumnIndex(Columns.ALBUM_DESC));
+				Album album = new Album();
+				album.setId(albumId);
+				album.setTitle(albumTitle);
+				album.setDesc(desc);
+				List<Artist> artists = new ArrayList<Artist>();
+				if (artist != null) {
+					String[] arts = artist.split(",");
+					if (arts == null) {
+						Artist a = new Artist();
+						a.setName(artist);
+						artists.add(a);
+					} else {
+						for (String aStr : arts) {
+							Artist a = new Artist();
+							a.setName(aStr);
+							artists.add(a);
+
+						}
+					}
+				}
+				album.setArtists(artists);
+				albums.add(album);
+			}
+			cursor.close();
+		}
 		
 		return albums;
 	}
