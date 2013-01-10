@@ -48,7 +48,7 @@ public class LocalMediaUtil {
 			String albumTitle = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM));
 			String albumId = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
 			String artistName = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));
-			String url = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
+			String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
 			long duration = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
 			
 			//for special songs (duo mi)
@@ -68,12 +68,23 @@ public class LocalMediaUtil {
 			artist.setName(artistName);
 			ArrayList<Artist> artists = new ArrayList<Artist>();
 			artists.add(artist);
+			
+			String audioType = null;
+			if(!TextUtils.isEmpty(path)){
+				int index = path.lastIndexOf(".");
+				if(index > 0 && index < path.length() - 1){
+					audioType = path.substring(index + 1);
+				}
+			}
+			
 			song = new Song();
 			song.setSongId(songId);
 			song.setTitle(title);
-			song.setSongPath(url);
+			song.setSongPath(path);
 			song.setAlbum(album);
 			song.setArtists(artists);
+			song.setDuration(duration);
+			song.setAudioType(audioType);
 			localSongs.add(song);
 			song = null;
 		}

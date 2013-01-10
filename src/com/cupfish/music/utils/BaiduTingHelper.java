@@ -297,6 +297,15 @@ public class BaiduTingHelper {
 			album.setCoverPath(albumCover);
 			song.setAlbum(album);
 			song.setLrcUrl(BASE_URL + lrcUrl);
+			
+			String audioType = null;
+			if(!TextUtils.isEmpty(downloadUrl)){
+				int index = downloadUrl.lastIndexOf(".");
+				if(index > 0 && index < downloadUrl.length() - 1){
+					audioType = downloadUrl.substring(index + 1);
+				}
+			}
+			song.setAudioType(audioType);
 			return song;
 		} catch (Exception e) {
 			throw new NetTimeoutException(e);

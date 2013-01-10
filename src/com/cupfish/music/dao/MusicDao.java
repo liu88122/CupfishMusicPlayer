@@ -148,7 +148,7 @@ public class MusicDao {
 				Iterator<Artist> iterator = artists.iterator();
 				StringBuilder sb = new StringBuilder();
 				while(iterator.hasNext()){
-					sb.append(iterator.next() + ",");
+					sb.append(iterator.next().getName() + ",");
 				}
 				sb.deleteCharAt(sb.length() -1);
 				artist = sb.toString();
@@ -336,10 +336,15 @@ public class MusicDao {
 		List<Song> songs = new ArrayList<Song>();
 		SQLiteDatabase db = mDbHelper.getReadableDatabase();
 		if(db.isOpen()){
-			String sql = "SELECT * FROM " + TABLE_LOCAL_MUSIC
-							+ " WHERE " + Columns.ALBUM_TITLE
-							+ " = ? AND " + Columns.ARTIST + " LINK %?%";
-			String[] params = {album.getTitle(), artistsBuilder.toString()};
+			String sql = null;
+			String[] params = null;
+			if (artistsBuilder.length() == 0) {
+				sql = "SELECT * FROM " + TABLE_LOCAL_MUSIC + " WHERE " + Columns.ALBUM_TITLE + " = ?";
+				params = new String[] { album.getTitle() };
+			} else {
+				sql = "SELECT * FROM " + TABLE_LOCAL_MUSIC + " WHERE " + Columns.ALBUM_TITLE + " = ? AND " + Columns.ARTIST + " = ?";
+				params = new String[] { album.getTitle(), artistsBuilder.toString()};
+			}
 			Cursor cursor = db.rawQuery(sql, params);
 			while(cursor.moveToNext()){
 				Song song = extractSongFromCursor(cursor);
@@ -408,6 +413,13 @@ public class MusicDao {
 		return artists;
 	}
 	
+	/**
+	 * 获取所有音乐文件夹
+	 * @return
+	 * List<MusicFolder>
+	 * @author <a href="liu88122@gmail.com">LiuZhongde</a>
+	 * @2013-1-10 下午2:07:20
+	 */
 	public List<MusicFolder> queryLocalFolders(){
 		List<MusicFolder> folders = new ArrayList<MusicFolder>();
 		Map<String, Integer> tempFolders = new HashMap<String, Integer>();
@@ -421,7 +433,12 @@ public class MusicDao {
 					int index = songPath.lastIndexOf(File.separator);
 					if(index > 0){
 						String subPath = songPath.substring(0, index + 1);
-						int count = tempFolders.get(subPath) + 1;
+						Integer count = tempFolders.get(subPath);
+						if(count == null){
+							count = 1;
+						} else {
+							count++;
+						}
 						tempFolders.put(subPath, count);
 					}
 				}
@@ -430,8 +447,12 @@ public class MusicDao {
 				for(Map.Entry<String, Integer> entry : tempFolders.entrySet()){
 					String folderPath = entry.getKey();
 					String folderTitle = null;
+					
+					//
+					folderPath = folderPath.substring(0, folderPath.length() - 1);
+					
 					int index = folderPath.lastIndexOf(File.separator);
-					if(index > 0){
+					if(index > 0 && (index + 1 <folderPath.length())){
 						folderTitle = folderPath.substring(index);
 					}
 					int count = entry.getValue();
@@ -444,15 +465,23 @@ public class MusicDao {
 		return folders;
 	}
 	
+	/**
+	 * 获取所有的专辑
+	 * @return
+	 * List<Album>
+	 * @author <a href="liu88122@gmail.com">LiuZhongde</a>
+	 * @2013-1-10 下午2:07:55
+	 */
 	public List<Album> queryLocalAlbums(){
 		List<Album> albums = new ArrayList<Album>();
 		SQLiteDatabase db = mDbHelper.getReadableDatabase();
 		if(db.isOpen()){
-			String sql = "SELECT　DISTINCT " + Columns.ALBUM_TITLE 
-								+ " , DISTINCT " + Columns.ARTIST + ", "
-								 + Columns.ALBUM_ID + ", "
+			String sql = "SELECT " + Columns.ALBUM_TITLE + " , " 
+								+ Columns.ARTIST + ", "
+								+ Columns.ALBUM_ID + ", "
 								+  Columns.ALBUM_DESC 
-								+ " FROM " + TABLE_LOCAL_MUSIC;
+								+ " FROM " + TABLE_LOCAL_MUSIC
+								+ " GROUP BY " + Columns.ALBUM_TITLE;
 			Cursor cursor = db.rawQuery(sql, new String[]{});
 			while(cursor.moveToNext()){
 				String albumId = cursor.getString(cursor.getColumnIndex(Columns.ALBUM_ID));

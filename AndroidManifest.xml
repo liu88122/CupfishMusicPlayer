@@ -45,6 +45,7 @@
 
         <service android:name=".service.MusicPlayerService" />
         <service android:name=".service.DownloadService" />
+        <service android:name=".service.MusicScanService" />
     </application>
 
 </manifest>

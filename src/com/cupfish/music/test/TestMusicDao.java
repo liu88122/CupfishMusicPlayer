@@ -5,6 +5,9 @@ import java.util.List;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 
+import com.cupfish.music.bean.Album;
+import com.cupfish.music.bean.Artist;
+import com.cupfish.music.bean.MusicFolder;
 import com.cupfish.music.bean.Song;
 import com.cupfish.music.dao.MusicDao;
 import com.cupfish.music.exception.NetTimeoutException;
@@ -30,8 +33,20 @@ public class TestMusicDao extends AndroidTestCase {
 		MusicDbHelper helper = new MusicDbHelper(getContext());
 		SQLiteDatabase db = helper.getWritableDatabase();
 		MusicDao mDao = new MusicDao(getContext());
-		List<Song> songs = mDao.queryLocalSongsByFolder("/sdcard/a");
+		List<Song> songs = mDao.queryAllLocalSongs();
 		System.out.println(songs.size());
+		List<MusicFolder> folders = mDao.queryLocalFolders();
+		List<Song> songs3 = mDao.queryLocalSongsByFolder(folders.get(2).getPath());
+		System.out.println("folder::" + songs3.get(0).getTitle());
+		
+		List<Artist> artists = mDao.queryLocalArtists();
+		List<Song> songs1 = mDao.queryLocalSongsByArtist(artists.get(2));
+		System.out.println("artist::" + songs1.get(0).getTitle());
+		
+		List<Album> albums = mDao.queryLocalAlbums();
+		List<Song> songs2 = mDao.queryLocalSongsByAlbum(albums.get(3));
+		System.out.println("album::" + songs2.get(0).getAudioType());
+		
 	}
 	
 }
