@@ -1,17 +1,17 @@
 杯里鱼音乐播放器 <br/>
 字体下载地址：http://www.cupfish.com/files/xujinglei_font.ttf  <br/>
 
-v2013.01.09 <br />
+v2013.01.10 <br/>
+1.增加 musicScanner相关模块，继续完善MusicDao<br/>
 
+v2013.01.09 <br />
 1.MusicDao继续编写，简单重构Album<br/>
 
 v2013.01.08 <br/>
-
 1.重构包名<br/>
 2.MusicDao的编写，正在进行...<br/>
 
 v2013.01.07<br/>
-
 1.完美解决歌词显示 seek to问题<br/>
 2.部分代码重构<br/>
 
@@ -21,8 +21,6 @@ v2013.01.06<br/>
 v2012.12.25<br/>
 1.修改 splash界面背景及延迟时间<br/>
 2.修改版本号<br/>
-
-git i love u, wow!<br/>
 
 v2012.12.24<br />
 WOW, HAPPY CHRISTMAS EVE!<br/>
