@@ -1,12 +1,14 @@
 package com.cupfish.music.dao;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -32,7 +34,7 @@ public class MusicDao {
 	 * 创建相应的表
 	 * @param db
 	 * void
-	 * @author <a href="liu88122@gmail.com">LiuZhongde</a>
+	 * @author <a href="liu88122@gmail.com">L iuZhongde</a>
 	 * @2013-1-8 下午4:58:04
 	 */
 	public static void createTables(SQLiteDatabase db){
@@ -98,7 +100,13 @@ public class MusicDao {
 		insert(db, song, TABLE_LOCAL_MUSIC);
 	}
 	
-	
+	/**
+	 * 插入歌曲，
+	 * 如果歌曲已经存在，则删除插入最新的
+	 * @param db
+	 * @param song
+	 * @param table
+	 */
 	private void insert(SQLiteDatabase db, Song song, String table){
 		
 		if(song == null){
@@ -106,26 +114,31 @@ public class MusicDao {
 		}
 		
 		if(db!= null && db.isOpen()){
+			String artist = artist2String(song.getArtists());
+			Song oldSong = querySongByTitleArtistAndAudioType(song.getTitle(), artist, song.getAudioType());
+			if(oldSong != null){
+				deleteSong(db, oldSong);
+			}
 			String sql = "INSERT INTO " + table + "(" 
-							+ Columns.SONG_ID + ","
-							+ Columns.TITLE + ", "
-							+ Columns.TITLE_PINYIN + ", "
-							+ Columns.ALBUM_ID + ", "
-							+ Columns.ALBUM_TITLE + ", "
-							+ Columns.ARTIST + ", "
-							+ Columns.COVER_PATH + ", "
-							+ Columns.COVER_URL + ", "
-							+ Columns.COVER_HD_URL + ", "
-							+ Columns.ALBUM_DESC + ", "
-							+ Columns.SONG_PATH + ", "
-							+ Columns.SONG_URL + ", "
-							+ Columns.LRC_PATH + ", "
-							+ Columns.LRC_URL + ", "
-							+ Columns.AUDIO_TYPE + ", "
-							+ Columns.DURATION + ", "
-							+ Columns.SOURCE + ", "
-							+ Columns.CATEGORY
-							+ ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+						+ Columns.SONG_ID + ", "
+						+ Columns.TITLE + ", "
+						+ Columns.TITLE_PINYIN + ", "
+						+ Columns.ALBUM_ID + ", "
+						+ Columns.ALBUM_TITLE + ", "
+						+ Columns.ARTIST + ", "
+						+ Columns.COVER_PATH + ", "
+						+ Columns.COVER_URL + ", "
+						+ Columns.COVER_HD_URL + ", "
+						+ Columns.ALBUM_DESC + ", "
+						+ Columns.SONG_PATH + ", "
+						+ Columns.SONG_URL + ", "
+						+ Columns.LRC_PATH + ", "
+						+ Columns.LRC_URL + ", "
+						+ Columns.AUDIO_TYPE + ", "
+						+ Columns.DURATION + ", "
+						+ Columns.SOURCE + ", "
+						+ Columns.CATEGORY
+						+ ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			Album album = song.getAlbum();
 			String albumId = null;
 			String albumTitle = null;
@@ -142,41 +155,55 @@ public class MusicDao {
 				albumDesc = album.getDesc();
 			}
 			
-			List<Artist> artists = song.getArtists();
-			String artist = null;
-			if(artists != null && artists.size() > 0){
-				Iterator<Artist> iterator = artists.iterator();
-				StringBuilder sb = new StringBuilder();
-				while(iterator.hasNext()){
-					sb.append(iterator.next().getName() + ",");
-				}
-				sb.deleteCharAt(sb.length() -1);
-				artist = sb.toString();
-			}
-			
-			
 			Object[] params = {	song.getSongId(),
-								song.getTitle(),
-								song.getTitlePinyin(),
-								albumId,
-								albumTitle,
-								artist,
-								coverPath,
-								coverUrl,
-								coverHdUrl,
-								albumDesc,
-								song.getSongPath(),
-								song.getSongUrl(),
-								song.getLrcPath(),
-								song.getLrcUrl(),
-								song.getAudioType(),
-								song.getDuration(),
-								song.getSource(),
-								song.getCategory()
-								};
+							song.getTitle(),
+							song.getTitlePinyin(),
+							albumId,
+							albumTitle,
+							artist,
+							coverPath,
+							coverUrl,
+							coverHdUrl,
+							albumDesc,
+							song.getSongPath(),
+							song.getSongUrl(),
+							song.getLrcPath(),
+							song.getLrcUrl(),
+							song.getAudioType(),
+							song.getDuration(),
+							song.getSource(),
+							song.getCategory()
+							};
 			db.execSQL(sql, params);
 		}
 	}
+	
+	
+	public void update(SQLiteDatabase db, String title, String artist, String audioType, ContentValues values){
+		if(TextUtils.isEmpty(title)){
+			return;
+		}
+		if (db.isOpen()) {
+			String where = null;
+			String[] args = null;
+			
+			if(TextUtils.isEmpty(artist)){
+				where = Columns.TITLE + " = ? ";
+				args = new String[]{ title };
+			} else if(TextUtils.isEmpty(audioType)){
+				where = Columns.TITLE + " = ? AND " + Columns.ARTIST + " = ?";
+				args = new String[]{ title , artist };
+			} else{
+				where = Columns.TITLE + " = ? AND " 
+						+ Columns.ARTIST + " = ? AND "
+						+ Columns.AUDIO_TYPE + " = ? ";
+				args = new String[]{ title, artist, audioType };
+			}
+			
+			db.update(TABLE_LOCAL_MUSIC, values, where, args);
+		}
+	}
+	
 	
 	/**
 	 * 根据本地Id查找歌曲
@@ -188,11 +215,11 @@ public class MusicDao {
 	 * @author <a href="liu88122@gmail.com">LiuZhongde</a>
 	 * @2013-1-9 上午11:05:06
 	 */
-	public Song querySongById(Context context,String table, String id){
+	public Song querySongById(Context context, String id){
 		SQLiteDatabase db = new MusicDbHelper(context).getReadableDatabase();
 		Song song = null;
 		if(db.isOpen()){
-			String sql = "SELECT * FROM " + table 
+			String sql = "SELECT * FROM " + TABLE_LOCAL_MUSIC 
 							+ " WHERE " + Columns._ID + " = ? " ;
 			String[] params = { id };
 			Cursor cursor = db.rawQuery(sql, params);
@@ -214,11 +241,11 @@ public class MusicDao {
 	 * @author <a href="liu88122@gmail.com">LiuZhongde</a>
 	 * @2013-1-9 上午11:05:24
 	 */
-	public Song querySongBySongId(Context context,String table, String songId){
+	public Song querySongBySongId(Context context, String songId){
 		SQLiteDatabase db = new MusicDbHelper(context).getReadableDatabase();
 		Song song = null;
 		if(db.isOpen()){
-			String sql = "SELECT * FROM " + table 
+			String sql = "SELECT * FROM " + TABLE_LOCAL_MUSIC 
 							+ " WHERE " + Columns.SONG_ID + " = ? " ;
 			String[] params = { songId };
 			Cursor cursor = db.rawQuery(sql, params);
@@ -231,13 +258,13 @@ public class MusicDao {
 	}
 	
 	/**
-	 * 根据歌曲名和歌手获取歌曲,这里还没有处理类型不同但歌曲名和歌手一致的情况
+	 * 根据歌曲名 歌手和歌曲类型获取歌曲
 	 * @return
 	 * Song
 	 * @author <a href="liu88122@gmail.com">LiuZhongde</a>
 	 * @2013-1-9 下午5:15:19
 	 */
-	public Song querySongByTitleAndArtist(String songTitle, String artistName){
+	public Song querySongByTitleArtistAndAudioType(String songTitle, String artistName, String audioType){
 		if(songTitle == null){
 			return null;
 		}
@@ -249,11 +276,17 @@ public class MusicDao {
 			sql = "SELECT * FROM " + TABLE_LOCAL_MUSIC
 					+ " WHERE " + Columns.TITLE + " = ?";
 			params = new String[]{ songTitle };
-		}else{
+		}else if(TextUtils.isEmpty(audioType)){
 			sql = "SELECT * FROM " + TABLE_LOCAL_MUSIC
 					+ " WHERE " + Columns.TITLE 
 					+ " = ? AND " + Columns.ARTIST + " = ?";
 			params = new String[]{ songTitle, artistName };
+		} else {
+			sql = "SELECT * FROM " + TABLE_LOCAL_MUSIC
+					+ " WHERE " + Columns.TITLE + " =  ?" 
+					+ " AND " + Columns.ARTIST + " = ?" 
+					+ " AND " + Columns.AUDIO_TYPE + " = ?";
+			params = new String[]{ songTitle, artistName, audioType };
 		}
 		Cursor cursor = db.rawQuery(sql, params);
 		if(cursor.moveToFirst()){
@@ -336,13 +369,11 @@ public class MusicDao {
 		List<Song> songs = new ArrayList<Song>();
 		SQLiteDatabase db = mDbHelper.getReadableDatabase();
 		if(db.isOpen()){
-			String sql = null;
+			String sql = "SELECT * FROM " + TABLE_LOCAL_MUSIC + " WHERE " + Columns.ALBUM_TITLE + " = ? AND " + Columns.ARTIST + " = ?";
 			String[] params = null;
 			if (artistsBuilder.length() == 0) {
-				sql = "SELECT * FROM " + TABLE_LOCAL_MUSIC + " WHERE " + Columns.ALBUM_TITLE + " = ?";
-				params = new String[] { album.getTitle() };
+				params = new String[] { album.getTitle(), null };
 			} else {
-				sql = "SELECT * FROM " + TABLE_LOCAL_MUSIC + " WHERE " + Columns.ALBUM_TITLE + " = ? AND " + Columns.ARTIST + " = ?";
 				params = new String[] { album.getTitle(), artistsBuilder.toString()};
 			}
 			Cursor cursor = db.rawQuery(sql, params);
@@ -515,6 +546,48 @@ public class MusicDao {
 		}
 		
 		return albums;
+	}
+	
+	
+	public void deleteSong(SQLiteDatabase db, Song song){
+		if(song == null){
+			return;
+		}
+		if(db.isOpen()){
+			String sql = null;
+			Object[] params = null;
+			List<Artist> artists = song.getArtists();
+			String artist = artist2String(artists);
+			if(song.get_id() != null){
+				sql = "DELETE FROM " + TABLE_LOCAL_MUSIC
+						+ " WHERE " + Columns._ID + " = ?";
+				params = new Object[]{ song.get_id() };
+			} else if (!TextUtils.isEmpty(song.getTitle()) && TextUtils.isEmpty(artist)) {
+				sql = "DELETE FROM " + TABLE_LOCAL_MUSIC
+						+ " WHERE " + Columns.TITLE + " = ?";
+				params = new Object[]{ song.getTitle()};
+			} else {
+				sql = "DELETE FROM " + TABLE_LOCAL_MUSIC
+						+ " WHERE " + Columns.TITLE + " = ? AND "
+						+ Columns.ARTIST + " = ?";
+				params = new Object[]{song.getTitle(), artist};
+			}
+			db.execSQL(sql, params);
+		}
+	}
+	
+	public String artist2String(List<Artist> artists){
+		String artist = null;
+		if(artists != null && artists.size() > 0){
+			Iterator<Artist> iterator = artists.iterator();
+			StringBuilder sb = new StringBuilder();
+			while(iterator.hasNext()){
+				sb.append(iterator.next().getName() + ",");
+			}
+			sb.deleteCharAt(sb.length() -1);
+			artist = sb.toString();
+		}
+		return artist;
 	}
 	
 	private Song extractSongFromCursor(Cursor cursor) {
