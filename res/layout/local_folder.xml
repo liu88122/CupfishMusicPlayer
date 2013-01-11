@@ -5,22 +5,13 @@
     android:background="@color/white"
     android:orientation="vertical" >
 
-    <FrameLayout
+    <ListView
+        android:id="@+id/folders"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <ListView
-            android:id="@+id/folders"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="invisible" >
-        </ListView>
-
-        <ProgressBar
-            android:id="@+id/scanning"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-            android:layout_gravity="center"/>
-    </FrameLayout>
+        android:layout_height="match_parent"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@drawable/music_list_divider"
+         >
+    </ListView>
 
 </LinearLayout>
