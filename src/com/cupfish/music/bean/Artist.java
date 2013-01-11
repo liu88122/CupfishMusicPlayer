@@ -40,6 +40,19 @@ public class Artist implements Serializable, Comparable<Artist>{
 		this.name = name;
 		this.namePinyin = PinyinUtil.toPinyinString(name);
 	}
+	
+	@Override
+	public int hashCode() {
+		return this.name.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof Artist){
+			return this.name.equals(((Artist)o).getName());
+		}
+		return super.equals(o);
+	}
 
 	@Override
 	public int compareTo(Artist another) {
