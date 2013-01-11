@@ -11,13 +11,13 @@ import android.test.AndroidTestCase;
 
 import com.cupfish.music.bean.Song;
 import com.cupfish.music.lrc.LrcReader;
-import com.cupfish.music.utils.BaiduTingHelper;
+import com.cupfish.music.utils.BaiduMusicHelper;
 
 public class TestLRCReader extends AndroidTestCase {
 	
 	public void testLrcRead() throws Exception{
 
-		Song song = BaiduTingHelper.getSongById("13869261");
+		Song song = BaiduMusicHelper.getSongById("13869261");
 		TreeMap<Long, String> result = LrcReader.getLRCTreeMap(song, getContext());
 		Iterator timeIterator = result.keySet().iterator();
 		while(timeIterator.hasNext()){

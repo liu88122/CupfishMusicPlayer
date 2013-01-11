@@ -7,7 +7,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -27,8 +26,9 @@ import com.cupfish.music.bean.Song;
 import com.cupfish.music.exception.NetTimeoutException;
 import com.cupfish.music.global.Constants;
 
-public class BaiduTingHelper {
+public class BaiduMusicHelper {
 
+	private static final String SOURCE = "baidu";
 	private static final String BASE_URL = "http://music.baidu.com";
 	private static final String TOP_BASE_URL = BASE_URL + "/top";
 	private static final String TOP_NEW_BASE_URL = BASE_URL + "/top/new";
@@ -72,6 +72,7 @@ public class BaiduTingHelper {
 			Document document = Jsoup.parse(sb.toString());
 			Elements songsElements = document.select("div.song-item");
 			Song song = null;
+			int rank = 1;
 			for (Element element : songsElements) {
 				song = new Song();
 
@@ -111,8 +112,10 @@ public class BaiduTingHelper {
 						song.getArtists().add(artist);
 					}
 				}
-
-				// sb.append(songId).append("|").append(songTitle).append("|").append(singer);
+				
+				song.setRank(rank++);
+				song.setCategory(topType);
+				song.setSource(SOURCE);
 				songs.add(song);
 				song = null;
 			}
