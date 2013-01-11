@@ -6,7 +6,12 @@ import java.util.List;
 import android.content.Context;
 
 import com.cupfish.music.R;
+import com.cupfish.music.bean.Album;
+import com.cupfish.music.bean.Artist;
 import com.cupfish.music.bean.LocalItem;
+import com.cupfish.music.bean.MusicFolder;
+import com.cupfish.music.bean.Song;
+import com.cupfish.music.dao.MusicDao;
 import com.cupfish.music.ui.LocalAllActivity;
 import com.cupfish.music.ui.LocalFolderActivity;
 
@@ -14,23 +19,40 @@ public class LocalCategoryFactory {
 
 	public static List<LocalItem> getAllCategoris(Context context) {
 		List<LocalItem> categories = new ArrayList<LocalItem>();
+		MusicDao mMusicDao = new MusicDao(context);
 		for(int i=0; i<CATEGORY_NUM; i++){
 			String name = context.getString(defaultNames[i]);
 			LocalItem item = new LocalItem(name, foregroundCovers[i], backgroundCovers[i]);
 			switch(i){
 			case 0:
-				item.setItemNum(LocalManager.getAllSongs(context).size());
-				item.setTarget(LocalAllActivity.class);
+				ArrayList<Song> songs = mMusicDao.queryAllLocalSongs();
+				if (songs != null) {
+					item.setData(songs);
+					item.setItemNum(songs.size());
+					item.setTarget(LocalAllActivity.class);
+				}
 				break;
 			case 1:
-				item.setItemNum(LocalManager.getAllArtists(context).size());
+				ArrayList<Artist> artists = mMusicDao.queryLocalArtists();
+				if(artists != null){
+					item.setData(artists);
+					item.setItemNum(artists.size());
+				}
 				break;
 			case 2:
-				item.setItemNum(LocalManager.getAllAlbums(context).size());
+				ArrayList<Album> albums = mMusicDao.queryLocalAlbums();
+				if (albums != null) {
+					item.setItemNum(albums.size());
+					item.setData(albums);
+				}
 				break;
 			case 3:
-				item.setItemNum(LocalManager.getAllFolders(context).size());
-				item.setTarget(LocalFolderActivity.class);
+				ArrayList<MusicFolder> folders = mMusicDao.queryLocalFolders();
+				if (folders != null) {
+					item.setItemNum(folders.size());
+					item.setData(folders);
+					item.setTarget(LocalFolderActivity.class);
+				}
 				break;
 			case 4:
 				item.setItemNum(LocalManager.getAllFavorites(context).size());
