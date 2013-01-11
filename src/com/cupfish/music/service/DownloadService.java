@@ -28,7 +28,7 @@ import com.cupfish.music.R;
 import com.cupfish.music.bean.Song;
 import com.cupfish.music.exception.NetTimeoutException;
 import com.cupfish.music.global.Constants;
-import com.cupfish.music.utils.BaiduTingHelper;
+import com.cupfish.music.utils.BaiduMusicHelper;
 import com.cupfish.music.utils.DownloadUtil;
 import com.cupfish.music.utils.LocalMediaUtil;
 
@@ -161,7 +161,7 @@ public class DownloadService extends Service {
 			switch (flag) {
 			case Constants.FLAG_BAIDU_MUSIC:
 				try {
-					tempUrl = BaiduTingHelper.getDownloadUrlBySongId(mCurrentDownloadSong.getSongId());
+					tempUrl = BaiduMusicHelper.getDownloadUrlBySongId(mCurrentDownloadSong.getSongId());
 				} catch (NetTimeoutException e) {
 					e.printStackTrace();
 				}

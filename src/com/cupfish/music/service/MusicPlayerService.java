@@ -31,7 +31,7 @@ import com.cupfish.music.global.BaseApp;
 import com.cupfish.music.global.Constants;
 import com.cupfish.music.lrc.LrcController;
 import com.cupfish.music.lrc.LrcController.OnLrcUpdateListener;
-import com.cupfish.music.utils.BaiduTingHelper;
+import com.cupfish.music.utils.BaiduMusicHelper;
 
 public class MusicPlayerService extends Service implements OnCompletionListener, OnPreparedListener, OnBufferingUpdateListener {
 
@@ -211,7 +211,7 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 										case Constants.FLAG_BAIDU_MUSIC:
 											Song baiduSong = song;
 											try {
-												baiduSong = BaiduTingHelper.getSongById(songId);
+												baiduSong = BaiduMusicHelper.getSongById(songId);
 											} catch (NetTimeoutException e) {
 												// TODO Auto-generated catch
 												// block
