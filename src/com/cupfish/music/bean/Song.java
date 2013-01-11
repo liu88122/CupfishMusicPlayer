@@ -22,6 +22,7 @@ public class Song implements Serializable, Comparable<Song> {
 	private long duration;
 	private String source;
 	private String category;
+	private int rank;
 
 	private List<Artist> artists = new ArrayList<Artist>();
 
@@ -30,7 +31,7 @@ public class Song implements Serializable, Comparable<Song> {
 	}
 
 	public Song(String _id, String sId, String title, String artist, Album album, String sPath, String sUrl, String lrcPath, String lrcUrl,
-			String audioType, long duration, List<Artist> artists, String source, String category) {
+			String audioType, long duration, List<Artist> artists, String source, String category, int rank) {
 		super();
 		this._id = _id;
 		this.songId = sId;
@@ -47,6 +48,7 @@ public class Song implements Serializable, Comparable<Song> {
 		this.artists = artists;
 		this.source = source;
 		this.category = category;
+		this.rank = rank;
 	}
 
 	public String get_id() {
@@ -165,6 +167,14 @@ public class Song implements Serializable, Comparable<Song> {
 	public void setCategory(String category) {
 		this.category = category;
 	}
+	
+	public int getRank() {
+		return rank;
+	}
+
+	public void setRank(int rank) {
+		this.rank = rank;
+	}
 
 	@Override
 	public int compareTo(Song another) {
@@ -185,9 +195,8 @@ public class Song implements Serializable, Comparable<Song> {
 	public String toString() {
 		return "Song [_id=" + _id + ", songId=" + songId + ", title=" + title + ", titlePinyin=" + titlePinyin + ", artist=" + artist + ", album="
 				+ album + ", songPath=" + songPath + ", songUrl=" + songUrl + ", lrcPath=" + lrcPath + ", lrcUrl=" + lrcUrl + ", audioType="
-				+ audioType + ", duration=" + duration + ", source=" + source + ", category=" + category + ", artists=" + artists + "]";
+				+ audioType + ", duration=" + duration + ", source=" + source + ", category=" + category + ", rank=" + rank + ", artists=" + artists
+				+ "]";
 	}
 
-	
-	
 }
