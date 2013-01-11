@@ -1,6 +1,14 @@
 杯里鱼音乐播放器 <br/>
 字体下载地址：http://www.cupfish.com/files/xujinglei_font.ttf  <br/>
 
+v2013.01.11 <br/>
+1.更新MusicDao,已基本满足现阶段的查询任务 <br/>
+2.文件夹模块目前已经实现，但查询效率有待提高，用户体验不是太好<br/>
+3.更换歌曲默认封面<br/>
+4.更新 回到MainActivity时默认回到播放界面,目前体验不是很流畅<br/>
+5.在Song中加入rank字段<br/>
+
+
 v2013.01.10 <br/>
 1.增加 musicScanner相关模块，继续完善MusicDao<br/>
 
