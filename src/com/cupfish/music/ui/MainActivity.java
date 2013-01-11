@@ -294,6 +294,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		doTabIndicatorAnim(TAB_PLAYING_INDEX);
+		mViewPager.setCurrentItem(0);
 		
 	}
 

@@ -21,7 +21,7 @@ import com.cupfish.music.exception.NetTimeoutException;
 import com.cupfish.music.global.BaseApp;
 import com.cupfish.music.global.Constants;
 import com.cupfish.music.ui.adapter.SearchResultAdapter;
-import com.cupfish.music.utils.BaiduTingHelper;
+import com.cupfish.music.utils.BaiduMusicHelper;
 
 public class SearchResultActivity extends Activity implements OnClickListener {
 
@@ -98,7 +98,7 @@ public class SearchResultActivity extends Activity implements OnClickListener {
 			@Override
 			public void run() {
 				try {
-					mSongs = BaiduTingHelper.getSongsByTitle(title);
+					mSongs = BaiduMusicHelper.getSongsByTitle(title);
 				} catch (NetTimeoutException e) {
 					showNetErrorDialog();
 				}

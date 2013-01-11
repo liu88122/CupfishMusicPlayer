@@ -1,9 +1,13 @@
 package com.cupfish.music.ui;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -25,11 +29,21 @@ public class LocalAllActivity extends Activity {
 	private AlphabetSideBar mSideBar;
 	private LocalAllAdapter mAdapter;
 	private TextView mCurrentSection;
+	private List<Song> songs;
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+		
 		setContentView(R.layout.local);
+		
+		
+		Intent intent = getIntent();
+		songs = (List<Song>) intent.getSerializableExtra("data");
+		
 		setupLayout();
 		setupListener();
 	}
@@ -38,7 +52,7 @@ public class LocalAllActivity extends Activity {
 		mSongListView = (PinnedHeaderListView) findViewById(R.id.lv_local);
 		mSideBar = (AlphabetSideBar) findViewById(R.id.side_bar);
 		mCurrentSection = (TextView) findViewById(R.id.tv_current_section);
-		mAdapter = new LocalAllAdapter(this, LocalManager.getAllSongs(this));
+		mAdapter = new LocalAllAdapter(this, songs);
 		mSongListView.setAdapter(mAdapter);
 		mSongListView.setOnScrollListener(mAdapter);
 		mSongListView.setHeaderView(getLayoutInflater().inflate(R.layout.music_list_item_section_title, mSongListView, false));

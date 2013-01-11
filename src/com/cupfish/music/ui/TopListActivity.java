@@ -32,7 +32,7 @@ import com.cupfish.music.exception.NetTimeoutException;
 import com.cupfish.music.global.BaseApp;
 import com.cupfish.music.global.Constants;
 import com.cupfish.music.ui.adapter.OnlineListAdapter;
-import com.cupfish.music.utils.BaiduTingHelper;
+import com.cupfish.music.utils.BaiduMusicHelper;
 
 public class TopListActivity extends Activity implements OnClickListener {
 
@@ -118,7 +118,7 @@ public class TopListActivity extends Activity implements OnClickListener {
 		topType = intent.getStringExtra("topType");
 		mBack.setText(topType);
 		if (flag == Constants.FLAG_BAIDU_MUSIC) {
-			topType = BaiduTingHelper.getTopListTypeByName(topType);
+			topType = BaiduMusicHelper.getTopListTypeByName(topType);
 		}
 		mLoadingDialog = new ProgressDialog(this);
 		mLoadingDialog.setMessage("正在加载歌曲哦亲");
@@ -192,7 +192,7 @@ public class TopListActivity extends Activity implements OnClickListener {
 						Log.i(TAG, "BaiduTingHelper, HELPING");
 						List<Song> tempBaiduSongs = null;
 						try {
-							tempBaiduSongs = BaiduTingHelper.getSongsFromBaidu(topType);
+							tempBaiduSongs = BaiduMusicHelper.getSongsFromBaidu(topType);
 						} catch (NetTimeoutException e) {
 							errorHandler.sendEmptyMessage(ERROR);
 						}

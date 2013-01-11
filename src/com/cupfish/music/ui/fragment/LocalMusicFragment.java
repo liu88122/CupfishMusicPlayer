@@ -1,5 +1,7 @@
 package com.cupfish.music.ui.fragment;
 
+import java.util.ArrayList;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -40,8 +42,14 @@ public class LocalMusicFragment extends Fragment implements OnItemClickListener 
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		LocalItem item = (LocalItem) mAdapter.getItem(position);
 		if(item.getTarget() != null){
-			Intent intent = new Intent(getActivity(), item.getTarget());
-			getActivity().startActivity(intent);
+			ArrayList data = item.getData();
+			if(data != null && data.size() > 0){
+				Intent intent = new Intent(getActivity(), item.getTarget());
+				Bundle bundle = new Bundle();
+				bundle.putSerializable("data", data);
+				intent.putExtras(bundle);
+				getActivity().startActivity(intent);
+			}
 		}
 	}
 	

@@ -33,6 +33,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextSwitcher;
@@ -110,9 +111,6 @@ public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClic
 	// 手势库加载状态
 	private boolean loadState;
 
-	// 判断专辑封面是否为默认，true:默认时封面有rotateAnimation, 点击播放按钮时动画有响应
-	// false: 点击播放按钮时动画无响应
-	private boolean isDefaultAlbum = true;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -340,7 +338,6 @@ public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClic
 					bitmap = MyImageUtils.loadImage(imageName, imageUrl, new ImageCallback() {
 						@Override
 						public void loadImage(Bitmap bitmap, String imagePath) {
-							isDefaultAlbum = false;
 							mAlbumCover.setImageBitmap(MyImageUtils.getFitableBitmapWithReflection(getActivity(), bitmap));
 						}
 					});
@@ -349,9 +346,10 @@ public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClic
 				if (bitmap == null) {
 					bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.music_album_default);
 					mAlbumCover.setImageBitmap(MyImageUtils.zoomBitmap(bitmap, 0.8f));
+					mAlbumCover.setScaleType(ScaleType.CENTER);
 				} else {
-					isDefaultAlbum = false;
 					mAlbumCover.setImageBitmap(MyImageUtils.getFitableBitmapWithReflection(getActivity(), bitmap));
+					mAlbumCover.setScaleType(ScaleType.FIT_CENTER);
 					bitmap.recycle();
 				}
 			}
@@ -497,10 +495,7 @@ public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClic
 
 							// 控制默认封面是否加载Circle动画
 							mPlayBtn.setImageResource(R.drawable.player_pause_btn_selector);
-							Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.roate_circle);
-							if (isDefaultAlbum) {
-								mAlbumCover.startAnimation(animation);
-							}
+							
 						} else if ("next".equals(cmdName)) {
 							action = Constants.ACTION_NEXT;
 						} else if ("previous".equals(cmdName)) {
