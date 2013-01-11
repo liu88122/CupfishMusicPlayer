@@ -145,10 +145,12 @@ public class LocalAllAdapter extends BaseAdapter implements PinnedHeaderAdapter,
 		}
 		
 		int section = getSectionForPosition(realPosition);// 得到此item所在的分组位置
-		int nextSectionPosition = getPositionForSection(mSections.get(section + 1));// 得到下一个分组的位置
-		System.out.println("section:" + section + " next:" + nextSectionPosition);
-		if (nextSectionPosition != -1 && realPosition == nextSectionPosition - 1) {
-			return PINNED_HEADER_PUSHED_UP;
+		if (section < mSections.size() - 1) {
+			int nextSectionPosition = getPositionForSection(mSections.get(section + 1));// 得到下一个分组的位置
+			System.out.println("section:" + section + " next:" + nextSectionPosition);
+			if (nextSectionPosition != -1 && realPosition == nextSectionPosition - 1) {
+				return PINNED_HEADER_PUSHED_UP;
+			}
 		}
 		return PINNED_HEADER_VISIBLE;
 	}
