@@ -16,7 +16,7 @@ import android.text.TextUtils;
 
 import com.cupfish.music.bean.LRC2;
 import com.cupfish.music.bean.Song;
-import com.cupfish.music.global.Constants;
+import com.cupfish.music.common.Constants;
 import com.cupfish.music.utils.DownloadUtil;
 
 public class LrcReader {

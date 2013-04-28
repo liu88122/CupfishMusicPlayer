@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.cupfish.music.global.Constants;
+import com.cupfish.music.common.Constants;
 
 /**
  * 新的歌词LRC类

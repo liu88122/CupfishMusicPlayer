@@ -1,4 +1,4 @@
-package com.cupfish.music.global;
+package com.cupfish.music.common;
 
 import android.os.Environment;
 
@@ -59,6 +59,8 @@ public interface Constants {
 	int FLAG_BAIDU_MUSIC = 2012;
 	
 	String LRC_AD = "~music~";
+	
+	String VISUALIZATION_TYPE = "visualizationType";
 	
 
 }

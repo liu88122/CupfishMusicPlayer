@@ -15,7 +15,7 @@ import android.widget.ListView;
 
 import com.cupfish.music.R;
 import com.cupfish.music.bean.Song;
-import com.cupfish.music.global.Constants;
+import com.cupfish.music.common.Constants;
 import com.cupfish.music.ui.adapter.MusicListNameAdapter;
 
 public class TopListNameActivity extends Activity implements OnClickListener {

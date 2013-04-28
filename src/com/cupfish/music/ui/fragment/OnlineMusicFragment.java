@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.cupfish.music.R;
-import com.cupfish.music.global.Constants;
+import com.cupfish.music.common.Constants;
 import com.cupfish.music.ui.TopListNameActivity;
 
 public class OnlineMusicFragment extends Fragment implements OnClickListener {

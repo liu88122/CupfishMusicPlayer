@@ -1,4 +1,4 @@
-package com.cupfish.music.global;
+package com.cupfish.music.common;
 
 import java.util.List;
 

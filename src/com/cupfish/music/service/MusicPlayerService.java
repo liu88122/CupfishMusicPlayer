@@ -14,6 +14,7 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnBufferingUpdateListener;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnPreparedListener;
+import android.media.audiofx.Visualizer;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -25,13 +26,14 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.cupfish.music.bean.Song;
+import com.cupfish.music.common.BaseApp;
+import com.cupfish.music.common.Constants;
 import com.cupfish.music.download.DownloadEngine;
 import com.cupfish.music.exception.NetTimeoutException;
-import com.cupfish.music.global.BaseApp;
-import com.cupfish.music.global.Constants;
 import com.cupfish.music.lrc.LrcController;
 import com.cupfish.music.lrc.LrcController.OnLrcUpdateListener;
 import com.cupfish.music.utils.BaiduMusicHelper;
+import com.cupfish.music.utils.VisualizerUtils;
 
 public class MusicPlayerService extends Service implements OnCompletionListener, OnPreparedListener, OnBufferingUpdateListener {
 
@@ -121,7 +123,7 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 		mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 		mMediaPlayer.setOnCompletionListener(this);
 		mMediaPlayer.setOnPreparedListener(this);
-
+		
 		mControllerReceiver = new PlayerControllerReceiver();
 		// 注册BroadcastReceiver，处理所有播放器控制命令
 		IntentFilter filter = new IntentFilter();
@@ -287,7 +289,7 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 				Log.i(TAG, "Download url::" + path);
 				mMediaPlayer.prepareAsync();
 				lrcController.loadLRC(this, mPlayList.get(index), mMediaPlayer);
-				
+				VisualizerUtils.initVisualizer(mMediaPlayer);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -366,6 +368,7 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 //		mDao.deleteAll();
 //		mDao.insertPlayList(mPlayList);
 		unregisterReceiver(mControllerReceiver);
+		VisualizerUtils.releaseVisualizer();
 		super.onDestroy();
 	}
 

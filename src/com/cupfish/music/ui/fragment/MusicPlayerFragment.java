@@ -1,6 +1,7 @@
 package com.cupfish.music.ui.fragment;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import android.content.BroadcastReceiver;
@@ -44,19 +45,21 @@ import android.widget.ViewSwitcher.ViewFactory;
 import com.cupfish.music.R;
 import com.cupfish.music.bean.Album;
 import com.cupfish.music.bean.Song;
+import com.cupfish.music.common.BaseApp;
+import com.cupfish.music.common.Constants;
 import com.cupfish.music.download.DownloadEngine;
 import com.cupfish.music.download.DownloadTask.DownloadListener;
-import com.cupfish.music.global.BaseApp;
-import com.cupfish.music.global.Constants;
 import com.cupfish.music.lrc.LrcController;
 import com.cupfish.music.lrc.LrcController.OnLrcUpdateListener;
 import com.cupfish.music.service.MusicPlayerService;
 import com.cupfish.music.ui.PlaylistActivity;
 import com.cupfish.music.ui.view.LrcView2;
+import com.cupfish.music.ui.view.VisualizerView;
 import com.cupfish.music.utils.LocalMediaUtil;
 import com.cupfish.music.utils.MyImageUtils;
 import com.cupfish.music.utils.MyImageUtils.ImageCallback;
 import com.cupfish.music.utils.TextFormatUtils;
+import com.cupfish.music.utils.VisualizerUtils;
 
 public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClickListener {
 
@@ -81,7 +84,6 @@ public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClic
 	private ImageView mAlbumCover;
 	private ImageView mGuestureBtn;
 	private ImageView mVolumeBtn;
-
 	
 	private FrameLayout lrcViewContainer;
 	// 歌词显示使用TextSwitcher
@@ -232,6 +234,10 @@ public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClic
 
 		// 初始化Play按钮
 		mPlayBtn.setImageResource(R.drawable.player_play_btn_selector);
+		
+		//初始化VisualizerView
+		WeakReference<VisualizerView> visualizerView = new WeakReference<VisualizerView>((VisualizerView) mPlayingContent.findViewById(R.id.vv_visualizer_view));
+		VisualizerUtils.updateVisualizerView(visualizerView);
 	}
 	
 	private void initGueture(View mPlayingContent) {

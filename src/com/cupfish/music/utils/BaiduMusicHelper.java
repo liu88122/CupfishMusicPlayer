@@ -23,8 +23,8 @@ import android.text.TextUtils;
 import com.cupfish.music.bean.Album;
 import com.cupfish.music.bean.Artist;
 import com.cupfish.music.bean.Song;
+import com.cupfish.music.common.Constants;
 import com.cupfish.music.exception.NetTimeoutException;
-import com.cupfish.music.global.Constants;
 
 public class BaiduMusicHelper {
 

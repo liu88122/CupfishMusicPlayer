@@ -20,7 +20,7 @@ import android.view.WindowManager;
 
 import com.cupfish.music.R;
 import com.cupfish.music.bean.AppUpdateInfo;
-import com.cupfish.music.global.Constants;
+import com.cupfish.music.common.Constants;
 import com.cupfish.music.service.MusicScanService;
 import com.cupfish.music.utils.UpdateManager;
 

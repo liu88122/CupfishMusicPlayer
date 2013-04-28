@@ -35,7 +35,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
-import com.cupfish.music.global.Constants;
+import com.cupfish.music.common.Constants;
 
 public class MyImageUtils {
 

@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.cupfish.music.R;
 import com.cupfish.music.bean.Song;
-import com.cupfish.music.global.Constants;
+import com.cupfish.music.common.Constants;
 import com.cupfish.music.ui.adapter.LocalAllAdapter;
 import com.cupfish.music.ui.view.AlphabetSideBar;
 import com.cupfish.music.ui.view.AlphabetSideBar.AlphabetClickListener;

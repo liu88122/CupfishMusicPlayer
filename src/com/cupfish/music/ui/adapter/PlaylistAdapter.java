@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.cupfish.music.R;
 import com.cupfish.music.bean.Song;
-import com.cupfish.music.global.Constants;
+import com.cupfish.music.common.Constants;
 
 public class PlaylistAdapter extends BaseAdapter {
 

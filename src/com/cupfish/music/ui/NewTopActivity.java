@@ -17,9 +17,9 @@ import android.widget.ListView;
 
 import com.cupfish.music.R;
 import com.cupfish.music.bean.Song;
+import com.cupfish.music.common.BaseApp;
+import com.cupfish.music.common.Constants;
 import com.cupfish.music.exception.NetTimeoutException;
-import com.cupfish.music.global.BaseApp;
-import com.cupfish.music.global.Constants;
 import com.cupfish.music.ui.adapter.OnlineListAdapter;
 import com.cupfish.music.utils.BaiduMusicHelper;
 

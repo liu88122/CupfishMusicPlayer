@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.cupfish.music.R;
 import com.cupfish.music.bean.Song;
-import com.cupfish.music.global.Constants;
+import com.cupfish.music.common.Constants;
 import com.cupfish.music.utils.BaiduMusicHelper;
 import com.cupfish.music.utils.DownloadUtil;
 

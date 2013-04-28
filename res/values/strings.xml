@@ -30,5 +30,12 @@
     <string name="local_folder">文件夹</string>
     <string name="local_favorate">我的最爱</string>
     <string name="local_playlist">播放列表</string>
+    
+     <!-- Visualizations -->
+    <string name="visual_none">None</string>
+    <string name="visual_bargraph">Bar Graph</string>
+    <string name="visual_solidbargraph">Solid Bar Graph</string>
+    <string name="visual_waveform">Waveform</string>
+    
 
 </resources>

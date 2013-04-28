@@ -29,6 +29,8 @@
                     android:focusable="true"
                     android:scaleType="fitCenter"
                     android:src="@drawable/start_cover_default" />
+                
+               
             </FrameLayout>
 
             <LinearLayout
@@ -129,6 +131,13 @@
             android:orientation="horizontal"
             android:uncertainGestureColor="@color/yellow_light"
             android:visibility="gone" />
+        
+         <com.cupfish.music.ui.view.VisualizerView 
+                    android:id="@+id/vv_visualizer_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="visible"
+                    />
     </FrameLayout>
 
     <LinearLayout

@@ -15,7 +15,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.cupfish.music.global.Constants;
+import com.cupfish.music.common.Constants;
 
 public class DownloadUtil {
 

@@ -39,7 +39,7 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import com.cupfish.music.R;
-import com.cupfish.music.global.BaseApp;
+import com.cupfish.music.common.BaseApp;
 import com.cupfish.music.service.DownloadService;
 import com.cupfish.music.service.MusicPlayerService;
 import com.cupfish.music.ui.adapter.MainPagerAdapter;
