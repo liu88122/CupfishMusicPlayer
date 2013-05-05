@@ -10,7 +10,10 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.NinePatchDrawable;
+import android.os.Handler;
+import android.os.Message;
 import android.util.DisplayMetrics;
 
 import com.cupfish.music.R;
@@ -20,12 +23,35 @@ public class BarGraphRenderer extends Renderer
   private Context mContext = null;
   
   private int[] mData = null;
+  
+  private int[] mLastMax = null;
+  
+  private Handler mHandler;
+  
+  private long mDropInterval = 500;
+  
+  private Runnable mMaxBarCalc = new Runnable() {
+	@Override
+	public void run() {
+		for(int i =0; i<mLastMax.length; i++){
+			if((mLastMax[i] - 1) <=  0){
+				mLastMax[i] = 0;
+			} else {
+				mLastMax[i] = mLastMax[i] - 1;
+			}
+		}
+		mHandler.postDelayed(this, mDropInterval);
+	}
+};
 
   public BarGraphRenderer(Context context)
   {
     super();
     mContext = context;
     mData = new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    mLastMax = new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    mHandler = new Handler();
+    mHandler.postDelayed(mMaxBarCalc, mDropInterval);
   }
 
   @Override
@@ -80,13 +106,22 @@ public class BarGraphRenderer extends Renderer
 			float y1 = rect.height();
 			int blockHeight = 10;
 			int numBlocks = (int) Math.floor((dbValue * 8) / blockHeight);
+			if(numBlocks > mLastMax[i]){
+				mLastMax[i] = numBlocks;
+			}
 			//cycle through and render individual blocks
 			for( int j = 0; j < numBlocks; j++ ){
 					int yEnd = (int)( y1 - ( blockHeight * j ));
 					Rect nRect = new Rect((int)x1, yEnd - blockHeight, (int)(x1+bar_width), yEnd);
 					bg.setBounds(nRect);
 					bg.draw(canvas);
-			}			
+			}	
+			
+			int yEnd = (int)( y1 - ( blockHeight * mLastMax[i] ));
+			Rect nRect = new Rect((int)x1,  yEnd - blockHeight, (int)(x1+bar_width), yEnd);
+//			ColorDrawable bg1 = new ColorDrawable(R.color.main_blue_light);
+			bg.setBounds(nRect);
+			bg.draw(canvas);
 	  }
   }
 }
