@@ -1,5 +1,9 @@
 杯里鱼音乐播放器 <br/>
-字体下载地址：http://www.cupfish.com/files/xujinglei_font.ttf  <br/>
+字体下载地址：http://www.cupfish.com/files/xujinglei_font.ttf (暂时无效) <br/>
+
+v2013.05.14 <br/>
+1.重新调整UI及架构
+
 
 v2013.01.11 <br/>
 1.更新MusicDao,已基本满足现阶段的查询任务 <br/>

@@ -215,9 +215,9 @@ public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClic
 		mVolumeBtn = (ImageView) mPlayingContent.findViewById(R.id.iv_volume);
 		mAlbumCover = (ImageView) mPlayingContent.findViewById(R.id.iv_album_cover);
 
-		Log.i(TAG, "--383--daodao");
+		Log.i(TAG, "--383--music");
 		Bitmap temp = MyImageUtils.createReflectionImageWithOrigin(BitmapFactory.decodeResource(getResources(),
-				R.drawable.daodao));
+				R.drawable.music));
 		mAlbumCover.setImageBitmap(MyImageUtils.zoomBitmap(temp, 0.6f));
 		
 		//手势相关初始化
