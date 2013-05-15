@@ -4,12 +4,12 @@
  * Licensed under the MIT license:
  * http://creativecommons.org/licenses/MIT/
  */
-package com.cupfish.music.utils.visualizer;
+package com.cupfish.music.helpers.visualizer;
 
-// Data class to explicitly indicate that these bytes are raw audio data
-public class AudioData
+// Data class to explicitly indicate that these bytes are the FFT of audio data
+public class FFTData
 {
-  public AudioData(byte[] bytes)
+  public FFTData(byte[] bytes)
   {
     this.bytes = bytes;
   }

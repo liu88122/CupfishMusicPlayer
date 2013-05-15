@@ -8,7 +8,6 @@ package com.cupfish.music.ui.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
@@ -16,18 +15,13 @@ import android.graphics.Matrix;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.Rect;
 import android.media.audiofx.Visualizer;
-import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.cupfish.music.R;
-import com.cupfish.music.common.Constants;
-import com.cupfish.music.utils.visualizer.AudioData;
-import com.cupfish.music.utils.visualizer.BarGraphRenderer;
-import com.cupfish.music.utils.visualizer.FFTData;
-import com.cupfish.music.utils.visualizer.Renderer;
-import com.cupfish.music.utils.visualizer.SolidBarGraphRenderer;
-import com.cupfish.music.utils.visualizer.WaveformRenderer;
+import com.cupfish.music.helpers.visualizer.AudioData;
+import com.cupfish.music.helpers.visualizer.BarGraphRenderer;
+import com.cupfish.music.helpers.visualizer.FFTData;
+import com.cupfish.music.helpers.visualizer.Renderer;
 
 public class VisualizerView extends View {
 

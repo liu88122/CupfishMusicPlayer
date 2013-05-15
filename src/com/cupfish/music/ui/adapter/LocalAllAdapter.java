@@ -1,8 +1,11 @@
 package com.cupfish.music.ui.adapter;
 
+import static com.cupfish.music.Constants.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -16,8 +19,9 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import com.cupfish.music.R;
-import com.cupfish.music.bean.Artist;
 import com.cupfish.music.bean.Song;
+import com.cupfish.music.cache.ImageInfo;
+import com.cupfish.music.cache.ImageProvider;
 import com.cupfish.music.ui.view.PinnedHeaderListView;
 import com.cupfish.music.ui.view.PinnedHeaderListView.PinnedHeaderAdapter;
 
@@ -27,12 +31,14 @@ public class LocalAllAdapter extends BaseAdapter implements PinnedHeaderAdapter,
 	private Context mContext;
 	private LayoutInflater mInflater;
 	private List<Character> mSections;
+	private ImageProvider mImageProvider;
 
 
 	public LocalAllAdapter(Context context, List<Song> mLocalSongs){
 		this.mLocalSongs = mLocalSongs;
 		mInflater = LayoutInflater.from(context);
 		buildSections(mLocalSongs);
+		mImageProvider = ImageProvider.getInstance((Activity)context);
 	}
 	
 	private void buildSections(List<Song> mLocalSongs){
@@ -101,16 +107,13 @@ public class LocalAllAdapter extends BaseAdapter implements PinnedHeaderAdapter,
 			convertView.setTag(holder);
 		}else{
 			holder = (ViewHolder) convertView.getTag();
+			holder.albumCover.setImageResource(R.drawable.no_art_small);
 		}
 		Song song = mLocalSongs.get(position);
 		holder.title.setText(song.getTitle());
-		List<Artist> artist = song.getArtists();
-		if(artist != null){
-			StringBuilder sb = new StringBuilder();
-			for(Artist a : artist){
-				sb.append(a.getName() + " ");
-			}
-			holder.artist.setText(sb.toString());
+		
+		if(!TextUtils.isEmpty(song.getArtist())){
+			holder.artist.setText(song.getArtist());
 		}
 		
 		if(!TextUtils.isEmpty(song.getTitlePinyin())){
@@ -123,7 +126,14 @@ public class LocalAllAdapter extends BaseAdapter implements PinnedHeaderAdapter,
 				holder.section.setVisibility(View.GONE);
 			}
 		}
-		
+
+		ImageInfo mInfo = new ImageInfo();
+		mInfo.type = TYPE_ARTIST;
+		mInfo.size = SIZE_THUMB;
+		mInfo.source = SRC_LASTFM;
+		mInfo.data = new String[] { song.getArtist() };
+
+		mImageProvider.loadImage(holder.albumCover, mInfo);
 		return convertView;
 	}
 

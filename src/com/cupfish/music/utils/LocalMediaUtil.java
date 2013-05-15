@@ -21,9 +21,9 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 
 import com.cupfish.music.R;
-import com.cupfish.music.bean.Album;
-import com.cupfish.music.bean.Artist;
 import com.cupfish.music.bean.Song;
+import com.cupfish.music.helpers.lastfm.Album;
+import com.cupfish.music.helpers.lastfm.Artist;
 
 public class LocalMediaUtil {
 
@@ -60,14 +60,7 @@ public class LocalMediaUtil {
 				}
 			}
 			
-			Album album = new Album();
-			album.setId(albumId);
-			album.setTitle(albumTitle);
-			
-			Artist artist = new Artist();
-			artist.setName(artistName);
-			ArrayList<Artist> artists = new ArrayList<Artist>();
-			artists.add(artist);
+			Album album = new Album(title, null, artistName);
 			
 			String audioType = null;
 			if(!TextUtils.isEmpty(path)){
@@ -82,7 +75,7 @@ public class LocalMediaUtil {
 			song.setTitle(title);
 			song.setSongPath(path);
 			song.setAlbum(album);
-			song.setArtists(artists);
+			song.setArtist(artistName);
 			song.setDuration(duration);
 			song.setAudioType(audioType);
 			localSongs.add(song);

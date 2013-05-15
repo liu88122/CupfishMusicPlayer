@@ -4,7 +4,7 @@
  * Licensed under the MIT license:
  * http://creativecommons.org/licenses/MIT/
  */
-package com.cupfish.music.utils.visualizer;
+package com.cupfish.music.helpers.visualizer;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;

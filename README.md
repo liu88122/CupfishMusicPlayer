@@ -1,6 +1,12 @@
 杯里鱼音乐播放器 <br/>
 字体下载地址：http://www.cupfish.com/files/xujinglei_font.ttf (暂时无效) <br/>
 
+v2013.05.15 <br/>
+1.继续调整UI,引入lastFm API
+
+TODO:
+1.搞定图片缓存
+
 v2013.05.14 <br/>
 1.重新调整UI及架构
 

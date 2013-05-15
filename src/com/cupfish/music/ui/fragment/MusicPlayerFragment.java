@@ -1,5 +1,7 @@
 package com.cupfish.music.ui.fragment;
 
+import static com.cupfish.music.Constants.*;
+
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -43,12 +45,14 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher.ViewFactory;
 
 import com.cupfish.music.R;
-import com.cupfish.music.bean.Album;
 import com.cupfish.music.bean.Song;
+import com.cupfish.music.cache.ImageInfo;
+import com.cupfish.music.cache.ImageProvider;
 import com.cupfish.music.common.BaseApp;
 import com.cupfish.music.common.Constants;
 import com.cupfish.music.download.DownloadEngine;
 import com.cupfish.music.download.DownloadTask.DownloadListener;
+import com.cupfish.music.helpers.lastfm.Album;
 import com.cupfish.music.lrc.LrcController;
 import com.cupfish.music.lrc.LrcController.OnLrcUpdateListener;
 import com.cupfish.music.service.MusicPlayerService;
@@ -113,6 +117,7 @@ public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClic
 	// 手势库加载状态
 	private boolean loadState;
 
+	private ImageProvider mImageProvider;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -124,6 +129,7 @@ public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClic
 		}
 		mDurationUpdateHandler = new DurationUpdateHandler();
 		mLrcHandler = new LrcHandler();
+		mImageProvider = ImageProvider.getInstance(getActivity());
 	}
 	
 	@Override
@@ -310,17 +316,16 @@ public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClic
 
 		if (mCurrentSong != null) {
 			//artists
-			if (mCurrentSong.getArtists() != null && mCurrentSong.getArtists().size() > 0) {
-				mArtist.setText(mCurrentSong.getArtists().get(0).getName());
+			if (!TextUtils.isEmpty(mCurrentSong.getArtist())) {
+				mArtist.setText(mCurrentSong.getArtist());
 			} else {
 				mArtist.setText(R.string.love_life);
 			}
 			//album
 			Album album = mCurrentSong.getAlbum();
 			if (album != null) {
-				mAlbum.setText(album.getTitle());
+				mAlbum.setText(album.getName());
 				mTitle.setText(mCurrentSong.getTitle());
-				String imageUrl = album.getCoverUrl();
 				Bitmap bitmap = null;
 
 				BitmapFactory.Options options = new BitmapFactory.Options();
@@ -339,14 +344,21 @@ public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClic
 
 				// TODO 专辑封面下载有问题，待修复
 				if (bitmap == null) {
-					String imageName = MyImageUtils.md5(mCurrentSong.getTitle());
-					Log.i(TAG, "Loading ImageCover");
-					bitmap = MyImageUtils.loadImage(imageName, imageUrl, new ImageCallback() {
-						@Override
-						public void loadImage(Bitmap bitmap, String imagePath) {
-							mAlbumCover.setImageBitmap(MyImageUtils.getFitableBitmapWithReflection(getActivity(), bitmap));
-						}
-					});
+//					String imageName = MyImageUtils.md5(mCurrentSong.getTitle());
+//					Log.i(TAG, "Loading ImageCover");
+//					bitmap = MyImageUtils.loadImage(imageName, imageUrl, new ImageCallback() {
+//						@Override
+//						public void loadImage(Bitmap bitmap, String imagePath) {
+//							mAlbumCover.setImageBitmap(MyImageUtils.getFitableBitmapWithReflection(getActivity(), bitmap));
+//						}
+//					});
+					ImageInfo mInfo = new ImageInfo();
+					mInfo.type = TYPE_ARTIST;
+					mInfo.size = SIZE_NORMAL;
+					mInfo.source = SRC_LASTFM;
+					mInfo.data = new String[] { mCurrentSong.getArtist() };
+
+					mImageProvider.loadImage(mAlbumCover, mInfo);
 				}
 
 				if (bitmap == null) {

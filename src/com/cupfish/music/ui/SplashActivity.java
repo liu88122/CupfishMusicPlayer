@@ -21,7 +21,6 @@ import android.view.WindowManager;
 import com.cupfish.music.R;
 import com.cupfish.music.bean.AppUpdateInfo;
 import com.cupfish.music.common.Constants;
-import com.cupfish.music.service.MusicScanService;
 import com.cupfish.music.utils.UpdateManager;
 
 public class SplashActivity extends Activity {
@@ -74,8 +73,6 @@ public class SplashActivity extends Activity {
 
 		updateManager = UpdateManager.getInstance();
 
-		scanLocalMusic();
-		
 		new Thread() {
 			@Override
 			public void run() {
@@ -104,10 +101,6 @@ public class SplashActivity extends Activity {
 			
 	}
 	
-	private void scanLocalMusic(){
-		Intent service =new Intent(this, MusicScanService.class);
-		startService(service);
-	}
 
 	private class InitReceiver extends BroadcastReceiver {
 		@Override

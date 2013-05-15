@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -21,7 +20,7 @@ import com.cupfish.music.ui.adapter.LocalAllAdapter;
 import com.cupfish.music.ui.view.AlphabetSideBar;
 import com.cupfish.music.ui.view.AlphabetSideBar.AlphabetClickListener;
 import com.cupfish.music.ui.view.PinnedHeaderListView;
-import com.cupfish.music.utils.LocalManager;
+import com.cupfish.music.utils.LocalMediaUtil;
 
 public class LocalAllActivity extends Activity {
 
@@ -40,9 +39,7 @@ public class LocalAllActivity extends Activity {
 		
 		setContentView(R.layout.local);
 		
-		
-		Intent intent = getIntent();
-		songs = (List<Song>) intent.getSerializableExtra("data");
+		songs = LocalMediaUtil.getLocalSongs(this);
 		
 		setupLayout();
 		setupListener();

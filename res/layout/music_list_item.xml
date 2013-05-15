@@ -17,7 +17,7 @@
             android:layout_height="72dp"
             android:padding="2dip"
             android:scaleType="fitCenter"
-            android:src="@drawable/local_item"
+            android:src="@drawable/no_art_small"
             />
 
         <LinearLayout

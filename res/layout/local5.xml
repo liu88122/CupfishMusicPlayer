@@ -7,52 +7,43 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
         android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/btn_all_songs"
+            style="@style/LocalButtonLong"
+            android:background="@drawable/simple_purple_selector"
+            android:text="@string/local_all_songs" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
-            
+
             <Button
-                android:layout_width="0dp"
-                android:layout_height="140dp"
-                android:background="@color/red_light"
-                android:layout_weight="1"
-                android:layout_margin="12dp"
-                
-                />
-            
-             <Button 
-                android:layout_width="0dp"
-                android:layout_height="140dp"
-                android:layout_weight="1"
-                 android:background="@color/yellow_light"
-                  android:layout_margin="12dp"
-                />
-            
+                style="@style/LocalButton"
+                android:background="@drawable/simple_red_selector"
+                android:text="@string/local_artist" />
+
+            <Button
+                style="@style/LocalButton"
+                android:background="@drawable/simple_yellow_selector"
+                android:text="@string/local_album" />
         </LinearLayout>
-        
-         <LinearLayout
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
-            
+
             <Button
-                android:layout_width="0dp"
-                android:layout_height="140dp"
-                android:background="@color/green_light"
-                android:layout_weight="1"
-                android:layout_margin="12dp"
-                />
-            
-             <Button 
-                android:layout_width="0dp"
-                android:layout_height="140dp"
-                android:layout_weight="1"
-                 android:background="@color/main_blue_light"
-                  android:layout_margin="12dp"
-                />
-            
+                style="@style/LocalButton"
+                android:background="@drawable/simple_green_selector"
+                android:text="@string/local_recent_list" />
+
+            <Button
+                style="@style/LocalButton"
+                android:background="@drawable/simple_blue_selector"
+                android:text="@string/local_playlist" />
         </LinearLayout>
     </LinearLayout>
 
