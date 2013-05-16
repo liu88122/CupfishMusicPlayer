@@ -95,8 +95,17 @@ public abstract class MusicEntry extends ImageHolder implements  Comparable<Musi
     public Collection<String> getTags() {
         return tags;
     }
+    
 
-    @Override
+    public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	@Override
     public String toString() {
         return this.getClass().getSimpleName() + "[" + "name='" + name + '\'' + ", id='" + id
                 + '\'' + ", url='" + url + '\'' + ", mbid='" + mbid + '\'' + ']';

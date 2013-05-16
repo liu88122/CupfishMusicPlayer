@@ -61,6 +61,7 @@ public class LocalMediaUtil {
 			}
 			
 			Album album = new Album(title, null, artistName);
+			album.setId(albumId);
 			
 			String audioType = null;
 			if(!TextUtils.isEmpty(path)){

@@ -9,12 +9,17 @@ import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
 import com.cupfish.music.R;
 import com.cupfish.music.bean.Song;
+import com.cupfish.music.cache.ImageCache;
+import com.cupfish.music.cache.ImageFetcher;
+import com.cupfish.music.cache.NewImageCache;
+import com.cupfish.music.cache.NewImageCache.ImageCacheParams;
 import com.cupfish.music.common.Constants;
 import com.cupfish.music.ui.adapter.LocalAllAdapter;
 import com.cupfish.music.ui.view.AlphabetSideBar;
@@ -24,11 +29,14 @@ import com.cupfish.music.utils.LocalMediaUtil;
 
 public class LocalAllActivity extends Activity {
 
+	private static final String CACHE_DIR = "cache";
+	
 	private PinnedHeaderListView mSongListView;
 	private AlphabetSideBar mSideBar;
 	private LocalAllAdapter mAdapter;
 	private TextView mCurrentSection;
 	private List<Song> songs;
+	private ImageFetcher mImageFetcher;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -36,9 +44,12 @@ public class LocalAllActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
 		getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-		
 		setContentView(R.layout.local);
 		
+		mImageFetcher = new ImageFetcher(this);
+		mImageFetcher.setLoadingImage(R.drawable.no_art_small);
+		NewImageCache imageCache = new NewImageCache(this, CACHE_DIR);
+		mImageFetcher.setImageCache(imageCache);
 		songs = LocalMediaUtil.getLocalSongs(this);
 		
 		setupLayout();
@@ -49,11 +60,12 @@ public class LocalAllActivity extends Activity {
 		mSongListView = (PinnedHeaderListView) findViewById(R.id.lv_local);
 		mSideBar = (AlphabetSideBar) findViewById(R.id.side_bar);
 		mCurrentSection = (TextView) findViewById(R.id.tv_current_section);
-		mAdapter = new LocalAllAdapter(this, songs);
+		mAdapter = new LocalAllAdapter(this, mImageFetcher, songs);
 		mSongListView.setAdapter(mAdapter);
 		mSongListView.setOnScrollListener(mAdapter);
 		mSongListView.setHeaderView(getLayoutInflater().inflate(R.layout.music_list_item_section_title, mSongListView, false));
 		mSideBar.setListView(mSongListView);
+		
 	}
 	
 	private void setupListener(){
@@ -90,7 +102,26 @@ public class LocalAllActivity extends Activity {
 				mCurrentSection.setText(Character.toString(c));
 			}
 		});
-
 	}
+	
+	 @Override
+	    public void onResume() {
+	        super.onResume();
+	        mImageFetcher.setExitTasksEarly(false);
+	        mAdapter.notifyDataSetChanged();
+	    }
+
+	    @Override
+	    public void onPause() {
+	        super.onPause();
+	        mImageFetcher.setExitTasksEarly(true);
+	        mImageFetcher.flushCache();
+	    }
+
+	    @Override
+	    public void onDestroy() {
+	        super.onDestroy();
+	        mImageFetcher.closeCache();
+	    }
 	
 }

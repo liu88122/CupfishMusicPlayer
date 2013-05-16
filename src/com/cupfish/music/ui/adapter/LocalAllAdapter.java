@@ -5,7 +5,6 @@ import static com.cupfish.music.Constants.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -20,8 +19,11 @@ import android.widget.TextView;
 
 import com.cupfish.music.R;
 import com.cupfish.music.bean.Song;
+import com.cupfish.music.cache.ImageFetcher;
 import com.cupfish.music.cache.ImageInfo;
-import com.cupfish.music.cache.ImageProvider;
+import com.cupfish.music.cache.NewImageCache;
+import com.cupfish.music.cache.NewImageCache.ImageCacheParams;
+import com.cupfish.music.helpers.lastfm.Album;
 import com.cupfish.music.ui.view.PinnedHeaderListView;
 import com.cupfish.music.ui.view.PinnedHeaderListView.PinnedHeaderAdapter;
 
@@ -31,14 +33,14 @@ public class LocalAllAdapter extends BaseAdapter implements PinnedHeaderAdapter,
 	private Context mContext;
 	private LayoutInflater mInflater;
 	private List<Character> mSections;
-	private ImageProvider mImageProvider;
+	private ImageFetcher mImageFetcher;
+	
 
-
-	public LocalAllAdapter(Context context, List<Song> mLocalSongs){
+	public LocalAllAdapter(Context context, ImageFetcher imageFetcher, List<Song> mLocalSongs){
 		this.mLocalSongs = mLocalSongs;
+		this.mImageFetcher = imageFetcher;
 		mInflater = LayoutInflater.from(context);
 		buildSections(mLocalSongs);
-		mImageProvider = ImageProvider.getInstance((Activity)context);
 	}
 	
 	private void buildSections(List<Song> mLocalSongs){
@@ -107,7 +109,6 @@ public class LocalAllAdapter extends BaseAdapter implements PinnedHeaderAdapter,
 			convertView.setTag(holder);
 		}else{
 			holder = (ViewHolder) convertView.getTag();
-			holder.albumCover.setImageResource(R.drawable.no_art_small);
 		}
 		Song song = mLocalSongs.get(position);
 		holder.title.setText(song.getTitle());
@@ -128,12 +129,19 @@ public class LocalAllAdapter extends BaseAdapter implements PinnedHeaderAdapter,
 		}
 
 		ImageInfo mInfo = new ImageInfo();
-		mInfo.type = TYPE_ARTIST;
+		mInfo.type = TYPE_ALBUM;
 		mInfo.size = SIZE_THUMB;
-		mInfo.source = SRC_LASTFM;
-		mInfo.data = new String[] { song.getArtist() };
+		Album album = song.getAlbum();
+		String albumId = null;
+		String albumName = null;
+		if(album != null){
+			albumId = album.getId();
+			albumName = album.getName();
+		}
+		mInfo.data = new String[] { albumId, song.getArtist(), albumName };
 
-		mImageProvider.loadImage(holder.albumCover, mInfo);
+		mImageFetcher.loadImage(mInfo, holder.albumCover);
+		
 		return convertView;
 	}
 
@@ -215,6 +223,12 @@ public class LocalAllAdapter extends BaseAdapter implements PinnedHeaderAdapter,
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		// TODO Auto-generated method stub
+		 // Pause fetcher to ensure smoother scrolling when flinging
+        if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+            mImageFetcher.setPauseWork(true);
+        } else {
+            mImageFetcher.setPauseWork(false);
+        }
 		
 	}
 

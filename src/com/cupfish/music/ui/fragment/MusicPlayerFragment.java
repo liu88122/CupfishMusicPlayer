@@ -47,7 +47,6 @@ import android.widget.ViewSwitcher.ViewFactory;
 import com.cupfish.music.R;
 import com.cupfish.music.bean.Song;
 import com.cupfish.music.cache.ImageInfo;
-import com.cupfish.music.cache.ImageProvider;
 import com.cupfish.music.common.BaseApp;
 import com.cupfish.music.common.Constants;
 import com.cupfish.music.download.DownloadEngine;
@@ -61,7 +60,6 @@ import com.cupfish.music.ui.view.LrcView2;
 import com.cupfish.music.ui.view.VisualizerView;
 import com.cupfish.music.utils.LocalMediaUtil;
 import com.cupfish.music.utils.MyImageUtils;
-import com.cupfish.music.utils.MyImageUtils.ImageCallback;
 import com.cupfish.music.utils.TextFormatUtils;
 import com.cupfish.music.utils.VisualizerUtils;
 
@@ -117,7 +115,6 @@ public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClic
 	// 手势库加载状态
 	private boolean loadState;
 
-	private ImageProvider mImageProvider;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -129,7 +126,6 @@ public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClic
 		}
 		mDurationUpdateHandler = new DurationUpdateHandler();
 		mLrcHandler = new LrcHandler();
-		mImageProvider = ImageProvider.getInstance(getActivity());
 	}
 	
 	@Override
@@ -358,7 +354,6 @@ public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClic
 					mInfo.source = SRC_LASTFM;
 					mInfo.data = new String[] { mCurrentSong.getArtist() };
 
-					mImageProvider.loadImage(mAlbumCover, mInfo);
 				}
 
 				if (bitmap == null) {

@@ -25,4 +25,16 @@ public class ImageInfo {
 		//first_available - needs both file & lastFM data		
 	public String[] data;
 	
+	public String encode(){
+		StringBuilder sb = new StringBuilder();
+		if(data != null && data.length > 0){
+			for(String s : data){
+				if(s!= null){
+					sb.append(s);
+				}
+			}
+		}
+		return sb.toString();
+	}
+	
 }

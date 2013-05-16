@@ -114,7 +114,7 @@ public class ImageUtils {
         return null;
 	}
 	
-    public static File getImageFromWeb( Context context, ImageInfo imageInfo ) {
+    public static String getImageUrlFromWeb( Context context, ImageInfo imageInfo ) {
     	String imageUrl = null;
         try {
 	        if( imageInfo.type.equals(TYPE_ALBUM) ){  
@@ -134,19 +134,10 @@ public class ImageUtils {
         } catch ( Exception e ) {
         	return null;
         }
-        if ( imageUrl == null || imageUrl.isEmpty() ) {
-            return null;
-        }
-        File newFile = getFile( context, imageInfo );
-        //TODO download PICS
-        DownloadUtil.downloadFile( imageUrl, newFile );
-		if (newFile.exists()) {
-            return newFile;
-        }
-        return null;
+       return imageUrl;
     }    
 
-    public static File getImageFromMediaStore( Context context, ImageInfo imageInfo ){
+    public static Bitmap getImageFromMediaStore( Context context, ImageInfo imageInfo ){
     	String mAlbum = imageInfo.data[0];
     	String[] projection = {
                 BaseColumns._ID, Audio.Albums._ID, Audio.Albums.ALBUM_ART, Audio.Albums.ALBUM
@@ -165,19 +156,8 @@ public class ImageUtils {
 	        String albumArt = cursor.getString(column_index);	  
 	        if(albumArt != null){
 	        	try{
-	        		File orgFile = new File(albumArt);
-	        		File newFile = new File(context.getExternalCacheDir(), createShortTag(imageInfo)+IMAGE_EXTENSION);
-	        		InputStream in = new FileInputStream(orgFile);
-	        		OutputStream out = new FileOutputStream(newFile);
-	        		byte[] buf = new byte[1024];
-	        		int len;
-	        		while ((len = in.read(buf)) > 0){
-	        			out.write(buf, 0, len);
-	        		}
-	        		in.close();
-	        		out.close();
-	        		cursor.close();
-		        	return newFile;
+	        		Bitmap bitmap = BitmapFactory.decodeFile(albumArt);
+		        	return bitmap;
 	        	}
 	        	catch( Exception e){
 	        	}
