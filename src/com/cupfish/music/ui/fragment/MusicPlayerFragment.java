@@ -1,5 +1,7 @@
 package com.cupfish.music.ui.fragment;
 
+import static com.cupfish.music.Constants.*;
+
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -43,12 +45,13 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher.ViewFactory;
 
 import com.cupfish.music.R;
-import com.cupfish.music.bean.Album;
 import com.cupfish.music.bean.Song;
+import com.cupfish.music.cache.ImageInfo;
 import com.cupfish.music.common.BaseApp;
 import com.cupfish.music.common.Constants;
 import com.cupfish.music.download.DownloadEngine;
 import com.cupfish.music.download.DownloadTask.DownloadListener;
+import com.cupfish.music.helpers.lastfm.Album;
 import com.cupfish.music.lrc.LrcController;
 import com.cupfish.music.lrc.LrcController.OnLrcUpdateListener;
 import com.cupfish.music.service.MusicPlayerService;
@@ -57,7 +60,6 @@ import com.cupfish.music.ui.view.LrcView2;
 import com.cupfish.music.ui.view.VisualizerView;
 import com.cupfish.music.utils.LocalMediaUtil;
 import com.cupfish.music.utils.MyImageUtils;
-import com.cupfish.music.utils.MyImageUtils.ImageCallback;
 import com.cupfish.music.utils.TextFormatUtils;
 import com.cupfish.music.utils.VisualizerUtils;
 
@@ -215,9 +217,9 @@ public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClic
 		mVolumeBtn = (ImageView) mPlayingContent.findViewById(R.id.iv_volume);
 		mAlbumCover = (ImageView) mPlayingContent.findViewById(R.id.iv_album_cover);
 
-		Log.i(TAG, "--383--daodao");
+		Log.i(TAG, "--383--music");
 		Bitmap temp = MyImageUtils.createReflectionImageWithOrigin(BitmapFactory.decodeResource(getResources(),
-				R.drawable.daodao));
+				R.drawable.music));
 		mAlbumCover.setImageBitmap(MyImageUtils.zoomBitmap(temp, 0.6f));
 		
 		//手势相关初始化
@@ -310,17 +312,16 @@ public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClic
 
 		if (mCurrentSong != null) {
 			//artists
-			if (mCurrentSong.getArtists() != null && mCurrentSong.getArtists().size() > 0) {
-				mArtist.setText(mCurrentSong.getArtists().get(0).getName());
+			if (!TextUtils.isEmpty(mCurrentSong.getArtist())) {
+				mArtist.setText(mCurrentSong.getArtist());
 			} else {
 				mArtist.setText(R.string.love_life);
 			}
 			//album
 			Album album = mCurrentSong.getAlbum();
 			if (album != null) {
-				mAlbum.setText(album.getTitle());
+				mAlbum.setText(album.getName());
 				mTitle.setText(mCurrentSong.getTitle());
-				String imageUrl = album.getCoverUrl();
 				Bitmap bitmap = null;
 
 				BitmapFactory.Options options = new BitmapFactory.Options();
@@ -339,14 +340,20 @@ public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClic
 
 				// TODO 专辑封面下载有问题，待修复
 				if (bitmap == null) {
-					String imageName = MyImageUtils.md5(mCurrentSong.getTitle());
-					Log.i(TAG, "Loading ImageCover");
-					bitmap = MyImageUtils.loadImage(imageName, imageUrl, new ImageCallback() {
-						@Override
-						public void loadImage(Bitmap bitmap, String imagePath) {
-							mAlbumCover.setImageBitmap(MyImageUtils.getFitableBitmapWithReflection(getActivity(), bitmap));
-						}
-					});
+//					String imageName = MyImageUtils.md5(mCurrentSong.getTitle());
+//					Log.i(TAG, "Loading ImageCover");
+//					bitmap = MyImageUtils.loadImage(imageName, imageUrl, new ImageCallback() {
+//						@Override
+//						public void loadImage(Bitmap bitmap, String imagePath) {
+//							mAlbumCover.setImageBitmap(MyImageUtils.getFitableBitmapWithReflection(getActivity(), bitmap));
+//						}
+//					});
+					ImageInfo mInfo = new ImageInfo();
+					mInfo.type = TYPE_ARTIST;
+					mInfo.size = SIZE_NORMAL;
+					mInfo.source = SRC_LASTFM;
+					mInfo.data = new String[] { mCurrentSong.getArtist() };
+
 				}
 
 				if (bitmap == null) {

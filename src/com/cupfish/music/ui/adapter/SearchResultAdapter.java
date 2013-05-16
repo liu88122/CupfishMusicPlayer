@@ -72,7 +72,7 @@ public class SearchResultAdapter extends BaseAdapter {
 //			holder.artist.setText(song.getArtist());
 //		}
 		if(song.getAlbum() != null){
-			holder.album.setText(song.getAlbum().getTitle());
+			holder.album.setText(song.getAlbum().getName());
 		}
 		holder.download.setOnClickListener(new OnClickListener() {
 			@Override

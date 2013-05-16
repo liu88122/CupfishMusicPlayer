@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,9 +77,10 @@ public class PlaylistAdapter extends BaseAdapter {
 		Song song = mPlaylist.get(position);
 		holder.index.setText(String.valueOf(position + 1));
 		holder.title.setText(song.getTitle());
+		
 		//TODO 需要将所有的artist都显示
-		if(song.getArtists() != null && song.getArtists().size() > 0){
-			holder.artist.setText(song.getArtists().get(0).getName());
+		if(TextUtils.isEmpty(song.getArtist())){
+			holder.artist.setText(song.getArtist());
 		}
 		holder.remove.setOnClickListener(new OnClickListener() {
 			int mPosition = position;

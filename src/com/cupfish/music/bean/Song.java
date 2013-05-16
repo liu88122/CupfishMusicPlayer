@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cupfish.music.helpers.lastfm.Album;
+import com.cupfish.music.helpers.lastfm.Artist;
 import com.cupfish.music.utils.PinyinUtil;
 
 public class Song implements Serializable, Comparable<Song> {
@@ -24,8 +26,6 @@ public class Song implements Serializable, Comparable<Song> {
 	private String category;
 	private int rank;
 
-	private List<Artist> artists = new ArrayList<Artist>();
-
 	public Song() {
 
 	}
@@ -45,7 +45,6 @@ public class Song implements Serializable, Comparable<Song> {
 		this.lrcUrl = lrcUrl;
 		this.audioType = audioType;
 		this.duration = duration;
-		this.artists = artists;
 		this.source = source;
 		this.category = category;
 		this.rank = rank;
@@ -140,14 +139,7 @@ public class Song implements Serializable, Comparable<Song> {
 		this.duration = duration;
 	}
 
-	public List<Artist> getArtists() {
-		return artists;
-	}
-
-	public void setArtists(ArrayList<Artist> artists) {
-		this.artists = artists;
-	}
-
+	
 	public String getTitlePinyin() {
 		return titlePinyin;
 	}
@@ -189,14 +181,6 @@ public class Song implements Serializable, Comparable<Song> {
 			return 0;
 		}
 		return this.titlePinyin.compareTo(another.titlePinyin);
-	}
-
-	@Override
-	public String toString() {
-		return "Song [_id=" + _id + ", songId=" + songId + ", title=" + title + ", titlePinyin=" + titlePinyin + ", artist=" + artist + ", album="
-				+ album + ", songPath=" + songPath + ", songUrl=" + songUrl + ", lrcPath=" + lrcPath + ", lrcUrl=" + lrcUrl + ", audioType="
-				+ audioType + ", duration=" + duration + ", source=" + source + ", category=" + category + ", rank=" + rank + ", artists=" + artists
-				+ "]";
 	}
 
 }

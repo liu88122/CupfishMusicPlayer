@@ -20,11 +20,11 @@ import org.jsoup.select.Elements;
 
 import android.text.TextUtils;
 
-import com.cupfish.music.bean.Album;
-import com.cupfish.music.bean.Artist;
 import com.cupfish.music.bean.Song;
 import com.cupfish.music.common.Constants;
 import com.cupfish.music.exception.NetTimeoutException;
+import com.cupfish.music.helpers.lastfm.Album;
+import com.cupfish.music.helpers.lastfm.Artist;
 
 public class BaiduMusicHelper {
 
@@ -84,9 +84,7 @@ public class BaiduMusicHelper {
 					String albumId = albumIdTmp.substring(albumIdTmp.lastIndexOf("/") + 1);
 					String albumName = albumEle.attr("title");
 
-					Album album = new Album();
-					album.setTitle(albumName);
-					album.setId(albumId);
+					Album album = new Album(albumName, null, null);
 					song.setAlbum(album);
 					
 				}
@@ -105,11 +103,9 @@ public class BaiduMusicHelper {
 				if (singersEle != null) {
 					Artist artist;
 					for (Element e : singersEle) {
-						artist = new Artist();
 						String artistIdTemp = e.attr("href");
-						artist.setId(artistIdTemp.substring(artistIdTemp.lastIndexOf("/")));
-						artist.setName(e.text());
-						song.getArtists().add(artist);
+						artist = new Artist(e.text(), null);
+						song.setArtist(artist.getName());
 					}
 				}
 				
@@ -163,9 +159,9 @@ public class BaiduMusicHelper {
 				}
 				if (albumEle != null) {
 					String albumStr = albumEle.text();
-					Album album = new Album();
-					album.setTitle(albumStr);
-					song.setAlbum(album);
+//					Album album = new Album();
+//					album.setTitle(albumStr);
+//					song.setAlbum(album);
 				}
 				// sb.append(songId).append("|").append(songTitle).append("|").append(singer);
 				result.add(song);
@@ -181,61 +177,6 @@ public class BaiduMusicHelper {
 		}
 	}
 
-	/**
-	 * 通过albumId获取Album专辑对象
-	 * 
-	 * @param albumId
-	 * @param containSongDetail
-	 *            是否包括专辑内所有歌曲的详细信息 如果为true, 将加载所有的歌曲信息，可能导致加载时间变长，或流量增多 建议为false
-	 * @return 由albumId得到的专辑对象
-	 * @throws NetTimeoutException
-	 */
-	public static Album getAlbumById(String albumId, boolean containSongDetail) throws NetTimeoutException {
-
-		Album album = new Album();
-		String url = ALBUM_BASE_URL + "/" + albumId;
-		try {
-			Document document = Jsoup.connect(url).userAgent("Mozilla").timeout(TIME_OUT).post();
-			String title = document.select("h2.album-name").first().text();
-			String coverImg = document.select("span.cover").first().select("img").first().attr("src");
-			String desc = document.select("span.description").first().text();
-
-			// 解析歌手
-			Elements singersEle = document.select("span.author_list").first().select("a");
-			if (singersEle != null) {
-				Artist artist;
-				for (Element e : singersEle) {
-					artist = new Artist();
-					String artistIdTemp = e.attr("href");
-					artist.setId(artistIdTemp.substring(artistIdTemp.lastIndexOf("/")));
-					artist.setName(e.text());
-					album.getArtists().add(artist);
-				}
-			}
-			
-			Elements songsElements = document.select("span.song-title");
-			List<Song> songs = new ArrayList<Song>();
-			if (containSongDetail) {
-				for (Element ele : songsElements) {
-					String songHrefStr = ele.select("a").first().attr("href");
-					String songId = songHrefStr.substring(songHrefStr.lastIndexOf("/") + 1);
-					String songTitle = ele.select("a").first().text();
-					Song song = new Song();
-					song.setSongId(songId);
-					song.setTitle(songTitle);
-					songs.add(song);
-				}
-			}
-			album.setId(albumId);
-			album.setCoverUrl(coverImg);
-			album.setTitle(title);
-			album.setSongs(songs);
-			album.setDesc(desc);
-			return album;
-		} catch (Exception e) {
-			throw new NetTimeoutException(e);
-		}
-	}
 
 	public static Song getSongById(String songId) throws NetTimeoutException {
 		Song song = new Song();
@@ -248,11 +189,11 @@ public class BaiduMusicHelper {
 			if (singersEle != null) {
 				Artist artist;
 				for (Element e : singersEle) {
-					artist = new Artist();
-					String artistIdTemp = e.attr("href");
-					artist.setId(artistIdTemp.substring(artistIdTemp.lastIndexOf("/")));
-					artist.setName(e.text());
-					song.getArtists().add(artist);
+//					artist = new Artist();
+//					String artistIdTemp = e.attr("href");
+//					artist.setId(artistIdTemp.substring(artistIdTemp.lastIndexOf("/")));
+//					artist.setName(e.text());
+//					song.getArtists().add(artist);
 				}
 			}
 			
@@ -283,22 +224,22 @@ public class BaiduMusicHelper {
 			String albumCover = "";
 			String albumStr = "";
 			if (!TextUtils.isEmpty(albumId)) {
-				Album album2 = getAlbumById(albumId, false);
-				albumCover = album2.getCoverUrl();
-				albumStr = album2.getTitle();
+//				Album album2 = getAlbumById(albumId, false);
+//				albumCover = album2.getCoverUrl();
+//				albumStr = album2.getTitle();
 			}
 
-			if (!TextUtils.isEmpty(albumId) && getAlbumById(albumId, false) != null) {
-				albumCover = getAlbumById(albumId, false).getCoverUrl();
-			}
+//			if (!TextUtils.isEmpty(albumId) && getAlbumById(albumId, false) != null) {
+//				albumCover = getAlbumById(albumId, false).getCoverUrl();
+//			}
 			song.setSongId(songId);
 			// song.setArtist(singerEle.text());
 			song.setTitle(titleEle.text());
 			song.setSongUrl(downloadUrl);
-			Album album = new Album();
-			album.setTitle(albumStr);
-			album.setCoverPath(albumCover);
-			song.setAlbum(album);
+//			Album album = new Album();
+//			album.setTitle(albumStr);
+//			album.setCoverPath(albumCover);
+//			song.setAlbum(album);
 			song.setLrcUrl(BASE_URL + lrcUrl);
 			
 			String audioType = null;

@@ -4,9 +4,9 @@ import java.util.List;
 
 import android.test.AndroidTestCase;
 
-import com.cupfish.music.bean.Album;
 import com.cupfish.music.bean.Song;
 import com.cupfish.music.exception.NetTimeoutException;
+import com.cupfish.music.helpers.lastfm.Album;
 import com.cupfish.music.utils.BaiduMusicHelper;
 
 public class TestBaiduMusicHelper extends AndroidTestCase {
@@ -37,9 +37,5 @@ public class TestBaiduMusicHelper extends AndroidTestCase {
 		}
 	}
 	
-	public void testGetAlbumById() throws NetTimeoutException{
-		Album a = BaiduMusicHelper.getAlbumById("31149823", true);
-		System.out.println(a);
-	}
 	
 }

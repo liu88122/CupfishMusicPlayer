@@ -5,6 +5,7 @@ import java.util.List;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -68,8 +69,8 @@ public class OnlineListAdapter extends BaseAdapter {
 			holder.title.setText(song.getTitle());
 		}
 		//TODO 需要将所有的artist都显示
-		if(song.getArtists() != null	){
-			holder.artist.setText(song.getArtists().get(0).getName());
+		if(!TextUtils.isEmpty(song.getArtist())){
+			holder.artist.setText(song.getArtist());
 		}
 		holder.download.setOnClickListener(new OnClickListener() {
 			@Override
