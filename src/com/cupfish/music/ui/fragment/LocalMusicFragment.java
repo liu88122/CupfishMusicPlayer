@@ -1,21 +1,32 @@
 package com.cupfish.music.ui.fragment;
 
+import java.util.ArrayList;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 
 import com.cupfish.music.R;
 import com.cupfish.music.ui.LocalAllActivity;
+import com.cupfish.music.ui.anim.RotateAnimation;
 
 public class LocalMusicFragment extends Fragment implements OnClickListener {
 
 	private View mLocalContent;
-	private Button mAllMusicBtn;
+	private ViewGroup mItemSongs;
+	private ViewGroup mItemArtist;
+	private ViewGroup mItemAlbum;
+	private ViewGroup mItemRecent;
+	private ViewGroup mItemPlaylist;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -24,25 +35,86 @@ public class LocalMusicFragment extends Fragment implements OnClickListener {
 		setupListener();
 		return mLocalContent;
 	}
+
 	private void setupLayout() {
-		mAllMusicBtn = (Button) mLocalContent.findViewById(R.id.btn_all_songs);
+		mItemSongs = (ViewGroup) mLocalContent.findViewById(R.id.rl_item_songs);
+		mItemArtist = (ViewGroup) mLocalContent.findViewById(R.id.rl_item_artist);
+		mItemAlbum = (ViewGroup) mLocalContent.findViewById(R.id.rl_item_album);
+		mItemRecent = (ViewGroup) mLocalContent.findViewById(R.id.rl_item_recent);
+		mItemPlaylist = (ViewGroup) mLocalContent.findViewById(R.id.rl_item_playlist);
 	}
-	
-	private void setupListener(){
-		mAllMusicBtn.setOnClickListener(this);
+
+	private void setupListener() {
+		mItemSongs.setOnClickListener(this);
+		mItemArtist.setOnClickListener(this);
+		mItemAlbum.setOnClickListener(this);
+		mItemRecent.setOnClickListener(this);
+		mItemPlaylist.setOnClickListener(this);
 	}
-	
+
 	@Override
 	public void onClick(View v) {
-		switch(v.getId()){
-		case R.id.btn_all_songs:
+		rotateView((ViewGroup) v);
+		
+	}
+
+	private void rotateView(final ViewGroup view) {
+		final int id = view.getId();
+		final ArrayList<View> childs = new ArrayList<View>();
+		for (int i = 0; i < view.getChildCount(); i++) {
+			View child = view.getChildAt(i);
+			child.setVisibility(View.INVISIBLE);
+			childs.add(child);
+		}
+
+		AnimationSet animSet = new AnimationSet(true);
+		RotateAnimation rotAnim = new RotateAnimation(view.getWidth() / 2, view.getHeight() / 2, RotateAnimation.ROTATE_DECREASE);
+
+		Display display = getActivity().getWindowManager().getDefaultDisplay();
+		int sWidth = display.getWidth();
+		ScaleAnimation scaleAnimation = new ScaleAnimation(1f, (float) sWidth / view.getWidth(), 1f, 1f, Animation.RELATIVE_TO_SELF, 0.0f,
+				Animation.RELATIVE_TO_SELF, 0.0f);
+
+		animSet.addAnimation(rotAnim);
+		animSet.addAnimation(scaleAnimation);
+		animSet.setDuration(500);
+		animSet.setZAdjustment(Animation.ZORDER_TOP);
+		view.bringToFront();
+		animSet.setFillAfter(false);
+
+		view.startAnimation(animSet);
+
+		animSet.setAnimationListener(new AnimationListener() {
+
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				// TODO Auto-generated method stub
+				for (View child : childs) {
+					child.setVisibility(View.VISIBLE);
+				}
+				startNewPage(id);
+			}
+		});
+	}
+
+	protected void startNewPage(int id) {
+		// TODO Auto-generated method stub
+		switch(id){
+		case R.id.rl_item_songs:
 			Intent intent = new Intent(getActivity(), LocalAllActivity.class);
 			startActivity(intent);
 			break;
 		}
 	}
-	
-	
-	
-	
+
 }

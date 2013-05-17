@@ -32,7 +32,7 @@ import com.cupfish.music.common.BaseApp;
 import com.cupfish.music.common.Constants;
 import com.cupfish.music.exception.NetTimeoutException;
 import com.cupfish.music.ui.adapter.OnlineListAdapter;
-import com.cupfish.music.utils.BaiduMusicHelper;
+import com.cupfish.music.utils.helpers.BaiduMusicHelper;
 
 public class TopListActivity extends Activity implements OnClickListener {
 

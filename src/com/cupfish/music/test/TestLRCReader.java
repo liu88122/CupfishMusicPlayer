@@ -10,8 +10,8 @@ import java.util.TreeMap;
 import android.test.AndroidTestCase;
 
 import com.cupfish.music.bean.Song;
-import com.cupfish.music.lrc.LrcReader;
-import com.cupfish.music.utils.BaiduMusicHelper;
+import com.cupfish.music.utils.helpers.BaiduMusicHelper;
+import com.cupfish.music.utils.lrc.LrcReader;
 
 public class TestLRCReader extends AndroidTestCase {
 	

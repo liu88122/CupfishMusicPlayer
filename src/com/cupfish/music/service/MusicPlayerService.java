@@ -30,10 +30,10 @@ import com.cupfish.music.common.BaseApp;
 import com.cupfish.music.common.Constants;
 import com.cupfish.music.download.DownloadEngine;
 import com.cupfish.music.exception.NetTimeoutException;
-import com.cupfish.music.lrc.LrcController;
-import com.cupfish.music.lrc.LrcController.OnLrcUpdateListener;
-import com.cupfish.music.utils.BaiduMusicHelper;
 import com.cupfish.music.utils.VisualizerUtils;
+import com.cupfish.music.utils.helpers.BaiduMusicHelper;
+import com.cupfish.music.utils.lrc.LrcController;
+import com.cupfish.music.utils.lrc.LrcController.OnLrcUpdateListener;
 
 public class MusicPlayerService extends Service implements OnCompletionListener, OnPreparedListener, OnBufferingUpdateListener {
 

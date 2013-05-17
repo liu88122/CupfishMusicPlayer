@@ -23,9 +23,9 @@ import com.cupfish.music.cache.ImageFetcher;
 import com.cupfish.music.cache.ImageInfo;
 import com.cupfish.music.cache.NewImageCache;
 import com.cupfish.music.cache.NewImageCache.ImageCacheParams;
-import com.cupfish.music.helpers.lastfm.Album;
 import com.cupfish.music.ui.view.PinnedHeaderListView;
 import com.cupfish.music.ui.view.PinnedHeaderListView.PinnedHeaderAdapter;
+import com.cupfish.music.utils.helpers.lastfm.Album;
 
 public class LocalAllAdapter extends BaseAdapter implements PinnedHeaderAdapter, SectionIndexer, OnScrollListener{
 

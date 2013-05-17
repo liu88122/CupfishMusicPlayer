@@ -1,50 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="10dp"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/rl_item_songs"
+        style="@style/LocalItemLong"
+        android:background="@drawable/simple_purple_selector"
+        android:gravity="center_vertical" >
+
+        <ImageView
+            android:id="@+id/icon_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/local_item_songs" />
+
+        <TextView
+            style="@style/LocalItemText"
+            android:layout_below="@id/icon_all"
+            android:layout_centerHorizontal="true"
+            android:text="@string/local_all_songs" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical" >
+        android:layout_height="wrap_content" >
 
-        <Button
-            android:id="@+id/btn_all_songs"
-            style="@style/LocalButtonLong"
-            android:background="@drawable/simple_purple_selector"
-            android:text="@string/local_all_songs" />
+        <RelativeLayout
+            android:id="@+id/rl_item_artist"
+            style="@style/LocalItem"
+            android:background="@drawable/simple_red_selector"
+            android:gravity="center_vertical" >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            <ImageView
+                android:id="@+id/icon_artist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/local_item_artist" />
 
-            <Button
-                style="@style/LocalButton"
-                android:background="@drawable/simple_red_selector"
+            <TextView
+                style="@style/LocalItemText"
+                android:layout_below="@id/icon_artist"
+                android:layout_centerHorizontal="true"
                 android:text="@string/local_artist" />
+        </RelativeLayout>
 
-            <Button
-                style="@style/LocalButton"
-                android:background="@drawable/simple_yellow_selector"
+        <RelativeLayout
+            android:id="@+id/rl_item_album"
+            style="@style/LocalItem"
+            android:background="@drawable/simple_yellow_selector"
+            android:gravity="center_vertical" >
+
+            <ImageView
+                android:id="@+id/icon_album"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/local_item_album" />
+
+            <TextView
+                style="@style/LocalItemText"
+                android:layout_below="@id/icon_album"
+                android:layout_centerHorizontal="true"
                 android:text="@string/local_album" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <Button
-                style="@style/LocalButton"
-                android:background="@drawable/simple_green_selector"
-                android:text="@string/local_recent_list" />
-
-            <Button
-                style="@style/LocalButton"
-                android:background="@drawable/simple_blue_selector"
-                android:text="@string/local_playlist" />
-        </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <RelativeLayout
+            android:id="@+id/rl_item_recent"
+            style="@style/LocalItem"
+            android:background="@drawable/simple_green_selector"
+            android:gravity="center_vertical" >
+
+            <ImageView
+                android:id="@+id/icon_recent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/local_item_recent" />
+
+            <TextView
+                style="@style/LocalItemText"
+                android:layout_below="@id/icon_recent"
+                android:layout_centerHorizontal="true"
+                android:text="@string/local_recent_list" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_item_playlist"
+            style="@style/LocalItem"
+            android:background="@drawable/simple_blue_selector"
+            android:gravity="center_vertical" >
+
+            <ImageView
+                android:id="@+id/icon_playlist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/local_item_playlist" />
+
+            <TextView
+                style="@style/LocalItemText"
+                android:layout_below="@id/icon_playlist"
+                android:layout_centerHorizontal="true"
+                android:text="@string/local_playlist" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

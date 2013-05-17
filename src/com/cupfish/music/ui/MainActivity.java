@@ -43,6 +43,7 @@ import com.cupfish.music.common.BaseApp;
 import com.cupfish.music.service.DownloadService;
 import com.cupfish.music.service.MusicPlayerService;
 import com.cupfish.music.ui.adapter.MainPagerAdapter;
+import com.cupfish.music.ui.anim.RotateAnimation;
 import com.cupfish.music.ui.fragment.LocalMusicFragment;
 import com.cupfish.music.ui.fragment.MusicPlayerFragment;
 import com.cupfish.music.ui.fragment.OnlineMusicFragment;
@@ -441,5 +442,10 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+	
+	@Override
+	public void overridePendingTransition(int enterAnim, int exitAnim) {
+		super.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 	}
 }

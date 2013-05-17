@@ -51,9 +51,6 @@ import com.cupfish.music.common.BaseApp;
 import com.cupfish.music.common.Constants;
 import com.cupfish.music.download.DownloadEngine;
 import com.cupfish.music.download.DownloadTask.DownloadListener;
-import com.cupfish.music.helpers.lastfm.Album;
-import com.cupfish.music.lrc.LrcController;
-import com.cupfish.music.lrc.LrcController.OnLrcUpdateListener;
 import com.cupfish.music.service.MusicPlayerService;
 import com.cupfish.music.ui.PlaylistActivity;
 import com.cupfish.music.ui.view.LrcView2;
@@ -62,6 +59,9 @@ import com.cupfish.music.utils.LocalMediaUtil;
 import com.cupfish.music.utils.MyImageUtils;
 import com.cupfish.music.utils.TextFormatUtils;
 import com.cupfish.music.utils.VisualizerUtils;
+import com.cupfish.music.utils.helpers.lastfm.Album;
+import com.cupfish.music.utils.lrc.LrcController;
+import com.cupfish.music.utils.lrc.LrcController.OnLrcUpdateListener;
 
 public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClickListener {
 

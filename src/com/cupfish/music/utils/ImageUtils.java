@@ -28,10 +28,10 @@ import android.provider.BaseColumns;
 import android.provider.MediaStore.Audio;
 
 import com.cupfish.music.cache.ImageInfo;
-import com.cupfish.music.helpers.lastfm.Album;
-import com.cupfish.music.helpers.lastfm.Artist;
-import com.cupfish.music.helpers.lastfm.Image;
-import com.cupfish.music.helpers.lastfm.PaginatedResult;
+import com.cupfish.music.utils.helpers.lastfm.Album;
+import com.cupfish.music.utils.helpers.lastfm.Artist;
+import com.cupfish.music.utils.helpers.lastfm.Image;
+import com.cupfish.music.utils.helpers.lastfm.PaginatedResult;
 
 public class ImageUtils {
 	

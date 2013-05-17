@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.cupfish.music.helpers.lastfm.Album;
-import com.cupfish.music.helpers.lastfm.Artist;
 import com.cupfish.music.utils.PinyinUtil;
+import com.cupfish.music.utils.helpers.lastfm.Album;
+import com.cupfish.music.utils.helpers.lastfm.Artist;
 
 public class Song implements Serializable, Comparable<Song> {
 

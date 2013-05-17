@@ -21,9 +21,9 @@ import android.widget.Scroller;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cupfish.music.lrc.LrcController;
 import com.cupfish.music.service.MusicPlayerService;
 import com.cupfish.music.utils.TextFormatUtils;
+import com.cupfish.music.utils.lrc.LrcController;
 
 public class LrcView2 extends ViewGroup {
 

@@ -9,17 +9,14 @@ import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
 import com.cupfish.music.R;
 import com.cupfish.music.bean.Song;
-import com.cupfish.music.cache.ImageCache;
 import com.cupfish.music.cache.ImageFetcher;
 import com.cupfish.music.cache.NewImageCache;
-import com.cupfish.music.cache.NewImageCache.ImageCacheParams;
 import com.cupfish.music.common.Constants;
 import com.cupfish.music.ui.adapter.LocalAllAdapter;
 import com.cupfish.music.ui.view.AlphabetSideBar;

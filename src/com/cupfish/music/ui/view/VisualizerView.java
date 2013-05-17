@@ -18,10 +18,10 @@ import android.media.audiofx.Visualizer;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.cupfish.music.helpers.visualizer.AudioData;
-import com.cupfish.music.helpers.visualizer.BarGraphRenderer;
-import com.cupfish.music.helpers.visualizer.FFTData;
-import com.cupfish.music.helpers.visualizer.Renderer;
+import com.cupfish.music.utils.helpers.visualizer.AudioData;
+import com.cupfish.music.utils.helpers.visualizer.BarGraphRenderer;
+import com.cupfish.music.utils.helpers.visualizer.FFTData;
+import com.cupfish.music.utils.helpers.visualizer.Renderer;
 
 public class VisualizerView extends View {
 

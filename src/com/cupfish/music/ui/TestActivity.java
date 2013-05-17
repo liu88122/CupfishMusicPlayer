@@ -6,8 +6,8 @@ import android.os.Bundle;
 import com.cupfish.music.R;
 import com.cupfish.music.bean.Song;
 import com.cupfish.music.common.Constants;
-import com.cupfish.music.utils.BaiduMusicHelper;
 import com.cupfish.music.utils.DownloadUtil;
+import com.cupfish.music.utils.helpers.BaiduMusicHelper;
 
 public class TestActivity extends Activity {
 

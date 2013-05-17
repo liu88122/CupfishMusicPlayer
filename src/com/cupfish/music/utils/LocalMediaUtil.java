@@ -22,8 +22,8 @@ import android.text.TextUtils;
 
 import com.cupfish.music.R;
 import com.cupfish.music.bean.Song;
-import com.cupfish.music.helpers.lastfm.Album;
-import com.cupfish.music.helpers.lastfm.Artist;
+import com.cupfish.music.utils.helpers.lastfm.Album;
+import com.cupfish.music.utils.helpers.lastfm.Artist;
 
 public class LocalMediaUtil {
 
