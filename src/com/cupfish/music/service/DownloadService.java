@@ -30,7 +30,7 @@ import com.cupfish.music.bean.Song;
 import com.cupfish.music.common.Constants;
 import com.cupfish.music.exception.NetTimeoutException;
 import com.cupfish.music.utils.DownloadUtil;
-import com.cupfish.music.utils.LocalMediaUtil;
+import com.cupfish.music.utils.LocalMediaUtils;
 import com.cupfish.music.utils.helpers.BaiduMusicHelper;
 
 public class DownloadService extends Service {
@@ -128,7 +128,7 @@ public class DownloadService extends Service {
 		super.onCreate();
 
 		downloadList = new ArrayList<Song>();
-		localSongs = LocalMediaUtil.getLocalSongs(this);
+		localSongs = LocalMediaUtils.getLocalSongs(this);
 
 		taskReceiver = new DownloadTaskReceiver();
 		IntentFilter filter = new IntentFilter();

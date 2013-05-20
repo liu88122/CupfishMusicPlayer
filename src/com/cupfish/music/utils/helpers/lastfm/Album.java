@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.cupfish.music.utils.PinyinUtil;
-import com.cupfish.music.utils.StringUtilities;
+import com.cupfish.music.utils.StringUtils;
 
 
 /**
@@ -89,7 +89,7 @@ public class Album extends MusicEntry implements Serializable{
      */
     public static Album getInfo(String artist, String albumOrMbid, String username, String apiKey) {
         Map<String, String> params = new HashMap<String, String>();
-        if (StringUtilities.isMbid(albumOrMbid)) {
+        if (StringUtils.isMbid(albumOrMbid)) {
             params.put("mbid", albumOrMbid);
         } else {
             params.put("artist", artist);

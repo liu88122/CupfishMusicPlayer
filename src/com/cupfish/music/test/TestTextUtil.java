@@ -5,12 +5,13 @@ import java.util.Date;
 import android.test.AndroidTestCase;
 import android.text.format.DateFormat;
 
+import com.cupfish.music.utils.StringUtils;
 import com.cupfish.music.utils.TextFormatUtils;
 
 public class TestTextUtil extends AndroidTestCase {
 
 	public void testFormatDuration(){
-		System.out.println(TextFormatUtils.getPrettyFormatDuration(4 * 60 * 60 * 1000 + 15 * 60 * 1000 + 30 * 1000));;
+		System.out.println(StringUtils.getPrettyFormatDuration(4 * 60 * 60 * 1000 + 15 * 60 * 1000 + 30 * 1000));;
 	}
 	
 	public void test(){

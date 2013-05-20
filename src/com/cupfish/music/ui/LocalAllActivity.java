@@ -2,9 +2,9 @@ package com.cupfish.music.ui;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
@@ -12,7 +12,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.SubMenu;
 import com.cupfish.music.R;
 import com.cupfish.music.bean.Song;
 import com.cupfish.music.cache.ImageFetcher;
@@ -22,9 +27,9 @@ import com.cupfish.music.ui.adapter.LocalAllAdapter;
 import com.cupfish.music.ui.view.AlphabetSideBar;
 import com.cupfish.music.ui.view.AlphabetSideBar.AlphabetClickListener;
 import com.cupfish.music.ui.view.PinnedHeaderListView;
-import com.cupfish.music.utils.LocalMediaUtil;
+import com.cupfish.music.utils.LocalMediaUtils;
 
-public class LocalAllActivity extends Activity {
+public class LocalAllActivity extends SherlockActivity {
 
 	private static final String CACHE_DIR = "cache";
 	
@@ -40,17 +45,18 @@ public class LocalAllActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+//		getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.local);
 		
 		mImageFetcher = new ImageFetcher(this);
 		mImageFetcher.setLoadingImage(R.drawable.no_art_small);
 		NewImageCache imageCache = new NewImageCache(this, CACHE_DIR);
 		mImageFetcher.setImageCache(imageCache);
-		songs = LocalMediaUtil.getLocalSongs(this);
+		songs = LocalMediaUtils.getLocalSongs(this);
 		
 		setupLayout();
 		setupListener();
+		
 	}
 	
 	private void setupLayout(){
@@ -101,11 +107,30 @@ public class LocalAllActivity extends Activity {
 		});
 	}
 	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getSupportMenuInflater().inflate(R.menu.action_menu, menu);
+		
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
+		// TODO Auto-generated method stub
+		switch(item.getItemId()){
+		case android.R.id.home:
+			finish();
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 	 @Override
 	    public void onResume() {
 	        super.onResume();
 	        mImageFetcher.setExitTasksEarly(false);
 	        mAdapter.notifyDataSetChanged();
+	        
+			getSupportActionBar().setHomeButtonEnabled(true);
 	    }
 
 	    @Override

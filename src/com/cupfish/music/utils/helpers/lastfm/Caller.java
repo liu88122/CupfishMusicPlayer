@@ -51,7 +51,7 @@ import org.xml.sax.SAXException;
 
 import com.cupfish.music.utils.helpers.lastfm.Result.Status;
 
-import static com.cupfish.music.utils.StringUtilities.*;
+import static com.cupfish.music.utils.StringUtils.*;
 
 /**
  * The <code>Caller</code> class handles the low-level communication between the

@@ -291,14 +291,14 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 			break;
 		}
 	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		doTabIndicatorAnim(TAB_PLAYING_INDEX);
-		mViewPager.setCurrentItem(0);
-		
-	}
+	//resume 后不用跳转到播放界面
+//	@Override
+//	protected void onResume() {
+//		super.onResume();
+//		doTabIndicatorAnim(TAB_PLAYING_INDEX);
+//		mViewPager.setCurrentItem(0);
+//		
+//	}
 
 	@Override
 	protected void onPause() {

@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cupfish.music.service.MusicPlayerService;
+import com.cupfish.music.utils.StringUtils;
 import com.cupfish.music.utils.TextFormatUtils;
 import com.cupfish.music.utils.lrc.LrcController;
 
@@ -167,7 +168,7 @@ public class LrcView2 extends ViewGroup {
 				}
 				if (child != null) {
 					mCurrentTime = (Long) child.getTag();
-					String text = TextFormatUtils.getPrettyFormatDuration(mCurrentTime);
+					String text = StringUtils.getPrettyFormatDuration(mCurrentTime);
 					if (mCurrentTime == 3600000) {
 						text = "OVER";
 					}

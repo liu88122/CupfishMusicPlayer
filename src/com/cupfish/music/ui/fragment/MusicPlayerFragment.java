@@ -55,8 +55,9 @@ import com.cupfish.music.service.MusicPlayerService;
 import com.cupfish.music.ui.PlaylistActivity;
 import com.cupfish.music.ui.view.LrcView2;
 import com.cupfish.music.ui.view.VisualizerView;
-import com.cupfish.music.utils.LocalMediaUtil;
+import com.cupfish.music.utils.LocalMediaUtils;
 import com.cupfish.music.utils.MyImageUtils;
+import com.cupfish.music.utils.StringUtils;
 import com.cupfish.music.utils.TextFormatUtils;
 import com.cupfish.music.utils.VisualizerUtils;
 import com.cupfish.music.utils.helpers.lastfm.Album;
@@ -336,7 +337,7 @@ public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClic
 					e.printStackTrace();
 				}
 
-				bitmap = MyImageUtils.createReflectionImageWithOrigin(LocalMediaUtil.getArtwork(getActivity(), songId, albumId));
+				bitmap = MyImageUtils.createReflectionImageWithOrigin(LocalMediaUtils.getArtwork(getActivity(), songId, albumId));
 
 				// TODO 专辑封面下载有问题，待修复
 				if (bitmap == null) {
@@ -357,7 +358,7 @@ public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClic
 				}
 
 				if (bitmap == null) {
-					bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.music_album_default);
+					bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.music);
 					mAlbumCover.setImageBitmap(MyImageUtils.zoomBitmap(bitmap, 0.8f));
 					mAlbumCover.setScaleType(ScaleType.CENTER);
 				} else {
@@ -404,7 +405,7 @@ public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClic
 		}
 		if (MusicPlayerService.mMediaPlayer != null) {
 			long duration = MusicPlayerService.mMediaPlayer.getDuration();
-			mTotalDuration.setText(TextFormatUtils.getPrettyFormatDuration(duration));
+			mTotalDuration.setText(StringUtils.getPrettyFormatDuration(duration));
 			mMainPlayerProgress.setMax((int) duration);
 			// mMiniPlayerProgress.setMax((int) duration);
 		}
@@ -584,11 +585,11 @@ public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClic
 				break;
 			case TIME_LINE_UPDATE:
 				int currentPosition = MusicPlayerService.mMediaPlayer.getCurrentPosition();
-				mCurrentDuration.setText(TextFormatUtils.getPrettyFormatDuration(currentPosition));
+				mCurrentDuration.setText(StringUtils.getPrettyFormatDuration(currentPosition));
 				mMainPlayerProgress.setProgress(currentPosition);
 				if ("00:00".equals(mTotalDuration.getText().toString())) {
 					long duration = MusicPlayerService.mMediaPlayer.getDuration();
-					mTotalDuration.setText(TextFormatUtils.getPrettyFormatDuration(duration));
+					mTotalDuration.setText(StringUtils.getPrettyFormatDuration(duration));
 				}
 				// mMiniPlayerProgress.setProgress((int) currentPosition);
 				break;

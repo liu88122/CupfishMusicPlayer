@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
 
 import com.cupfish.music.R;
 import com.cupfish.music.ui.LocalAllActivity;
@@ -70,13 +68,8 @@ public class LocalMusicFragment extends Fragment implements OnClickListener {
 		AnimationSet animSet = new AnimationSet(true);
 		RotateAnimation rotAnim = new RotateAnimation(view.getWidth() / 2, view.getHeight() / 2, RotateAnimation.ROTATE_DECREASE);
 
-		Display display = getActivity().getWindowManager().getDefaultDisplay();
-		int sWidth = display.getWidth();
-		ScaleAnimation scaleAnimation = new ScaleAnimation(1f, (float) sWidth / view.getWidth(), 1f, 1f, Animation.RELATIVE_TO_SELF, 0.0f,
-				Animation.RELATIVE_TO_SELF, 0.0f);
 
 		animSet.addAnimation(rotAnim);
-		animSet.addAnimation(scaleAnimation);
 		animSet.setDuration(500);
 		animSet.setZAdjustment(Animation.ZORDER_TOP);
 		view.bringToFront();
@@ -108,7 +101,6 @@ public class LocalMusicFragment extends Fragment implements OnClickListener {
 	}
 
 	protected void startNewPage(int id) {
-		// TODO Auto-generated method stub
 		switch(id){
 		case R.id.rl_item_songs:
 			Intent intent = new Intent(getActivity(), LocalAllActivity.class);

@@ -41,7 +41,7 @@
         <activity android:name=".ui.TopListNameActivity" />
         <activity android:name=".ui.TopListActivity" />
         <activity android:name=".ui.AboutActivity" />
-        <activity android:name=".ui.LocalAllActivity" />
+        <activity android:name=".ui.LocalAllActivity"  android:theme="@style/Theme.Sherlock.Light" />
 
         <service android:name=".service.MusicPlayerService" />
         <service android:name=".service.DownloadService" />

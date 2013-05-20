@@ -29,7 +29,7 @@ package com.cupfish.music.utils.helpers.lastfm;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.cupfish.music.utils.StringUtilities;
+import com.cupfish.music.utils.StringUtils;
 
 /**
  * Bean that contains artist information.<br/>
@@ -75,7 +75,7 @@ public class Artist extends MusicEntry {
     public static PaginatedResult<Image> getImages(String artistOrMbid, int page, int limit,
             String apiKey) {
         Map<String, String> params = new HashMap<String, String>();
-        if (StringUtilities.isMbid(artistOrMbid)) {
+        if (StringUtils.isMbid(artistOrMbid)) {
             params.put("mbid", artistOrMbid);
         } else {
             params.put("artist", artistOrMbid);
