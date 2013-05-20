@@ -2,6 +2,12 @@
 字体下载地址：http://www.cupfish.com/files/xujinglei_font.ttf (暂时无效) <br/>
 
 
+v2013.05.20 <br/>
+
+1.引入ActionBarSherlock库， 目前只用在LocalAllActivity<br/>
+	http://actionbarsherlock.com/<br/>
+	https://github.com/JakeWharton/ActionBarSherlock<br/>
+
 v2013.05.17 <br/>
 
 1.加入部分图标，及动画
