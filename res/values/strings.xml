@@ -37,5 +37,6 @@
     <string name="local_recent_list">播放列表</string>
     <string name="local_all_songs">所有歌曲</string>
     
+    <string name="tools">小工具</string>
 
 </resources>

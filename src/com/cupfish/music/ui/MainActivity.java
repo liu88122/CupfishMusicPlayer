@@ -446,6 +446,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	
 	@Override
 	public void overridePendingTransition(int enterAnim, int exitAnim) {
-		super.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+		super.overridePendingTransition(R.anim.push_up_in, R.anim.fade_out);
 	}
 }

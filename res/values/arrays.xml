@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="menu_cate">
+        <item >正在听</item>
+        <item >本地听</item>
+        <item >百度音乐</item>
+        <item >SongTaste</item>
+    </string-array>
+    
+    <string-array name="tools">
+        <item >无线传歌</item>
+    </string-array>
+    
+</resources>

@@ -51,7 +51,7 @@ public class SplashActivity extends Activity {
 			case CANCEL_DOWNLOAD:
 				cancel = true;
 				isPlaylistOk = true;
-				Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+				Intent intent = new Intent(SplashActivity.this, Main2Activity.class);
 				startActivity(intent);
 				finish();
 				break;
