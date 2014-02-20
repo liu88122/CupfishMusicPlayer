@@ -274,7 +274,7 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 					mMediaPlayer.stop();
 				}
 
-				// mMediaPlayer.release();
+				// mMediaPlayer.release();             
 				// mMediaPlayer = new MediaPlayer();
 				// mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 				 
