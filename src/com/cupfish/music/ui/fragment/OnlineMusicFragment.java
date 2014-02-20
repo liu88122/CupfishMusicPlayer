@@ -9,21 +9,20 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.cupfish.music.R;
 import com.cupfish.music.common.Constants;
-import com.cupfish.music.ui.TopListNameActivity;
+import com.cupfish.music.ui.BaiduMusicActivity;
 
 public class OnlineMusicFragment extends Fragment implements OnClickListener {
 	
 	private View mOnlineContent;
 	
-	// 在线听内的1个按钮
+	// 在线听内的2个按钮
 	private ImageView mBaiduMusic;
+	private ImageView mSongtaste;
 
-	// 在线语音识别搜索按钮
-	private Button mSearch;
-	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
@@ -33,11 +32,11 @@ public class OnlineMusicFragment extends Fragment implements OnClickListener {
 		mBaiduMusic = (ImageView) mOnlineContent.findViewById(R.id.iv_baidu_music);
 
 		// 语音识别按钮
-		mSearch = (Button) mOnlineContent.findViewById(R.id.bt_search_online);
+		mSongtaste =  (ImageView) mOnlineContent.findViewById(R.id.iv_songtaste);
 
 		// 在线音乐条目按钮的点击事件
 		mBaiduMusic.setOnClickListener(this);
-		mSearch.setOnClickListener(this);
+		mSongtaste.setOnClickListener(this);
 		return mOnlineContent;
 	}
 
@@ -45,10 +44,13 @@ public class OnlineMusicFragment extends Fragment implements OnClickListener {
 	public void onClick(View v) {
 		switch(v.getId()){
 		case R.id.iv_baidu_music:
-			Intent baiduIntent = new Intent(getActivity(), TopListNameActivity.class);
+			Intent baiduIntent = new Intent(getActivity(), BaiduMusicActivity.class);
 			baiduIntent.putExtra("flag", Constants.FLAG_BAIDU_MUSIC);
 			baiduIntent.putExtra("title", "百度音乐");
 			startActivity(baiduIntent);
+			break;
+		case R.id.iv_songtaste:
+			Toast.makeText(getActivity(), "敬请期待", 0).show();
 			break;
 		}
 	}

@@ -1,6 +1,8 @@
 package com.cupfish.music.utils.helpers;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -13,16 +15,20 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.cupfish.music.bean.Song;
 import com.cupfish.music.common.Constants;
 import com.cupfish.music.exception.NetTimeoutException;
+import com.cupfish.music.parser.JsonParser;
 import com.cupfish.music.utils.helpers.lastfm.Album;
 import com.cupfish.music.utils.helpers.lastfm.Artist;
 
@@ -37,6 +43,7 @@ public class BaiduMusicHelper {
 	private static final String SEARCH_BASE_URL = BASE_URL + "/search";
 	/* 连接超时时间 */
 	private static final int TIME_OUT = 10000;
+	private static final String TAG = BaiduMusicHelper.class.getSimpleName();
 
 	public static List<Song> getSongsFromBaidu(String topType) throws NetTimeoutException {
 		List<Song> songs = new ArrayList<Song>();
@@ -53,7 +60,6 @@ public class BaiduMusicHelper {
 			// .post();
 
 			URL url = new URL(urlStr);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			HttpGet get = new HttpGet(urlStr);
 			HttpClient client = new DefaultHttpClient();
 			HttpResponse response = client.execute(get);
@@ -69,10 +75,12 @@ public class BaiduMusicHelper {
 				sb.append(line.trim()).append("\n");
 			}
 			in.close();
+			Log.i(TAG, sb.toString());
 			Document document = Jsoup.parse(sb.toString());
 			Elements songsElements = document.select("div.song-item");
 			Song song = null;
 			int rank = 1;
+			Log.i(TAG, "songsElements size:" + songsElements.size());
 			for (Element element : songsElements) {
 				song = new Song();
 
@@ -86,7 +94,7 @@ public class BaiduMusicHelper {
 
 					Album album = new Album(albumName, null, null);
 					song.setAlbum(album);
-					
+
 				}
 
 				// 解析歌曲名称及歌曲ID
@@ -108,7 +116,7 @@ public class BaiduMusicHelper {
 						song.setArtist(artist.getName());
 					}
 				}
-				
+
 				song.setRank(rank++);
 				song.setCategory(topType);
 				song.setSource(SOURCE);
@@ -159,9 +167,9 @@ public class BaiduMusicHelper {
 				}
 				if (albumEle != null) {
 					String albumStr = albumEle.text();
-//					Album album = new Album();
-//					album.setTitle(albumStr);
-//					song.setAlbum(album);
+					// Album album = new Album();
+					// album.setTitle(albumStr);
+					// song.setAlbum(album);
 				}
 				// sb.append(songId).append("|").append(songTitle).append("|").append(singer);
 				result.add(song);
@@ -177,7 +185,6 @@ public class BaiduMusicHelper {
 		}
 	}
 
-
 	public static Song getSongById(String songId) throws NetTimeoutException {
 		Song song = new Song();
 		String url = SONG_BASE_URL + "/" + songId;
@@ -189,14 +196,14 @@ public class BaiduMusicHelper {
 			if (singersEle != null) {
 				Artist artist;
 				for (Element e : singersEle) {
-//					artist = new Artist();
-//					String artistIdTemp = e.attr("href");
-//					artist.setId(artistIdTemp.substring(artistIdTemp.lastIndexOf("/")));
-//					artist.setName(e.text());
-//					song.getArtists().add(artist);
+					// artist = new Artist();
+					// String artistIdTemp = e.attr("href");
+					// artist.setId(artistIdTemp.substring(artistIdTemp.lastIndexOf("/")));
+					// artist.setName(e.text());
+					// song.getArtists().add(artist);
 				}
 			}
-			
+
 			Element titleEle = document.select("span.name").first();
 			Element albumEle = null;
 			Elements albumTemp = document.select("li.clearfix");
@@ -207,11 +214,11 @@ public class BaiduMusicHelper {
 			String albumId = "";
 			if (albumEle != null) {
 				albumHrefStr = albumEle.attr("href");
-				if(!TextUtils.isEmpty(albumHrefStr)){
+				if (!TextUtils.isEmpty(albumHrefStr)) {
 					albumId = albumHrefStr.substring(albumHrefStr.lastIndexOf("/") + 1);
 				}
 			}
-			
+
 			Element lrcEle = document.select("a.down-lrc-btn").first();
 			String lrcUrl = "";
 			if (lrcEle != null) {
@@ -224,28 +231,29 @@ public class BaiduMusicHelper {
 			String albumCover = "";
 			String albumStr = "";
 			if (!TextUtils.isEmpty(albumId)) {
-//				Album album2 = getAlbumById(albumId, false);
-//				albumCover = album2.getCoverUrl();
-//				albumStr = album2.getTitle();
+				// Album album2 = getAlbumById(albumId, false);
+				// albumCover = album2.getCoverUrl();
+				// albumStr = album2.getTitle();
 			}
 
-//			if (!TextUtils.isEmpty(albumId) && getAlbumById(albumId, false) != null) {
-//				albumCover = getAlbumById(albumId, false).getCoverUrl();
-//			}
+			// if (!TextUtils.isEmpty(albumId) && getAlbumById(albumId, false)
+			// != null) {
+			// albumCover = getAlbumById(albumId, false).getCoverUrl();
+			// }
 			song.setSongId(songId);
 			// song.setArtist(singerEle.text());
 			song.setTitle(titleEle.text());
 			song.setSongUrl(downloadUrl);
-//			Album album = new Album();
-//			album.setTitle(albumStr);
-//			album.setCoverPath(albumCover);
-//			song.setAlbum(album);
+			// Album album = new Album();
+			// album.setTitle(albumStr);
+			// album.setCoverPath(albumCover);
+			// song.setAlbum(album);
 			song.setLrcUrl(BASE_URL + lrcUrl);
-			
+
 			String audioType = null;
-			if(!TextUtils.isEmpty(downloadUrl)){
+			if (!TextUtils.isEmpty(downloadUrl)) {
 				int index = downloadUrl.lastIndexOf(".");
-				if(index > 0 && index < downloadUrl.length() - 1){
+				if (index > 0 && index < downloadUrl.length() - 1) {
 					audioType = downloadUrl.substring(index + 1);
 				}
 			}
@@ -256,7 +264,8 @@ public class BaiduMusicHelper {
 		}
 	}
 
-	public static String getDownloadUrlBySongId(String songId) throws NetTimeoutException {
+	@Deprecated
+	public static String getDownloadUrlBySongIdOld(String songId) throws NetTimeoutException {
 
 		// http://music.baidu.com/song/13932461/download
 
@@ -265,12 +274,12 @@ public class BaiduMusicHelper {
 		try {
 			// Document document = Jsoup.connect(url).timeout(20000).get();
 			Document document = Jsoup.connect(url).userAgent("Mozilla").timeout(30000).post();
-			Elements lis = document.select("li");
+			Elements lis = document.select("a");
 			if (lis != null && lis.size() > 0) {
 				String dataStr = "";
 				for (Element e : lis) {
-					dataStr = e.attr("data-data");
-					if (!TextUtils.isEmpty(dataStr) && dataStr.contains("link")) {
+					dataStr = e.attr("href");
+					if (!TextUtils.isEmpty(dataStr) && dataStr.contains(".mp3")) {
 						songUrl = dataStr.substring(dataStr.indexOf("http"), dataStr.length() - 2).replaceAll("\\\\", "");
 					}
 				}
@@ -281,6 +290,46 @@ public class BaiduMusicHelper {
 			throw new NetTimeoutException(e);
 		}
 		return null;
+	}
+
+	// http://musicmini.baidu.com/app/link/getLinks.php?songId=392372
+	public static String getDownloadUrlBySongId(String songId) throws NetTimeoutException {
+
+		// http://music.baidu.com/song/13932461/download
+
+		String urlStr = "http://musicmini.baidu.com/app/link/getLinks.php?songId=" + songId;
+		String songUrl = "";
+		try {
+			
+			URL url = new URL(urlStr);
+			HttpGet get = new HttpGet(urlStr);
+			HttpClient client = new DefaultHttpClient();
+			HttpResponse response = client.execute(get);
+			int code = response.getStatusLine().getStatusCode();
+			System.out.println(code);
+			InputStream in = response.getEntity().getContent();
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			byte[] buffer = new byte[1024];
+			int len = -1;
+			while((len = in.read(buffer)) != -1){
+				baos.write(buffer, 0, len);
+			}
+			String jsonStr = baos.toString();
+			JSONArray jArray = new JSONArray(jsonStr);
+			if(jArray != null && jArray.length() > 0){
+				JSONObject jObj = jArray.getJSONObject(0);
+				JSONArray jFileArray = jObj.getJSONArray("file_list");
+				if(jFileArray != null && jFileArray.length() >  0){
+					songUrl = jFileArray.getJSONObject(0).getString("url");
+					if(!TextUtils.isEmpty(songUrl)){
+						songUrl = songUrl.replace("\\","");
+					}
+				}
+			}
+		} catch (Exception e) {
+			throw new NetTimeoutException(e);
+		}
+		return songUrl;
 	}
 
 	public static String getTopListTypeByName(String name) {

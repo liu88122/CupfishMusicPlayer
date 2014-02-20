@@ -5,42 +5,9 @@
     android:background="@color/white"
     android:orientation="vertical" >
 
-    <!--
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="vertical" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/list_section_divider_holo_custom"
-            android:padding="10dip"
-            android:text="@string/baiduting"
-            android:textColor="@color/main_blue_light" />
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="@color/main_blue_light" />
-    </LinearLayout>
-    -->
-
-    <Button
-        android:id="@+id/bt_search_online"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dip"
-        android:background="@drawable/search_btn_selector"
-        android:padding="10dip"
-        android:text="@string/search_online"
-        android:textColor="@color/white"
-        android:textSize="18sp" />
-
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="40dip"
         android:layout_weight="1" >
 
@@ -53,8 +20,18 @@
             android:focusable="true"
             android:scaleType="fitXY"
             android:src="@drawable/baidu_music_btn_selector" />
-
-      
+        
+        <ImageView
+            android:id="@+id/iv_songtaste"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/iv_baidu_music"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/songtaste"
+            android:layout_marginTop="30dp" />
     </RelativeLayout>
 
     <!-- <include layout="@layout/bottom_mini_player" /> -->
@@ -73,15 +50,15 @@
         <com.cupfish.music.ui.view.MyTextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:padding="5dip"
+            android:background="@color/red_light"
+            android:clickable="true"
             android:ellipsize="marquee"
             android:focusable="true"
-            android:clickable="true"
+            android:padding="5dip"
             android:singleLine="true"
             android:text="@string/copyright"
             android:textColor="@color/white"
-            android:textSize="16sp"
-            android:background="@color/red_light" />
+            android:textSize="16sp" />
     </LinearLayout>
 
 </LinearLayout>

@@ -48,7 +48,7 @@
         <activity android:name=".ui.NewTopActivity" />
         <activity android:name=".ui.TestActivity" />
         <activity android:name=".ui.SearchResultActivity" />
-        <activity android:name=".ui.TopListNameActivity" />
+        <activity android:name=".ui.BaiduMusicActivity" />
         <activity android:name=".ui.TopListActivity" />
         <activity android:name=".ui.AboutActivity" />
         <activity

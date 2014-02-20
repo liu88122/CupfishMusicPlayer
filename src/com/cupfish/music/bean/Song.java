@@ -183,4 +183,13 @@ public class Song implements Serializable, Comparable<Song> {
 		return this.titlePinyin.compareTo(another.titlePinyin);
 	}
 
+	@Override
+	public String toString() {
+		return "Song [_id=" + _id + ", songId=" + songId + ", title=" + title + ", titlePinyin=" + titlePinyin + ", artist=" + artist + ", album=" + album
+				+ ", songPath=" + songPath + ", songUrl=" + songUrl + ", lrcPath=" + lrcPath + ", lrcUrl=" + lrcUrl + ", audioType=" + audioType
+				+ ", duration=" + duration + ", source=" + source + ", category=" + category + ", rank=" + rank + "]";
+	}
+	
+	
+
 }

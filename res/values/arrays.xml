@@ -3,8 +3,7 @@
     <string-array name="menu_cate">
         <item >正在听</item>
         <item >本地听</item>
-        <item >百度音乐</item>
-        <item >SongTaste</item>
+        <item >在线听</item>
     </string-array>
     
     <string-array name="tools">

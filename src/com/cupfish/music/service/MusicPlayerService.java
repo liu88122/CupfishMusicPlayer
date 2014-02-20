@@ -194,6 +194,7 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 				Bundle bundle = intent.getExtras();
 				if (bundle != null) {
 					final Song song = (Song) bundle.getSerializable("song");
+					Log.i(TAG, song.toString());
 					if (song != null) {
 						if (!TextUtils.isEmpty(song.getSongPath())) {
 							// 如果是本地歌曲，则song的url属性不为空，可以直接播放
@@ -267,20 +268,22 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 		}
 		String path = song.getSongPath();
 		
-		if (mMediaPlayer != null && path != null) {
+		if (mMediaPlayer != null) {
 			try {
 				if (mMediaPlayer.isPlaying()) {
 					mMediaPlayer.stop();
 				}
-				/*
-				 * mMediaPlayer.release(); mMediaPlayer = new MediaPlayer();
-				 * mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-				 */
-				
-				if(!new File(path).exists()){
-					String dir = Environment.getExternalStorageDirectory() + "/cupfish";
-					path = DownloadEngine.getInstance().download(getApplicationContext(), path, dir, song.getTitle()+".mp3", 1);
-				}
+
+				// mMediaPlayer.release();
+				// mMediaPlayer = new MediaPlayer();
+				// mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+				 
+				// 设置缓冲地址代码
+//				if (TextUtils.isEmpty(path)||!new File(path).exists()) {
+//					String dir = Environment.getExternalStorageDirectory() + "/cupfish";
+//					path = DownloadEngine.getInstance().download(getApplicationContext(), path, dir, song.getTitle() + ".mp3", 1);
+//				}
+				path = song.getSongUrl();
 				mMediaPlayer.reset();
 				mMediaPlayer.setDataSource(path);
 				mMediaPlayer.setOnPreparedListener(this);

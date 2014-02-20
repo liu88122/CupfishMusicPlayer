@@ -25,7 +25,7 @@ public class MenuCateAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return menuCates.length + 2 + tools.length;
+		return menuCates.length;
 	}
 
 	@Override
@@ -35,35 +35,42 @@ public class MenuCateAdapter extends BaseAdapter {
 
 	@Override
 	public long getItemId(int position) {
+		int viewType = getItemViewType(position);
+		switch(viewType){
+		case 0:
+			
+			break;
+		case 1:
+			
+			break;
+		}
 		return position;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		int viewType = getItemViewType(position);
+//		int viewType = getItemViewType(position);
 		View view = null;
-		switch(viewType){
-		case 0:
-			view = View.inflate(context, R.layout.music_list_item_section_title, null);
-			TextView  tv = (TextView) view.findViewById(R.id.tv_section_title);
-			if(position == 0){
-				tv.setText(sectionTitles[0]);
-			} else {
-				tv.setText(sectionTitles[1]);
-			}
-			break;
-		case 1:
+//		switch(viewType){
+//		case 0:
+//			view = View.inflate(context, R.layout.music_list_item_section_title, null);
+//			TextView  tv = (TextView) view.findViewById(R.id.tv_section_title);
+//			if(position == 0){
+//				tv.setText(sectionTitles[0]);
+//			} else {
+//				tv.setText(sectionTitles[1]);
+//			}
+//			break;
+//		case 1:
 			view = View.inflate(context, R.layout.menu_cate_item, null);
 			TextView tv1 = (TextView) view.findViewById(R.id.title);
-			ImageView iv= (ImageView) view.findViewById(R.id.icon);
 			if(position <= menuCates.length){
-				tv1.setText(menuCates[position - 1]);
-				iv.setImageResource(menuIcons[position - 1]);
+				tv1.setText(menuCates[position]);
 			} else {
-				tv1.setText(tools[position - menuCates.length - 2]);
+				tv1.setText(tools[position - menuCates.length]);
 			}
-			break;
-		}
+//			break;
+//		}
 		return view;
 	}
 

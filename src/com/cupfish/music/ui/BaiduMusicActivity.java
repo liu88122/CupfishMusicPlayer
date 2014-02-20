@@ -18,7 +18,7 @@ import com.cupfish.music.bean.Song;
 import com.cupfish.music.common.Constants;
 import com.cupfish.music.ui.adapter.MusicListNameAdapter;
 
-public class TopListNameActivity extends Activity implements OnClickListener {
+public class BaiduMusicActivity extends Activity implements OnClickListener {
 
 
 	private ListView mMusicLv;
@@ -57,7 +57,7 @@ public class TopListNameActivity extends Activity implements OnClickListener {
 		mMusicLv.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-				Intent intent = new Intent(TopListNameActivity.this, TopListActivity.class);
+				Intent intent = new Intent(BaiduMusicActivity.this, TopListActivity.class);
 				if(flag == Constants.FLAG_BAIDU_MUSIC){
 					intent.putExtra("topType",Constants.BAIDU_MUSIC_LIST[position]);
 				}else if(flag == Constants.FLAG_GOOGLE_MUSIC){
