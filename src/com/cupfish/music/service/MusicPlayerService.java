@@ -214,7 +214,8 @@ public class MusicPlayerService extends Service implements OnCompletionListener,
 										case Constants.FLAG_BAIDU_MUSIC:
 											Song baiduSong = song;
 											try {
-												baiduSong = BaiduMusicHelper.getSongById(songId);
+//												baiduSong = BaiduMusicHelper.getSongById(songId);
+												baiduSong = BaiduMusicHelper.queryBySongId(songId);
 											} catch (NetTimeoutException e) {
 												// TODO Auto-generated catch
 												// block

@@ -1,10 +1,13 @@
 杯里鱼音乐播放器 <br/>
 字体下载地址：http://www.cupfish.com/files/xujinglei_font.ttf (暂时无效) <br/>
 
+v2014.02.21 <br/>
+1.在线听时返回播放界面歌曲信息不全<br/>
+APK下载地址:http://pan.baidu.com/s/1qWNgCQo
+
 v2014.02.20 <br/>
 1.修正无法播放歌曲历史遗留问题<br/>
 2.修正百度音乐地址获取问题<br/>
-apk下载地址:http://pan.baidu.com/s/1c0ePM5y<br/>
 
 TODO:
 1.下载引擎弱弱好像不工作了呀，检查一下<br/>

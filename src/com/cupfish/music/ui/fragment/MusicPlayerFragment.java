@@ -312,6 +312,12 @@ public class MusicPlayerFragment extends Fragment implements ViewFactory, OnClic
 		}
 
 		if (mCurrentSong != null) {
+			
+			//song title
+			if(!TextUtils.isEmpty(mCurrentSong.getTitle())){
+				mTitle.setText(mCurrentSong.getTitle());
+			}
+			
 			//artists
 			if (!TextUtils.isEmpty(mCurrentSong.getArtist())) {
 				mArtist.setText(mCurrentSong.getArtist());

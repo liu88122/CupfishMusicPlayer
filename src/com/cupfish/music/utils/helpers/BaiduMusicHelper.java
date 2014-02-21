@@ -185,6 +185,7 @@ public class BaiduMusicHelper {
 		}
 	}
 
+	@Deprecated
 	public static Song getSongById(String songId) throws NetTimeoutException {
 		Song song = new Song();
 		String url = SONG_BASE_URL + "/" + songId;
@@ -290,6 +291,83 @@ public class BaiduMusicHelper {
 			throw new NetTimeoutException(e);
 		}
 		return null;
+	}
+	
+	/**
+	 * 
+	 * @param songId
+	 * @return
+	 * @throws NetTimeoutException
+	 */
+	public static Song queryBySongId(String songId) throws NetTimeoutException {
+
+		Song song = new Song();
+		song.setSongId(songId);
+		String urlStr = "http://musicmini.baidu.com/app/link/getLinks.php?songId=" + songId;
+		
+		try {
+			URL url = new URL(urlStr);
+			HttpGet get = new HttpGet(urlStr);
+			HttpClient client = new DefaultHttpClient();
+			HttpResponse response = client.execute(get);
+			int code = response.getStatusLine().getStatusCode();
+			System.out.println(code);
+			InputStream in = response.getEntity().getContent();
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			byte[] buffer = new byte[1024];
+			int len = -1;
+			while ((len = in.read(buffer)) != -1) {
+				baos.write(buffer, 0, len);
+			}
+			String jsonStr = baos.toString();
+			JSONArray jArray = new JSONArray(jsonStr);
+			if (jArray != null && jArray.length() > 0) {
+				JSONObject jObj = jArray.getJSONObject(0);
+				if (jObj != null) {
+					
+					String songTitle = jObj.getString("song_title");
+					if(!TextUtils.isEmpty(songTitle)){
+						song.setTitle(songTitle);
+					}
+					
+					String songArtist = jObj.getString("song_artist");
+					if(!TextUtils.isEmpty(songArtist)){
+						song.setArtist(songArtist);
+					}
+					
+					String songLyricUrl = jObj.getString("lyric_url");
+					if(!TextUtils.isEmpty(songArtist)){
+						songLyricUrl = songLyricUrl.replace("\\", "");
+						song.setLrcUrl(songLyricUrl);
+					}
+					
+					String songAlbumImageUrl = jObj.getString("album_image_url");
+					if(!TextUtils.isEmpty(songAlbumImageUrl)){
+						songAlbumImageUrl = songAlbumImageUrl.replace("\\", "");
+					}
+					String songAlbumTitle = jObj.getString("album_title");
+					Album album = new Album(songAlbumTitle, songAlbumImageUrl, song.getArtist());
+					song.setAlbum(album);
+					
+					JSONArray jFileArray = jObj.getJSONArray("file_list");
+					if (jFileArray != null && jFileArray.length() > 0) {
+						String songUrl = jFileArray.getJSONObject(0).getString("url");
+						if (!TextUtils.isEmpty(songUrl)) {
+							songUrl = songUrl.replace("\\", "");
+							song.setSongUrl(songUrl);
+						}
+						String songFormat = jFileArray.getJSONObject(0).getString("format");
+						if (!TextUtils.isEmpty(songFormat)) {
+							song.setAudioType(songFormat);
+						}
+						
+					}
+				}
+			}
+		} catch (Exception e) {
+			throw new NetTimeoutException(e);
+		}
+		return song;
 	}
 
 	// http://musicmini.baidu.com/app/link/getLinks.php?songId=392372
